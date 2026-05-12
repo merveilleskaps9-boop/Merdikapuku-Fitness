@@ -446,7 +446,29 @@
       <div class="input-group"><label>Poids (kg)</label><input type="number" id="inpWeight" step="0.1" value="75.0"></div>
       <div class="input-group"><label>Pas</label><input type="number" id="inpSteps" step="100" value="0" placeholder="0"></div>
       <div class="input-group"><label>Incline Walk (10%)</label>
-        <select id="inpIncline"><option value="0">No</option><option value="30">Yes (30 min)</option></select>
+        <select id="inpIncline"><option value="0">Rest / No</option>
+          <optgroup label="🚶 No bar holding — 9% @ 3.5km/h">
+            <option value="25_9_1.0">25 min — no bars</option>
+            <option value="30_9_1.0">30 min — no bars</option>
+            <option value="35_9_1.0">35 min — no bars</option>
+            <option value="40_9_1.0">40 min — no bars</option>
+            <option value="45_9_1.0">45 min — no bars</option>
+          </optgroup>
+          <optgroup label="🤲 Lower bars (sensors) — 11% @ 4km/h">
+            <option value="25_11_0.80">25 min — lower bars</option>
+            <option value="30_11_0.80">30 min — lower bars</option>
+            <option value="35_11_0.80">35 min — lower bars</option>
+            <option value="40_11_0.80">40 min — lower bars</option>
+            <option value="45_11_0.80">45 min — lower bars</option>
+          </optgroup>
+          <optgroup label="🙌 Upper bar (screen) — 11% @ 4km/h">
+            <option value="25_11_0.75">25 min — upper bar</option>
+            <option value="30_11_0.75">30 min — upper bar</option>
+            <option value="35_11_0.75">35 min — upper bar</option>
+            <option value="40_11_0.75">40 min — upper bar</option>
+            <option value="45_11_0.75">45 min — upper bar</option>
+          </optgroup>
+        </select>
       </div>
       <div class="input-group"><label>Gym Session</label>
         <select id="inpGym">
@@ -635,115 +657,115 @@ const WALK_S=58.33, WALK_SPEED_KMH=3.5, MET_WALK=2.02, INCL_G=0.08, INCL_DUR=25,
 // ═══════════════════════════════════
 const defDB={
   // Laitiers & protéines
-  "skyr_115g":      {cat:["Meal 1","Meal 2","Snacks"],en:"Skyr Yogurt (115g)",cal:80,p:12,c:8,f:0,fib:0,u:"unit"},
-  "skoti_150g":     {cat:["Meal 1","Meal 2","Snacks"],en:"Skotidakis 20g Pro (150g)",cal:140,p:20,c:9,f:3,fib:0,u:"unit"},
-  "cottage_cheese": {cat:["Meal 1","Meal 2","Snacks"],en:"Cottage Cheese Low Fat",cal:104,p:21.6,c:2.4,f:0.8,fib:0,u:"g"},
-  "greek_yogurt_0": {cat:["Meal 1","Meal 2","Snacks"],en:"Greek Yogurt 0%",cal:57,p:9.7,c:3.4,f:0,fib:0,u:"g"},
-  "lait_nido":      {cat:["Meal 1","Meal 2","Snacks"],en:"Nido Milk Powder",cal:496,p:25,c:40,f:26.2,fib:0,u:"g"},
-  "milk_protein":   {cat:["Meal 1","Snacks"],en:"Protein Milk",cal:64,p:7.2,c:3.6,f:2,fib:0,u:"ml"},
-  "kirkland_shake": {cat:["Snacks","Meal 1"],en:"Kirkland Protein Shake",cal:160,p:30,c:5,f:2.5,fib:2,u:"unit"},
-  "premier_protein":{cat:["Snacks","Meal 1"],en:"Premier Protein Shake",cal:160,p:30,c:4,f:3,fib:1,u:"unit"},
-  "whey_protein":   {cat:["Snacks","Meal 1","Meal 2"],en:"Whey Protein (Scoop)",cal:140,p:24,c:3,f:3.5,fib:0,u:"unit"},
-  "caffe_capsule":  {cat:["Meal 1"],en:"Protein Coffee (capsule)",cal:10,p:1,c:1,f:0,fib:0,u:"unit"},
+  "skyr_115g":      {cat:["Meal 1","Meal 2","Snacks"],en:"Skyr Yogurt (115g)",fr:"Skyr Yogourt (115g)",cal:80,p:12,c:8,f:0,fib:0,u:"unit"},
+  "skoti_150g":     {cat:["Meal 1","Meal 2","Snacks"],en:"Skotidakis 20g Pro (150g)",fr:"Skotidakis 20g Prot (150g)",cal:140,p:20,c:9,f:3,fib:0,u:"unit"},
+  "cottage_cheese": {cat:["Meal 1","Meal 2","Snacks"],en:"Cottage Cheese Low Fat",fr:"Fromage cottage allégé",cal:104,p:21.6,c:2.4,f:0.8,fib:0,u:"g"},
+  "greek_yogurt_0": {cat:["Meal 1","Meal 2","Snacks"],en:"Greek Yogurt 0%",fr:"Yogourt grec 0%",cal:57,p:9.7,c:3.4,f:0,fib:0,u:"g"},
+  "lait_nido":      {cat:["Meal 1","Meal 2","Snacks"],en:"Nido Milk Powder",fr:"Lait Nido (poudre)",cal:496,p:25,c:40,f:26.2,fib:0,u:"g"},
+  "milk_protein":   {cat:["Meal 1","Snacks"],en:"Protein Milk",fr:"Lait protéiné",cal:64,p:7.2,c:3.6,f:2,fib:0,u:"ml"},
+  "kirkland_shake": {cat:["Snacks","Meal 1"],en:"Kirkland Protein Shake",fr:"Boisson protéinée Kirkland",cal:160,p:30,c:5,f:2.5,fib:2,u:"unit"},
+  "premier_protein":{cat:["Snacks","Meal 1"],en:"Premier Protein Shake",fr:"Premier Protein Shake",cal:160,p:30,c:4,f:3,fib:1,u:"unit"},
+  "whey_protein":   {cat:["Snacks","Meal 1","Meal 2"],en:"Whey Protein (Scoop)",fr:"Protéine Whey (scoop)",cal:140,p:24,c:3,f:3.5,fib:0,u:"unit"},
+  "caffe_capsule":  {cat:["Meal 1"],en:"Protein Coffee (capsule)",fr:"Café protéiné (capsule)",cal:10,p:1,c:1,f:0,fib:0,u:"unit"},
   // Féculents & céréales
-  "pom_protein_t":  {cat:["Meal 1","Meal 2","Meal 3"],en:"POM Protein Tortilla",cal:150,p:13,c:19,f:3.5,fib:4,u:"unit"},
-  "pom_wrap_t":     {cat:["Meal 1","Meal 2","Meal 3"],en:"POM Tortilla Wrap",cal:150,p:5,c:29,f:2,fib:1,u:"unit"},
-  "hf_tortilla":    {cat:["Meal 1","Meal 2","Meal 3"],en:"High Fiber Low Cal Tortilla",cal:90,p:4,c:24,f:4,fib:17,u:"unit"},
-  "oatmeal_quaker": {cat:["Meal 1","Meal 2"],en:"Oatmeal Quaker (dry)",cal:375,p:12.5,c:67.5,f:1.3,fib:5,u:"g"},
-  "oatmeal_cooked": {cat:["Meal 1","Meal 2"],en:"Oatmeal cooked (100g)",cal:71,p:2.5,c:12,f:1.5,fib:1.7,u:"g"},
-  "white_rice":     {cat:["Meal 3"],en:"White rice cooked",cal:130,p:2.5,c:28,f:0,fib:0.5,u:"g"},
-  "brown_rice":     {cat:["Meal 3"],en:"Brown rice cooked",cal:123,p:2.6,c:25,f:1,fib:1.6,u:"g"},
-  "sweet_potato":   {cat:["Meal 3","Meal 1","Meal 2"],en:"Sweet potato cooked",cal:83,p:1.7,c:19.2,f:0.1,fib:2.9,u:"g"},
-  "yellow_potato":  {cat:["Meal 3","Meal 1"],en:"Yellow potato cooked",cal:91,p:2.3,c:21,f:0.1,fib:2,u:"g"},
-  "russet_potato":  {cat:["Meal 3"],en:"Russet potato cooked",cal:94,p:2.5,c:21.6,f:0.1,fib:1.8,u:"g"},
-  "plantain":       {cat:["Meal 3"],en:"Plantain cooked",cal:116,p:0.8,c:32,f:0.1,fib:2.3,u:"g"},
-  "yucca":          {cat:["Meal 3"],en:"Yucca / Cassava cooked",cal:151,p:1,c:36,f:0.3,fib:1.5,u:"g"},
-  "chia_seed":      {cat:["Meal 1","Meal 2","Snacks"],en:"Chia Seeds",cal:486,p:16,c:42,f:30,fib:34,u:"g"},
-  "spaghetti":      {cat:["Meal 3"],en:"Spaghetti cooked",cal:158,p:5.8,c:31,f:0.9,fib:1.8,u:"g"},
-  "regular_bread":  {cat:["Meal 1","Meal 2"],en:"Regular sliced bread",cal:265,p:9,c:49,f:3.2,fib:2.7,u:"g"},
-  "noodles":        {cat:["Meal 3"],en:"Noodles cooked",cal:138,p:4.5,c:25,f:2,fib:1,u:"g"},
+  "pom_protein_t":  {cat:["Meal 1","Meal 2","Meal 3"],en:"POM Protein Tortilla",fr:"Tortilla protéinée POM",cal:150,p:13,c:19,f:3.5,fib:4,u:"unit"},
+  "pom_wrap_t":     {cat:["Meal 1","Meal 2","Meal 3"],en:"POM Tortilla Wrap",fr:"Tortilla Wrap POM",cal:150,p:5,c:29,f:2,fib:1,u:"unit"},
+  "hf_tortilla":    {cat:["Meal 1","Meal 2","Meal 3"],en:"High Fiber Low Cal Tortilla",fr:"Tortilla haute fibre",cal:90,p:4,c:24,f:4,fib:17,u:"unit"},
+  "oatmeal_quaker": {cat:["Meal 1","Meal 2"],en:"Oatmeal Quaker (dry)",fr:"Flocons Quaker (sec)",cal:375,p:12.5,c:67.5,f:1.3,fib:5,u:"g"},
+  "oatmeal_cooked": {cat:["Meal 1","Meal 2"],en:"Oatmeal cooked (100g)",fr:"Flocons cuits (100g)",cal:71,p:2.5,c:12,f:1.5,fib:1.7,u:"g"},
+  "white_rice":     {cat:["Meal 3"],en:"White rice cooked",fr:"Riz blanc cuit",cal:130,p:2.5,c:28,f:0,fib:0.5,u:"g"},
+  "brown_rice":     {cat:["Meal 3"],en:"Brown rice cooked",fr:"Riz brun cuit",cal:123,p:2.6,c:25,f:1,fib:1.6,u:"g"},
+  "sweet_potato":   {cat:["Meal 3","Meal 1","Meal 2"],en:"Sweet potato cooked",fr:"Patate douce cuite",cal:83,p:1.7,c:19.2,f:0.1,fib:2.9,u:"g"},
+  "yellow_potato":  {cat:["Meal 3","Meal 1"],en:"Yellow potato cooked",fr:"Pomme de terre jaune cuite",cal:91,p:2.3,c:21,f:0.1,fib:2,u:"g"},
+  "russet_potato":  {cat:["Meal 3"],en:"Russet potato cooked",fr:"Russet cuite",cal:94,p:2.5,c:21.6,f:0.1,fib:1.8,u:"g"},
+  "plantain":       {cat:["Meal 3"],en:"Plantain cooked",fr:"Plantain cuit",cal:116,p:0.8,c:32,f:0.1,fib:2.3,u:"g"},
+  "yucca":          {cat:["Meal 3"],en:"Yucca / Cassava cooked",fr:"Manioc / Yucca cuit",cal:151,p:1,c:36,f:0.3,fib:1.5,u:"g"},
+  "chia_seed":      {cat:["Meal 1","Meal 2","Snacks"],en:"Chia Seeds",fr:"Graines de chia",cal:486,p:16,c:42,f:30,fib:34,u:"g"},
+  "spaghetti":      {cat:["Meal 3"],en:"Spaghetti cooked",fr:"Spaghetti cuits",cal:158,p:5.8,c:31,f:0.9,fib:1.8,u:"g"},
+  "regular_bread":  {cat:["Meal 1","Meal 2"],en:"Regular sliced bread",fr:"Pain tranché régulier",cal:265,p:9,c:49,f:3.2,fib:2.7,u:"g"},
+  "noodles":        {cat:["Meal 3"],en:"Noodles cooked",fr:"Nouilles cuites",cal:138,p:4.5,c:25,f:2,fib:1,u:"g"},
   // Oeufs & viandes
-  "eggs":           {cat:["Meal 1","Meal 2"],en:"Whole egg",cal:80,p:6.5,c:0.5,f:5.5,fib:0,u:"unit"},
-  "eggwhites":      {cat:["Meal 1","Meal 2"],en:"Egg whites liquid",cal:52,p:10.9,c:0.7,f:0.2,fib:0,u:"g"},
-  "saucisse_pro":   {cat:["Meal 2","Meal 3"],en:"Protein sausage",cal:210,p:31,c:7,f:6,fib:0,u:"unit"},
-  "chicken_breast": {cat:["Meal 3","Meal 2"],en:"Chicken breast cooked",cal:135,p:18,c:0,f:6,fib:0,u:"g"},
-  "chicken_thighs": {cat:["Meal 3","Meal 2"],en:"Chicken thighs cooked",cal:145,p:19,c:0,f:6.5,fib:0,u:"g"},
-  "chicken_wings":  {cat:["Meal 3","Meal 2"],en:"Chicken wings cooked",cal:203,p:19,c:0,f:14,fib:0,u:"g"},
-  "whole_chicken":  {cat:["Meal 3"],en:"Whole roasted chicken (Costco)",cal:190,p:22,c:0,f:11,fib:0,u:"g"},
-  "ground_beef":    {cat:["Meal 3","Meal 2"],en:"Ground beef cooked",cal:250,p:25,c:0,f:17,fib:0,u:"g"},
-  "ground_turkey":  {cat:["Meal 3","Meal 2"],en:"Ground turkey cooked",cal:140,p:18,c:0,f:8,fib:0,u:"g"},
-  "beef_strip_loin":{cat:["Meal 3","Meal 2"],en:"Strip loin (NY steak) cooked",cal:290,p:43.2,c:0,f:12,fib:0,u:"g"},
-  "beef_ribeye":    {cat:["Meal 3","Meal 2"],en:"Ribeye steak cooked",cal:310,p:25,c:0,f:24,fib:0,u:"g"},
-  "pork_shoulder":  {cat:["Meal 3","Meal 2"],en:"Pork shoulder cooked",cal:250,p:25,c:0,f:17,fib:0,u:"g"},
-  "beef_liver":     {cat:["Meal 3","Meal 2"],en:"Beef liver cooked",cal:175,p:27,c:4.5,f:5,fib:0,u:"g"},
-  "pork_liver":     {cat:["Meal 3","Meal 2"],en:"Pork liver cooked",cal:165,p:26,c:3.5,f:4.5,fib:0,u:"g"},
-  "lamb":           {cat:["Meal 3","Meal 2"],en:"Lamb cooked",cal:258,p:28,c:0,f:16,fib:0,u:"g"},
-  "jambon":         {cat:["Meal 1","Meal 2"],en:"Ham sliced",cal:145,p:21,c:2,f:6,fib:0,u:"g"},
-  "goat":           {cat:["Meal 3","Meal 2"],en:"Goat cooked",cal:170,p:30,c:0,f:5,fib:0,u:"g"},
-  "burger_meat":    {cat:["Meal 3"],en:"Burger patty cooked",cal:250,p:25,c:0,f:17,fib:0,u:"g"},
-  "burger_bread":   {cat:["Meal 3"],en:"Burger bun",cal:275,p:9,c:48,f:5,fib:2,u:"g"},
-  "chicken_burrito":{cat:["Meal 3"],en:"Chicken burrito (homemade ~300g)",cal:210,p:15,c:22,f:7,fib:2,u:"g"},
-  "beef_burrito":   {cat:["Meal 3"],en:"Beef burrito (homemade ~300g)",cal:230,p:15,c:22,f:9,fib:2,u:"g"},
+  "eggs":           {cat:["Meal 1","Meal 2"],en:"Whole egg",fr:"Oeuf entier",cal:80,p:6.5,c:0.5,f:5.5,fib:0,u:"unit"},
+  "eggwhites":      {cat:["Meal 1","Meal 2"],en:"Egg whites liquid",fr:"Blancs d'oeufs liquides",cal:52,p:10.9,c:0.7,f:0.2,fib:0,u:"g"},
+  "saucisse_pro":   {cat:["Meal 2","Meal 3"],en:"Protein sausage",fr:"Saucisse protéinée",cal:210,p:31,c:7,f:6,fib:0,u:"unit"},
+  "chicken_breast": {cat:["Meal 3","Meal 2"],en:"Chicken breast cooked",fr:"Poulet cuit (blanc)",cal:135,p:18,c:0,f:6,fib:0,u:"g"},
+  "chicken_thighs": {cat:["Meal 3","Meal 2"],en:"Chicken thighs cooked",fr:"Cuisses de poulet cuites",cal:145,p:19,c:0,f:6.5,fib:0,u:"g"},
+  "chicken_wings":  {cat:["Meal 3","Meal 2"],en:"Chicken wings cooked",fr:"Ailes de poulet cuites",cal:203,p:19,c:0,f:14,fib:0,u:"g"},
+  "whole_chicken":  {cat:["Meal 3"],en:"Whole roasted chicken (Costco)",fr:"Poulet entier rôti (Costco)",cal:190,p:22,c:0,f:11,fib:0,u:"g"},
+  "ground_beef":    {cat:["Meal 3","Meal 2"],en:"Ground beef cooked",fr:"Boeuf haché cuit",cal:250,p:25,c:0,f:17,fib:0,u:"g"},
+  "ground_turkey":  {cat:["Meal 3","Meal 2"],en:"Ground turkey cooked",fr:"Dinde hachée cuite",cal:140,p:18,c:0,f:8,fib:0,u:"g"},
+  "beef_strip_loin":{cat:["Meal 3","Meal 2"],en:"Strip loin cooked",fr:"Faux-filet cuit",cal:290,p:43.2,c:0,f:12,fib:0,u:"g"},
+  "beef_ribeye":    {cat:["Meal 3","Meal 2"],en:"Ribeye steak cooked",fr:"Entrecôte cuite",cal:310,p:25,c:0,f:24,fib:0,u:"g"},
+  "pork_shoulder":  {cat:["Meal 3","Meal 2"],en:"Pork shoulder cooked",fr:"Épaule de porc cuite",cal:250,p:25,c:0,f:17,fib:0,u:"g"},
+  "beef_liver":     {cat:["Meal 3","Meal 2"],en:"Beef liver cooked",fr:"Foie de boeuf cuit",cal:175,p:27,c:4.5,f:5,fib:0,u:"g"},
+  "pork_liver":     {cat:["Meal 3","Meal 2"],en:"Pork liver cooked",fr:"Foie de porc cuit",cal:165,p:26,c:3.5,f:4.5,fib:0,u:"g"},
+  "lamb":           {cat:["Meal 3","Meal 2"],en:"Lamb cooked",fr:"Agneau cuit",cal:258,p:28,c:0,f:16,fib:0,u:"g"},
+  "jambon":         {cat:["Meal 1","Meal 2"],en:"Ham sliced",fr:"Jambon tranché",cal:145,p:21,c:2,f:6,fib:0,u:"g"},
+  "goat":           {cat:["Meal 3","Meal 2"],en:"Goat cooked",fr:"Chèvre cuite",cal:170,p:30,c:0,f:5,fib:0,u:"g"},
+  "burger_meat":    {cat:["Meal 3"],en:"Burger patty cooked",fr:"Galette burger cuite",cal:250,p:25,c:0,f:17,fib:0,u:"g"},
+  "burger_bread":   {cat:["Meal 3"],en:"Burger bun",fr:"Pain à burger",cal:275,p:9,c:48,f:5,fib:2,u:"g"},
+  "chicken_burrito":{cat:["Meal 3"],en:"Chicken burrito homemade ~300g",fr:"Burrito poulet maison ~300g",cal:210,p:15,c:22,f:7,fib:2,u:"g"},
+  "beef_burrito":   {cat:["Meal 3"],en:"Beef burrito (homemade ~300g)",fr:"Burrito boeuf maison ~300g",cal:230,p:15,c:22,f:9,fib:2,u:"g"},
   // Poissons & fruits de mer
-  "tilapia":        {cat:["Meal 3","Meal 2"],en:"Tilapia cooked",cal:128,p:26,c:0,f:3,fib:0,u:"g"},
-  "tuna_water":     {cat:["Meal 1","Meal 2","Meal 3"],en:"Canned tuna (water)",cal:116,p:25.5,c:0,f:1,fib:0,u:"g"},
-  "sardine_exact":  {cat:["Meal 1","Meal 2","Meal 3"],en:"Canned sardines",cal:280,p:20,c:0,f:22.2,fib:0,u:"g"},
-  "saumon_conserve":{cat:["Meal 1","Meal 2","Meal 3"],en:"Canned salmon",cal:200,p:14.5,c:0,f:25.4,fib:0,u:"g"},
-  "shrimp":         {cat:["Meal 2","Meal 3"],en:"Shrimp cooked",cal:99,p:24,c:0,f:0.3,fib:0,u:"g"},
-  "chinchard":      {cat:["Meal 3","Meal 2"],en:"Scad fish cooked",cal:166,p:22,c:0,f:7,fib:0,u:"g"},
-  "maquereau":      {cat:["Meal 3","Meal 2"],en:"Mackerel cooked",cal:262,p:24,c:0,f:17,fib:0,u:"g"},
+  "tilapia":        {cat:["Meal 3","Meal 2"],en:"Tilapia cooked",fr:"Tilapia cuit",cal:128,p:26,c:0,f:3,fib:0,u:"g"},
+  "tuna_water":     {cat:["Meal 1","Meal 2","Meal 3"],en:"Canned tuna (water)",fr:"Thon en conserve (eau)",cal:116,p:25.5,c:0,f:1,fib:0,u:"g"},
+  "sardine_exact":  {cat:["Meal 1","Meal 2","Meal 3"],en:"Canned sardines",fr:"Sardines en conserve",cal:280,p:20,c:0,f:22.2,fib:0,u:"g"},
+  "saumon_conserve":{cat:["Meal 1","Meal 2","Meal 3"],en:"Canned salmon",fr:"Saumon en conserve",cal:200,p:14.5,c:0,f:25.4,fib:0,u:"g"},
+  "shrimp":         {cat:["Meal 2","Meal 3"],en:"Shrimp cooked",fr:"Crevettes cuites",cal:99,p:24,c:0,f:0.3,fib:0,u:"g"},
+  "chinchard":      {cat:["Meal 3","Meal 2"],en:"Scad fish cooked",fr:"Chinchard cuit",cal:166,p:22,c:0,f:7,fib:0,u:"g"},
+  "maquereau":      {cat:["Meal 3","Meal 2"],en:"Mackerel cooked",fr:"Maquereau cuit",cal:262,p:24,c:0,f:17,fib:0,u:"g"},
   // Plats congolais / africains
-  "ndakala":        {cat:["Meal 3","Meal 2"],en:"Ndakala",cal:290,p:55,c:0,f:7,fib:0,u:"g"},
-  "kawuka":         {cat:["Meal 3","Meal 2"],en:"Kawuka (dried fish)",cal:290,p:60,c:0,f:8,fib:0,u:"g"},
-  "makayabu":       {cat:["Meal 3","Meal 2"],en:"Makayabu (salted cod)",cal:310,p:63,c:0,f:2.5,fib:0,u:"g"},
-  "pondu":          {cat:["Meal 3"],en:"Pondu (cassava leaves)",cal:75,p:8.5,c:7,f:2,fib:2,u:"g"},
-  "madesu":         {cat:["Meal 3"],en:"Madesu (beans)",cal:95,p:6,c:17,f:0.5,fib:5,u:"g"},
-  "fufu":           {cat:["Meal 3"],en:"Fufu",cal:110,p:1,c:26,f:0,fib:1,u:"g"},
-  "chikwangue":     {cat:["Meal 3"],en:"Chikwangue / Kuanga",cal:150,p:1,c:35,f:0,fib:2,u:"g"},
-  "mikate":         {cat:["Snacks","Meal 1"],en:"Mikate (Congolese donuts)",cal:350,p:5,c:45,f:16,fib:1,u:"g"},
-  "mbwengi":        {cat:["Meal 3"],en:"Mbwengi",cal:90,p:2,c:20,f:0.5,fib:3,u:"g"},
-  "makelele":       {cat:["Meal 3","Snacks"],en:"Makelele (crickets)",cal:400,p:65,c:5,f:15,fib:5,u:"g"},
-  "poulet_mwambe":  {cat:["Meal 3"],en:"Chicken mwambe style",cal:220,p:18,c:4,f:15,fib:1,u:"g"},
+  "ndakala":        {cat:["Meal 3","Meal 2"],en:"Ndakala",fr:"Ndakala",cal:290,p:55,c:0,f:7,fib:0,u:"g"},
+  "kawuka":         {cat:["Meal 3","Meal 2"],en:"Kawuka (dried fish)",fr:"Kawuka (mbisi ya kawuka)",cal:290,p:60,c:0,f:8,fib:0,u:"g"},
+  "makayabu":       {cat:["Meal 3","Meal 2"],en:"Makayabu (salted cod)",fr:"Makayabu (morue salée)",cal:310,p:63,c:0,f:2.5,fib:0,u:"g"},
+  "pondu":          {cat:["Meal 3"],en:"Pondu (cassava leaves)",fr:"Pondu (feuilles de manioc)",cal:75,p:8.5,c:7,f:2,fib:2,u:"g"},
+  "madesu":         {cat:["Meal 3"],en:"Madesu (beans)",fr:"Madesu (haricots)",cal:95,p:6,c:17,f:0.5,fib:5,u:"g"},
+  "fufu":           {cat:["Meal 3"],en:"Fufu",fr:"Fufu",cal:110,p:1,c:26,f:0,fib:1,u:"g"},
+  "chikwangue":     {cat:["Meal 3"],en:"Chikwangue / Kuanga",fr:"Chikwangue / Kuanga",cal:150,p:1,c:35,f:0,fib:2,u:"g"},
+  "mikate":         {cat:["Snacks","Meal 1"],en:"Mikate (Congolese donuts)",fr:"Mikate (beignets congolais)",cal:350,p:5,c:45,f:16,fib:1,u:"g"},
+  "mbwengi":        {cat:["Meal 3"],en:"Mbwengi",fr:"Mbwengi",cal:90,p:2,c:20,f:0.5,fib:3,u:"g"},
+  "makelele":       {cat:["Meal 3","Snacks"],en:"Makelele (crickets)",fr:"Makelele (grillons)",cal:400,p:65,c:5,f:15,fib:5,u:"g"},
+  "poulet_mwambe":  {cat:["Meal 3"],en:"Chicken mwambe style",fr:"Poulet à la mwambe",cal:220,p:18,c:4,f:15,fib:1,u:"g"},
   // Légumes
-  "stir_fry_veg":   {cat:["Meal 3"],en:"Mixed stir-fry vegetables",cal:35,p:2.35,c:8.2,f:0.6,fib:2.35,u:"g"},
-  "spinach":        {cat:["Meal 3"],en:"Spinach cooked",cal:50,p:4,c:10,f:0.5,fib:3,u:"g"},
-  "cabbage":        {cat:["Meal 3"],en:"Cabbage",cal:25,p:1.3,c:5.8,f:0.1,fib:2.5,u:"g"},
-  "broccoli":       {cat:["Meal 3"],en:"Broccoli cooked",cal:35,p:2.4,c:7,f:0.4,fib:2.6,u:"g"},
-  "kale":           {cat:["Meal 3"],en:"Kale cooked",cal:49,p:3.3,c:10,f:0.9,fib:2,u:"g"},
-  "zucchini":       {cat:["Meal 3"],en:"Zucchini cooked",cal:17,p:1.2,c:3.5,f:0,fib:1,u:"g"},
-  "eggplant":       {cat:["Meal 3"],en:"Eggplant cooked",cal:35,p:0.8,c:8.6,f:0.2,fib:2.5,u:"g"},
-  "mushrooms":      {cat:["Meal 3"],en:"Mushrooms cooked",cal:29,p:2.2,c:5.9,f:0.5,fib:2.2,u:"g"},
-  "asparagus":      {cat:["Meal 3"],en:"Asparagus cooked",cal:22,p:2.4,c:4.1,f:0.2,fib:2.1,u:"g"},
-  "bell_peppers":   {cat:["Meal 3"],en:"Mixed bell peppers",cal:31,p:1,c:7.2,f:0.3,fib:2.4,u:"g"},
+  "stir_fry_veg":   {cat:["Meal 3"],en:"Mixed stir-fry vegetables",fr:"Légumes sautés mix",cal:35,p:2.35,c:8.2,f:0.6,fib:2.35,u:"g"},
+  "spinach":        {cat:["Meal 3"],en:"Spinach cooked",fr:"Épinards cuits",cal:50,p:4,c:10,f:0.5,fib:3,u:"g"},
+  "cabbage":        {cat:["Meal 3"],en:"Cabbage",fr:"Chou",cal:25,p:1.3,c:5.8,f:0.1,fib:2.5,u:"g"},
+  "broccoli":       {cat:["Meal 3"],en:"Broccoli cooked",fr:"Brocoli cuit",cal:35,p:2.4,c:7,f:0.4,fib:2.6,u:"g"},
+  "kale":           {cat:["Meal 3"],en:"Kale cooked",fr:"Kale cuit",cal:49,p:3.3,c:10,f:0.9,fib:2,u:"g"},
+  "zucchini":       {cat:["Meal 3"],en:"Zucchini cooked",fr:"Courgette cuite",cal:17,p:1.2,c:3.5,f:0,fib:1,u:"g"},
+  "eggplant":       {cat:["Meal 3"],en:"Eggplant cooked",fr:"Aubergine cuite",cal:35,p:0.8,c:8.6,f:0.2,fib:2.5,u:"g"},
+  "mushrooms":      {cat:["Meal 3"],en:"Mushrooms cooked",fr:"Champignons cuits",cal:29,p:2.2,c:5.9,f:0.5,fib:2.2,u:"g"},
+  "asparagus":      {cat:["Meal 3"],en:"Asparagus cooked",fr:"Asperges cuites",cal:22,p:2.4,c:4.1,f:0.2,fib:2.1,u:"g"},
+  "bell_peppers":   {cat:["Meal 3"],en:"Mixed bell peppers",fr:"Poivrons mélangés",cal:31,p:1,c:7.2,f:0.3,fib:2.4,u:"g"},
   // Fruits
-  "banana":         {cat:["Meal 1","Meal 2","Snacks"],en:"Banana",cal:89,p:1.1,c:23,f:0.3,fib:2.6,u:"g"},
-  "apple":          {cat:["Meal 1","Meal 2","Snacks"],en:"Apple",cal:52,p:0.3,c:14,f:0.2,fib:2.4,u:"g"},
-  "mango":          {cat:["Meal 1","Meal 2","Snacks"],en:"Mango",cal:60,p:0.8,c:15,f:0.4,fib:1.6,u:"g"},
-  "strawberries":   {cat:["Meal 1","Meal 2","Snacks"],en:"Strawberries",cal:35.7,p:0.5,c:9.3,f:0.2,fib:2.1,u:"g"},
-  "blueberries":    {cat:["Meal 1","Meal 2","Snacks"],en:"Blueberries",cal:57,p:0.7,c:14.5,f:0.3,fib:2.4,u:"g"},
-  "raspberries":    {cat:["Meal 1","Meal 2","Snacks"],en:"Raspberries",cal:52,p:1.2,c:12,f:0.7,fib:6.5,u:"g"},
-  "watermelon":     {cat:["Meal 1","Meal 2","Snacks"],en:"Watermelon",cal:30,p:0.6,c:7.6,f:0.2,fib:0.4,u:"g"},
-  "peaches":        {cat:["Meal 1","Meal 2","Snacks"],en:"Peaches",cal:39,p:0.9,c:9.5,f:0.3,fib:1.5,u:"g"},
-  "mix_berries":    {cat:["Meal 1","Meal 2","Snacks"],en:"Frozen mixed berries",cal:45,p:0.8,c:10.5,f:0.3,fib:3,u:"g"},
+  "banana":         {cat:["Meal 1","Meal 2","Snacks"],en:"Banana",fr:"Banane",cal:89,p:1.1,c:23,f:0.3,fib:2.6,u:"g"},
+  "apple":          {cat:["Meal 1","Meal 2","Snacks"],en:"Apple",fr:"Pomme",cal:52,p:0.3,c:14,f:0.2,fib:2.4,u:"g"},
+  "mango":          {cat:["Meal 1","Meal 2","Snacks"],en:"Mango",fr:"Mangue",cal:60,p:0.8,c:15,f:0.4,fib:1.6,u:"g"},
+  "strawberries":   {cat:["Meal 1","Meal 2","Snacks"],en:"Strawberries",fr:"Fraises",cal:35.7,p:0.5,c:9.3,f:0.2,fib:2.1,u:"g"},
+  "blueberries":    {cat:["Meal 1","Meal 2","Snacks"],en:"Blueberries",fr:"Bleuets",cal:57,p:0.7,c:14.5,f:0.3,fib:2.4,u:"g"},
+  "raspberries":    {cat:["Meal 1","Meal 2","Snacks"],en:"Raspberries",fr:"Framboises",cal:52,p:1.2,c:12,f:0.7,fib:6.5,u:"g"},
+  "watermelon":     {cat:["Meal 1","Meal 2","Snacks"],en:"Watermelon",fr:"Melon d'eau",cal:30,p:0.6,c:7.6,f:0.2,fib:0.4,u:"g"},
+  "peaches":        {cat:["Meal 1","Meal 2","Snacks"],en:"Peaches",fr:"Pêches",cal:39,p:0.9,c:9.5,f:0.3,fib:1.5,u:"g"},
+  "mix_berries":    {cat:["Meal 1","Meal 2","Snacks"],en:"Frozen mixed berries",fr:"Baies mélangées congelées",cal:45,p:0.8,c:10.5,f:0.3,fib:3,u:"g"},
   // Sauces — valeurs par 100 ml (converti depuis portions indiquées)
   // Ketchup: 15 ml = 20 kcal, 0,2g P, 5g C, 0g F → /100ml
-  "ketchup":        {cat:["Sauces"],en:"Ketchup",cal:133,p:1.3,c:33.3,f:0,fib:0,u:"ml",defQ:15},
+  "ketchup":        {cat:["Sauces"],en:"Ketchup",fr:"Ketchup",cal:133,p:1.3,c:33.3,f:0,fib:0,u:"ml",defQ:15},
   // Light Mayo: 15 ml = 35 kcal, 0g P, 1g C, 3,5g F → /100ml
-  "light_mayo":     {cat:["Sauces"],en:"Light Mayonnaise",cal:233,p:0,c:6.7,f:23.3,fib:0,u:"ml",defQ:15},
+  "light_mayo":     {cat:["Sauces"],en:"Light Mayonnaise",fr:"Mayonnaise légère",cal:233,p:0,c:6.7,f:23.3,fib:0,u:"ml",defQ:15},
   // BBQ Fitcook: 30 ml = 10 kcal, 1g P, 1g C, 0g F, 1g Fib → /100ml
-  "fitcook_bbq":    {cat:["Sauces"],en:"Fitcook BBQ Maple Whisky",cal:33.3,p:3.3,c:3.3,f:0,fib:3.3,u:"ml",defQ:30},
+  "fitcook_bbq":    {cat:["Sauces"],en:"Fitcook BBQ Maple Whisky",fr:"Fitcook BBQ Erable Whisky",cal:33.3,p:3.3,c:3.3,f:0,fib:3.3,u:"ml",defQ:30},
   // Moutarde Fitcook: 30 ml = 10 kcal, 0,2g P, 1g C, 0,5g F, 1g Fib → /100ml
-  "fitcook_moutarde":{cat:["Sauces"],en:"Fitcook Honey Mustard",cal:33.3,p:0.67,c:3.3,f:1.67,fib:3.3,u:"ml",defQ:30},
+  "fitcook_moutarde":{cat:["Sauces"],en:"Fitcook Honey Mustard",fr:"Fitcook Moutarde Miel",cal:33.3,p:0.67,c:3.3,f:1.67,fib:3.3,u:"ml",defQ:30},
   // Cheezy Fitcook: 30 ml = 30 kcal, 0,2g P, 2g C, 2g F → /100ml
-  "fitcook_cheezy": {cat:["Sauces"],en:"Fitcook Cheezy Sauce",cal:100,p:0.67,c:6.67,f:6.67,fib:0,u:"ml",defQ:30},
+  "fitcook_cheezy": {cat:["Sauces"],en:"Fitcook Cheezy Sauce",fr:"Fitcook Sauce Cheezy",cal:100,p:0.67,c:6.67,f:6.67,fib:0,u:"ml",defQ:30},
   // Farm Boy Relish: 15 ml = 20 kcal, 0,1g P, 5g C, 0g F → /100ml
-  "farmboy_relish": {cat:["Sauces"],en:"Pineapple Habanero Relish (Farm Boy)",cal:133,p:0.67,c:33.3,f:0,fib:0,u:"ml",defQ:15},
+  "farmboy_relish": {cat:["Sauces"],en:"Pineapple Habanero Relish (Farm Boy)",fr:"Relish Ananas Habanero (Farm Boy)",cal:133,p:0.67,c:33.3,f:0,fib:0,u:"ml",defQ:15},
   // Snacks
-  "corona_00":      {cat:["Snacks","Meal 3"],en:"Corona 0.0%",cal:18,p:0.3,c:3.9,f:0,fib:0,u:"ml",defQ:355},
-  "chocolat_7m":    {cat:["Snacks"],en:"Chocolate (7 pieces)",cal:220,p:8,c:20,f:14,fib:0,u:"unit"},
-  "popcorn":        {cat:["Snacks"],en:"Popcorn popped",cal:387,p:12.9,c:77.8,f:4.5,fib:14.5,u:"g"},
-  "biscuits":       {cat:["Snacks"],en:"Biscuits",cal:450,p:7,c:65,f:18,fib:2,u:"g"},
-  "mango_icecream": {cat:["Snacks"],en:"Mango ice cream",cal:190,p:2.5,c:25,f:9,fib:0.5,u:"g"}
+  "corona_00":      {cat:["Snacks","Meal 3"],en:"Corona 0.0%",fr:"Corona 0.0%",cal:18,p:0.3,c:3.9,f:0,fib:0,u:"ml",defQ:355},
+  "chocolat_7m":    {cat:["Snacks"],en:"Chocolate (7 pieces)",fr:"Chocolat (7 morceaux)",cal:220,p:8,c:20,f:14,fib:0,u:"unit"},
+  "popcorn":        {cat:["Snacks"],en:"Popcorn popped",fr:"Pop corn soufflé",cal:387,p:12.9,c:77.8,f:4.5,fib:14.5,u:"g"},
+  "biscuits":       {cat:["Snacks"],en:"Biscuits",fr:"Biscuits (générique)",cal:450,p:7,c:65,f:18,fib:2,u:"g"},
+  "mango_icecream": {cat:["Snacks"],en:"Mango ice cream",fr:"Crème glacée mangue",cal:190,p:2.5,c:25,f:9,fib:0.5,u:"g"}
 };
 
 const CATEGORIES=["Meal 1","Meal 2","Meal 3","Sauces","Snacks"];
@@ -829,9 +851,20 @@ function calcDay(d){
   const steps_n=Math.max(0,parseInt(d.s)||0);
   const dist_km=steps_n*stride/1000;
   const kcalW=MET_WALK*w*(dist_km/WALK_SPEED_KMH);
-  const VO2_INCL=0.1*WALK_S+1.8*WALK_S*INCL_G+3.5;
-  const rateI=(VO2_INCL*w*5)/1000;
-  const kcalI=(parseInt(d.i)>0)?rateI*INCL_DUR:0;
+    // Incline: value format "dur_grade_barfactor" e.g. "30_13_0.80"
+  // grade stored as integer (135 = 13.5%), barfactor = holding bars reduction
+  let kcalI=0;
+  if(d.i && String(d.i)!=='0'){
+    const iparts=String(d.i).split('_');
+    const iDur=parseInt(iparts[0])||25;
+    const iGradeRaw=parseInt(iparts[1])||9;
+    const iGrade=(iGradeRaw>20?(iGradeRaw/10):iGradeRaw)/100; // 135→13.5%, 9→9%
+    const iBars=parseFloat(iparts[2])||1.0;
+    // Speed: 3.5km/h for no-bar options, 4km/h for bar options
+    const iSpeed=(iBars<1.0)?66.67:58.33; // m/min
+    const VO2_I=0.1*iSpeed+1.8*iSpeed*iGrade+3.5;
+    kcalI=(VO2_I*w*5/1000)*iDur*iBars;
+  }
   const kcalG=(MET_GYM*w/60)*(parseInt(d.g)||0);
   const tdee=bmr+tef+kcalW+kcalI+kcalG;
   return{bmr,cal,pro,car,fat,fib,tef,kcalW,kcalI,kcalG,tdee};
@@ -1298,15 +1331,22 @@ function calcRealTDEE(){
   const steps=Math.max(0,parseInt(d.s)||0);
   const dist_km=steps*stride/1000;
   const kcalW_real=MET_WALK_REAL*w*(dist_km/WALK_SPEED_REAL);
-  // Real incline: 4km/h, grade M=12%/F=11%, 30min
-  const S_real=66.67;
-  const grade_real=pr.s==='M'?0.12:0.11;
-  const VO2_real=0.1*S_real+1.8*S_real*grade_real+3.5;
-  const kcalI_real=(parseInt(d.i)>0)?(VO2_real*w*5/1000)*30:0;
-  // Real gym MET 4.5
-  const kcalG_real=4.5*w/60*(parseInt(d.g)||0);
-  let cal=0;
-  (d.foods||[]).forEach(function(f){const item=userDB[f.id];if(item){const r=(item.u==='g'||item.u==='ml')?f.q/100:f.q;cal+=item.cal*r;}});
+    // Real incline based on option type
+  let kcalI_real=0;
+  if(d.i && String(d.i)!=='0'){
+    const ip=String(d.i).split('_');
+    const iDurR=parseInt(ip[0])||25;
+    const iBarsR=parseFloat(ip[2])||1.0;
+    // Real params per person
+    const realGrade=pr.s==='M'?
+      (iBarsR<0.78?0.16:iBarsR<0.85?0.15:0.12): // M: upper=16%, lower=15%, free=12%
+      (iBarsR<0.78?0.125:iBarsR<0.85?0.125:0.105); // F: upper=12.5%, lower=12.5%, free=10.5%
+    const realSpeed=pr.s==='M'?
+      (iBarsR<1.0?83.33:75.0): // M: bars=5km/h, free=4.5km/h
+      (iBarsR<1.0?83.33:66.67); // F: bars=5km/h, free=4km/h
+    const VO2R=0.1*realSpeed+1.8*realSpeed*realGrade+3.5;
+    kcalI_real=(VO2R*w*5/1000)*iDurR*iBarsR;
+  }
   const tef_real=0.10*cal;
   const tdee_real=bmr+tef_real+kcalW_real+kcalI_real+kcalG_real;
   return{bmr:Math.round(bmr),kcalW:Math.round(kcalW_real),kcalI:Math.round(kcalI_real),kcalG:Math.round(kcalG_real),tef:Math.round(tef_real),tdee:Math.round(tdee_real)};
@@ -1695,110 +1735,136 @@ function setLang(lang){
 // APPLY LANG — met à jour tout le HTML statique
 // ═══════════════════════════════════
 function applyLang(){
-  const fr = appLang==='fr';
-  // Subtitle
-  const sub=document.getElementById('appSubtitle');
-  if(sub) sub.textContent=fr?"🗺️ Le succès n'est pas une destination, mais un voyage ✈️ où on profite de chaque arrêt 📍🛑":"🗺️ Success is not a destination, but a journey ✈️ where you enjoy every stop 📍🛑";
-  // Profile card title
-  const pct=document.querySelector('.profile-card-title');
-  if(pct) pct.textContent=fr?'👤 Physiologie / Profile':'👤 Physiology / Profile';
-  // Save button
-  const sb=document.getElementById('saveBtn');
-  if(sb&&!sb.textContent.includes('✅')) sb.textContent=fr?'💾 SAUVEGARDER':'💾 SAVE';
-  // Age/height units
-  const units=document.querySelectorAll('.profile-inputs span');
-  if(units[0]) units[0].textContent=fr?'ans':'yrs';
-  // Sex select
-  const sex=document.getElementById('inpSex');
-  if(sex){sex.options[0].text=fr?'Homme':'Male';sex.options[1].text=fr?'Femme':'Female';}
-  // Target labels
-  const tgtLabels=document.querySelectorAll('.targets-row .input-group label');
-  const tgtKeys=fr?['🎯 Kcal','🎯 Pro (g)','🎯 Glucides (g)','🎯 Fat (g)','🎯 Fibres (g)']:['🎯 Kcal','🎯 Protein (g)','🎯 Carbs (g)','🎯 Fat (g)','🎯 Fiber (g)'];
-  tgtLabels.forEach((el,i)=>{if(tgtKeys[i])el.textContent=tgtKeys[i];});
-  // Controls labels
-  const ctrlLabels=document.querySelectorAll('.controls-grid .input-group label');
-  if(ctrlLabels.length>=4){
-    ctrlLabels[0].textContent=fr?'Semaine':'Week';
-    ctrlLabels[1].textContent=fr?'Jour':'Day';
-    ctrlLabels[2].textContent=fr?'Poids (kg)':'Weight (kg)';
-    ctrlLabels[3].textContent=fr?'Pas':'Steps';
+  var fr=appLang==='fr';
+  // ── Subtitle ──
+  var sub=document.getElementById('appSubtitle');
+  if(sub)sub.textContent=fr?"Le succes n'est pas une destination, mais un voyage ou on profite de chaque arret":"Success is not a destination, but a journey where you enjoy every stop";
+  // ── Header buttons ──
+  var ptl=document.getElementById('profileToggleLabel');if(ptl)ptl.textContent=fr?'Profil':'Profile';
+  var hb=document.getElementById('histBtn');if(hb)hb.textContent=fr?'Historique':'History';
+  var rb=document.getElementById('resetBtnLabel');if(rb)rb.textContent='Reset';
+  // ── Save button ──
+  var sb=document.getElementById('saveBtn');
+  if(sb&&sb.textContent.indexOf('OK')<0&&sb.textContent.indexOf('...')<0)sb.innerHTML=(fr?'SAUVEGARDER':'SAVE');
+  // ── Sync status ──
+  var syncEl=document.querySelector('.sync-status');
+  if(syncEl){var dot=syncEl.querySelector('.sync-dot');var txt=syncEl.textContent.replace(/[^\w\s]/g,'').trim();if(txt.toLowerCase().indexOf('onnex')>=0||txt.toLowerCase().indexOf('onnect')>=0){syncEl.innerHTML=(dot?dot.outerHTML:'')+(fr?' Connexion...':' Connecting...');}}
+  // ── Profile card ──
+  var pct=document.querySelector('.profile-card-title');if(pct)pct.textContent=fr?'Physiologie / Profil':'Physiology / Profile';
+  var sx=document.getElementById('inpSex');if(sx){sx.options[0].text=fr?'Homme':'Male';if(sx.options[1])sx.options[1].text=fr?'Femme':'Female';}
+  // ── Target labels ──
+  var tl=document.querySelectorAll('.targets-row .input-group label');
+  var tk=fr?['Kcal','Proteines (g)','Glucides (g)','Lipides (g)','Fibres (g)']:['Kcal','Protein (g)','Carbs (g)','Fat (g)','Fiber (g)'];
+  tl.forEach(function(el,i){if(tk[i])el.textContent=tk[i];});
+  // ── Controls grid labels ──
+  var cl=document.querySelectorAll('.controls-grid .input-group label');
+  var ck=fr?['Semaine','Jour','Poids (kg)','Pas','Incline Walk','Seance Gym']:['Week','Day','Weight (kg)','Steps','Incline Walk','Gym Session'];
+  cl.forEach(function(el,i){if(ck[i])el.textContent=ck[i];});
+  // ── Day selector ──
+  var ds=document.getElementById('selDay');
+  if(ds){var dn=fr?['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];dn.forEach(function(txt,i){if(ds.options[i])ds.options[i].text=txt;});}
+  // ── Incline select ──
+  var is2=document.getElementById('inpIncline');
+  if(is2){
+    if(is2.options[0])is2.options[0].text=fr?'Repos / Non':'Rest / No';
+    var ig=is2.querySelectorAll('optgroup');
+    if(ig[0])ig[0].label=fr?'Sans toucher les barres - 9% @ 3.5km/h':'No bar holding - 9% @ 3.5km/h';
+    if(ig[1])ig[1].label=fr?'Barres du bas - 11% @ 4km/h':'Lower bars - 11% @ 4km/h';
+    if(ig[2])ig[2].label=fr?'Barre du haut - 11% @ 4km/h':'Upper bar - 11% @ 4km/h';
+    for(var j=0;j<5;j++){var d=25+j*5;
+      var o1=is2.querySelector('[value="'+d+'_9_1.0"]');if(o1)o1.text=d+' min - '+(fr?'sans barres':'no bars');
+      var o2=is2.querySelector('[value="'+d+'_11_0.80"]');if(o2)o2.text=d+' min - '+(fr?'barres bas':'lower bars');
+      var o3=is2.querySelector('[value="'+d+'_11_0.75"]');if(o3)o3.text=d+' min - '+(fr?'barre haut':'upper bar');
+    }
   }
-  // Incline label
-  const incLabel=document.querySelector('label[for="inpIncline"]');
-  const allLabels=document.querySelectorAll('.controls-grid .input-group label');
-  allLabels.forEach(l=>{
-    if(l.textContent.includes('Incline')||l.textContent.includes('Walk')){l.textContent='Incline Walk (10%)';}
-    if(l.textContent==='Gym Session'||l.textContent==='Séance Gym'){l.textContent=fr?'Séance Gym':'Gym Session';}
+  // ── Gym select ──
+  var gs=document.getElementById('inpGym');
+  if(gs){var go=fr?["Repos","1) Fessiers + Dos (90 min)","2) Fessiers + Jambes (90 min)","3) Fessiers + Epaules + Bras (90 min)","4) Dos + Jambes (90 min)","5) Dos + Epaules + Bras (90 min)","6) Epaules + Bras + Jambes (90 min)","7) Jambes + Epaules + Bras (90 min)","9) Fessiers seuls (55 min)"]:["Rest","1) Glutes + Back (90 min)","2) Glutes + Legs (90 min)","3) Glutes + Arms + Shoulders (90 min)","4) Back + Legs (90 min)","5) Back + Shoulders + Arms (90 min)","6) Shoulders + Arms + Legs (90 min)","7) Legs + Shoulders + Arms (90 min)","9) Glutes only (55 min)"];go.forEach(function(txt,i){if(gs.options[i])gs.options[i].text=txt;});}
+  // ── Refeed checkbox ──
+  var rfl=document.querySelector('.refeed-label');if(rfl){var cbi=rfl.querySelector('input');if(cbi){var rft=rfl.querySelector('span')||rfl;rft.childNodes[rft.childNodes.length-1].textContent=' REFEED DAY';}}
+  // ── Action buttons ──
+  var mfb=document.querySelector('button[onclick="openFoodModal()"]');if(mfb)mfb.innerHTML=fr?'Gerer Aliments':'Manage Foods';
+  var scb=document.querySelector('button[onclick="openScanner()"]');if(scb)scb.innerHTML=fr?'Scanner':'Scan';
+  var cpb=document.getElementById('copyPrevBtn');if(cpb)cpb.textContent=fr?'Copier un jour ?':'Copy day?';
+  // ── Stat labels ──
+  var lblMap={lblCons:fr?'MANGE':'EATEN'};
+  // Other stat labels are generated in updateApp — patch them
+  var allStatLbls=document.querySelectorAll('.stat-lbl');
+  allStatLbls.forEach(function(el){
+    var t=el.textContent.trim();
+    var map={
+      'MANGÉ':fr?'MANGE':'EATEN','MANGE':fr?'MANGE':'EATEN','EATEN':fr?'MANGE':'EATEN',
+      'DÉFICIT':'DEFICIT','DEFICIT':'DEFICIT',
+      'PERTE/J':'PERTE/J','LOSS/D':'PERTE/J',
+      'PERTE/J→sem.':fr?'PERTE/J':'LOSS/D',
+      'BMR':'BMR','TDEE':'TDEE','PROT':'PROT','CARBS':'CARBS','FAT':'FAT',
+      'FIBER':fr?'FIBRES':'FIBER','FIBRES':fr?'FIBRES':'FIBER'
+    };
+    if(map[t])el.textContent=map[t];
   });
-  // Incline select
-  const incSel=document.getElementById('inpIncline');
-  if(incSel){incSel.options[0].text=fr?'Non':'No';if(incSel.options[1])incSel.options[1].text=fr?'Oui (30 min)':'Yes (30 min)';}
-  // Gym select
-  const gymSel=document.getElementById('inpGym');
-  if(gymSel){
-    const gymOpts=fr?
-      ['Repos','1) Glute Power + Heavy Back (65 min)','2) Jambes + Chaîne post. (50 min)','3) Glute isolation + Épaules (60 min)','4) Fessiers + Dos léger (50 min)']:
-      ['Rest','1) Glute Power + Heavy Back (65 min)','2) Legs + Posterior chain (50 min)','3) Glute isolation + Shoulders (60 min)','4) Glutes + Light Back (50 min)'];
-    gymOpts.forEach((txt,i)=>{if(gymSel.options[i])gymSel.options[i].text=txt;});
-  }
-  // Copy day button
-  const copyBtn=document.querySelector('button[onclick="copyPrevDay()"]');
-  if(copyBtn) copyBtn.textContent=fr?'📋 COPIER JOUR PRÉC.':'📋 COPY PREV. DAY';
-  // Refeed label
-  const refeedLbl=document.querySelector('.refeed-label');
-  if(refeedLbl){const cb=refeedLbl.querySelector('input');refeedLbl.innerHTML='';if(cb)refeedLbl.appendChild(cb);refeedLbl.append(fr?' 🔄 REFEED DAY':' 🔄 REFEED DAY');}
-  // Manage foods button
-  const mfBtn=document.querySelector('button[onclick="openFoodModal()"]');
-  if(mfBtn) mfBtn.textContent=fr?'🗄️ GÉRER ALIMENTS':'🗄️ MANAGE FOODS';
+  // ── TDEE breakdown ──
+  var tdb=document.getElementById('tdeeBreakdown');
+  if(tdb&&(tdb.textContent==='Chargement...'||tdb.textContent==='Loading...'))tdb.textContent=fr?'Chargement...':'Loading...';
+  // ── Reveal real TDEE button ──
+  var rvb=document.getElementById('revealBtnLabel');
+  if(rvb&&rvb.textContent.indexOf('Masqu')<0&&rvb.textContent.indexOf('Hide')<0)rvb.textContent=fr?'Voir ma depense reelle ?':'See my real expenditure?';
+  // ── Reset modal ──
+  var rmt=document.getElementById('resetModalTitle');if(rmt)rmt.textContent=fr?'Reset & Historique':'Reset & History';
+  var rsb=document.getElementById('resetSaveBtn');if(rsb)rsb.textContent=fr?'Sauvegarder & Reset':'Save & Reset';
+  var rnb=document.getElementById('resetNoSaveBtn');if(rnb)rnb.textContent=fr?'Reset sans sauvegarder':'Reset only';
+  var htt=document.getElementById('historyTitle');if(htt)htt.textContent=fr?'Historique sauvegarde':'Saved history';
+  var hem=document.getElementById('histEmpty');if(hem)hem.textContent=fr?'Aucun historique pour ce mode.':'No history for this mode.';
+  // ── Food modal ──
+  var fmh=document.querySelector('#foodModal .modal-header h3');if(fmh)fmh.textContent=fr?'Gestion des Aliments':'Manage Foods';
+  var fmc=document.querySelector('#foodModal .modal-header .btn-sm');if(fmc)fmc.textContent=fr?'Fermer':'Close';
+  var fms=document.getElementById('modalSearch');if(fms)fms.placeholder=fr?'Rechercher...':'Search...';
+  var nfc=document.querySelector('#nfCats+div .add-section-label,#foodModal .add-section h4');if(nfc)nfc.textContent=fr?'Ajouter un aliment':'Add a food item';
+  var nfl=document.querySelector('label[for="nfName"]');if(nfl)nfl.textContent=fr?'Nom':'Name';
+  var nfcl=document.querySelector('label[for="nfCal"]');if(nfcl)nfcl.textContent=fr?'Kcal':'Kcal';
+  var nfpl=document.querySelector('label[for="nfProt"]');if(nfpl)nfpl.textContent=fr?'Prot (g)':'Prot (g)';
+  var nfcrl=document.querySelector('label[for="nfCarb"]');if(nfcrl)nfcrl.textContent=fr?'Glucides (g)':'Carbs (g)';
+  var nffl=document.querySelector('label[for="nfFat"]');if(nffl)nffl.textContent=fr?'Lipides (g)':'Fat (g)';
+  var nffbl=document.querySelector('label[for="nfFib"]');if(nffbl)nffbl.textContent=fr?'Fibres (g)':'Fiber (g)';
+  var nful=document.querySelector('label[for="nfUnit"]');if(nful)nful.textContent=fr?'Unite':'Unit';
+  var catLbl=document.querySelector('.add-section .cat-label,#foodModal .input-group label:last-of-type');if(catLbl&&catLbl.textContent.indexOf('at')>=0)catLbl.textContent=fr?'Categories :':'Categories:';
+  var fab=document.querySelector('.btn-add-food');if(fab)fab.textContent=fr?'AJOUTER':'ADD';
+  // ── Scanner ──
+  var sct=document.getElementById('scannerTitle');if(sct)sct.textContent=fr?'Scanner un produit':'Scan a product';
+  var scs=document.getElementById('scannerStatus');if(scs&&(scs.textContent.indexOf('Pointez')>=0||scs.textContent.indexOf('Point')>=0))scs.textContent=fr?'Pointez la camera vers un code barre...':'Point the camera at a barcode...';
+  // ── Streak ──
+  var stk=document.getElementById('streakLabel');if(stk)stk.textContent=fr?'JOURS CONSECUTIFS TRACKES':'CONSECUTIVE DAYS TRACKED';
+  var stb=document.getElementById('streakBest');if(stb){var sv=stb.textContent.split(':')[1]||'0';stb.textContent=(fr?'Meilleur: ':'Best: ')+sv.trim();}
+  // ── Chart ──
+  var cht=document.getElementById('chartTitle');if(cht)cht.textContent=fr?'EVOLUTION DU POIDS':'WEIGHT EVOLUTION';
+  var cws=document.getElementById('chartWeeks');if(cws){var cwn=fr?['4 sem.','8 sem.','12 sem.']:['4 wks','8 wks','12 wks'];cwn.forEach(function(txt,i){if(cws.options[i])cws.options[i].text=txt;});}
+  // ── Gym calendar ──
+  var gct=document.getElementById('gymCalTitle');if(gct)gct.textContent=fr?'CALENDRIER GYM':'GYM CALENDAR';
+  // ── Week comparison ──
+  var wct=document.getElementById('compareTitle');if(wct)wct.textContent=(fr?'SEMAINE ':'WEEK ')+(state?state.week:1)+' vs '+(state?state.week-1:0);
+  var ctb=document.getElementById('compareToggleBtn');if(ctb){var cts=ctb.querySelector('span');if(cts&&ctb.getAttribute('data-open')!=='1')cts.textContent=fr?'Voir sem. N vs N-1':'Show week N vs N-1';}
+  // ── Maintenance banner ──
+  var mmt=document.getElementById('maintModeTitle');if(mmt)mmt.textContent=fr?'MODE MAINTENANCE':'MAINTENANCE MODE';
+  var mmc=document.getElementById('maintCushionLabel');if(mmc)mmc.textContent=fr?'Coussin +200 kcal - rester lean':'+200 kcal cushion - stay lean';
+  var mtl=document.getElementById('maintTdeeLabel');if(mtl)mtl.textContent=fr?'TDEE du jour':'Today TDEE';
+  var mtal=document.getElementById('maintTargetLabel');if(mtal)mtal.textContent=fr?'Cible maintien':'Maintenance target';
+  var mel=document.getElementById('maintEatenLabel');if(mel)mel.textContent=fr?'Mange':'Eaten';
+  var mbl=document.getElementById('maintBalLabel');if(mbl)mbl.textContent='Balance';
+  // ── Mode switch UI ──
   applyModeUI();
-  // Reveal btn
-  const revBtn=document.getElementById('revealBtnLabel');
-  if(revBtn&&!revBtn.textContent.includes('Masquer')&&!revBtn.textContent.includes('Hide'))revBtn.textContent=fr?'Voir ma dépense réelle ?':'See my real expenditure?';
-  // Copy prev day button
-  const copyBtn2=document.getElementById('copyPrevBtn');
-  if(copyBtn2) copyBtn2.textContent=fr?'📋 COPIER JOUR PRÉC.':'📋 COPY PREV. DAY';
-  // Scanner button
-  const scanBtn=document.querySelector('button[onclick="openScanner()"]');
-  if(scanBtn) scanBtn.textContent=fr?'📷 SCANNER':'📷 SCAN';
-  // Week/day selects
-  const daySel=document.getElementById('selDay');
-  if(daySel){
-    const dayNames=fr?['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    dayNames.forEach((txt,i)=>{if(daySel.options[i])daySel.options[i].text=txt;});
-  }
-  // Weekly table header
-  const thead=document.querySelector('#weekTableBody')?.previousElementSibling;
-  if(thead&&thead.tagName==='THEAD'){
-    thead.innerHTML=fr?'<tr><th>Jour</th><th>Poids</th><th>BMR</th><th>TDEE</th><th>Mangé</th><th>Déficit</th></tr>':'<tr><th>Day</th><th>Weight</th><th>BMR</th><th>TDEE</th><th>Eaten</th><th>Deficit</th></tr>';
-  }
-  // Food modal title
-  const modalTitle=document.querySelector('.modal-box h3');
-  if(modalTitle) modalTitle.textContent=fr?'🗄️ Gestion des Aliments':'🗄️ Manage Foods';
-  const modalClose=document.querySelector('.modal-box .btn-sm');
-  if(modalClose) modalClose.textContent=fr?'✕ Fermer':'✕ Close';
-  const modalSearch=document.getElementById('modalSearch');
-  if(modalSearch) modalSearch.placeholder=fr?'🔍 Rechercher...':'🔍 Search...';
-  // Add food section
-  const addTitle=document.querySelector('.add-section h4');
-  if(addTitle) addTitle.textContent=fr?'➕ Ajouter un aliment':'➕ Add a food';
-  const addBtn=document.querySelector('.btn-add-food');
-  if(addBtn) addBtn.textContent=fr?'✅ AJOUTER':'✅ ADD';
-  // Scanner overlay
-  const scanTitle=document.getElementById('scannerTitle');
-  if(scanTitle) scanTitle.textContent=fr?'📷 Scanner un produit':'📷 Scan a product';
-  const scanStatus=document.getElementById('scannerStatus');
-  if(scanStatus&&!scanStatus.textContent.includes('...')===false) scanStatus.textContent=fr?'Pointez la caméra vers un code barre...':'Point the camera at a barcode...';
-  // Recap & table titles
-  const tblTitle=document.getElementById('weekTableTitle');
-  if(tblTitle) tblTitle.firstChild.textContent=(fr?'📅 SEMAINE ':'📅 WEEK ')+state.week;
-  const recapTitle=document.getElementById('recapTitle');
-  if(recapTitle) recapTitle.firstChild.textContent=(fr?'📊 RÉCAP SEMAINE ':'📊 WEEK RECAP ')+state.week;
-  // Week label
-  const weekLabel=document.querySelector('.controls-grid .input-group label');
-  // Render everything
-  renderTable();
-  renderRecap();
+  // ── Day notes ──
+  var dnt=document.getElementById('dayNotes');if(dnt)dnt.placeholder=fr?'Note du jour (fatigue, repas special...)':'Day note (fatigue, special meal...)';
+  // ── Remaining macros title ──
+  var rmt2=document.getElementById('remainingTitle');if(rmt2)rmt2.textContent=fr?'MACROS RESTANTS':'REMAINING MACROS';
+  // ── Recent foods title ──
+  var rft=document.getElementById('recentFoodsTitle');if(rft)rft.textContent=fr?'ALIMENTS RECENTS':'RECENT FOODS';
+  // ── Re-render dynamic sections ──
+  if(typeof renderMealsList==='function')renderMealsList(typeof getD==='function'?(getD(state.week,state.day).foods||[]):[]);
+  if(typeof renderRecentFoods==='function')renderRecentFoods();
+  if(typeof renderTable==='function')renderTable();
+  if(typeof renderRecap==='function')renderRecap();
 }
+
+
 
 function t(key){return T[appLang][key]||T['fr'][key]||key;}
 
@@ -2160,7 +2226,7 @@ function renderMealsList(foods){
   CATEGORIES.forEach(cat=>{
     const items=foods.filter(f=>f.meal===cat&&userDB[f.id]);
     const col=MEAL_COLORS[cat];
-    let cCal=0,cPro=0;
+    let cCal=0,cPro=0,cCar=0,cFat=0,cFib=0;
     const rows=items.map(x=>{
       const item=userDB[x.id];
       const r=(item.u==='g'||item.u==='ml')?x.q/100:x.q;
@@ -2185,9 +2251,9 @@ function renderMealsList(foods){
       </div>`;
     }).join('');
     const catId=cat.replace(' ','');
-    const opts=Object.keys(userDB).filter(k=>userDB[k].cat.includes(cat)).sort((a,b)=>userDB[a].en.localeCompare(userDB[b].en)).map(k=>`<option value="${userDB[k].en}">`).join('');
+    const opts=Object.keys(userDB).filter(k=>userDB[k].cat.includes(cat)).sort((a,b)=>{var na=(appLang==='fr'&&userDB[a].fr)?userDB[a].fr:userDB[a].en;var nb=(appLang==='fr'&&userDB[b].fr)?userDB[b].fr:userDB[b].en;return na.localeCompare(nb);}).map(k=>{var nm=(appLang==='fr'&&userDB[k].fr)?userDB[k].fr:userDB[k].en;return `<option value="${nm}" data-key="${k}">`;}).join('');
     cont.innerHTML+=`<div class="meal-card" style="border-top-color:${col}">
-      <div class="meal-header"><span style="color:${col}">${cat}</span><span style="color:${col}">${Math.round(cCal)} kcal | ${cPro.toFixed(1)}g P</span></div>
+      <div class="meal-header"><span style="color:${col}">${cat}</span><span style="color:${col}">${Math.round(cCal)} kcal | ${cPro.toFixed(1)}g P | ${cCar.toFixed(1)}g C | ${cFat.toFixed(1)}g F | ${cFib.toFixed(1)}g Fib</span></div>
       ${rows}
       <div style="display:flex;gap:0.5rem;margin-top:0.8rem">
         <input type="text" list="dl_${catId}" id="inp_${catId}" class="search-input" placeholder="🔍 Rechercher..." style="flex:1;border-color:${col}">
@@ -2508,12 +2574,12 @@ document.getElementById('selDay').addEventListener('change',e=>{
       const md=getMaintD(maintState.week,maintState.day);
       md.w=parseFloat(document.getElementById('inpWeight').value)||maintState.profile.defaultW;
       md.s=parseInt(document.getElementById('inpSteps').value)||0;
-      md.i=parseInt(document.getElementById('inpIncline').value)||0;
+      md.i=document.getElementById('inpIncline').value||'0';
       md.g=parseInt(document.getElementById('inpGym').value)||0;
     } else {
       d.w=parseFloat(document.getElementById('inpWeight').value)||state.profile.defaultW;
       d.s=parseInt(document.getElementById('inpSteps').value)||0;
-      d.i=parseInt(document.getElementById('inpIncline').value)||0;
+      d.i=document.getElementById('inpIncline').value||'0';
       d.g=parseInt(document.getElementById('inpGym').value)||0;
     }
     updateApp();
