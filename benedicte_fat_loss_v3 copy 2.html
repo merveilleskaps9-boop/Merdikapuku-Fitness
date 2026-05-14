@@ -303,6 +303,33 @@
     .qs-val{font-size:2rem;font-weight:900;line-height:1;}
     .qs-lbl{font-size:0.62rem;color:var(--text-soft);font-weight:900;text-transform:uppercase;margin-top:0.3rem;}
     .qs-toggle{background:rgba(255,105,180,0.1);border:1px solid rgba(255,105,180,0.3);color:var(--accent-cal);font-size:0.68rem;font-weight:900;padding:0.3rem 0.8rem;border-radius:2rem;cursor:pointer;float:right;margin-bottom:0.5rem;}
+
+    /* ── GLOBAL DAY SCORE BAR ── */
+    .day-score-bar-wrap{position:relative;height:6px;background:rgba(255,255,255,0.07);border-radius:6px;overflow:hidden;margin-bottom:0.7rem;cursor:pointer;}
+    .day-score-bar-fill{height:100%;border-radius:6px;transition:width 0.6s cubic-bezier(.4,0,.2,1),background 0.6s;}
+    .day-score-label{font-size:0.6rem;font-weight:900;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.06em;display:flex;justify-content:space-between;margin-bottom:0.2rem;}
+    /* ── FAST TIMER ── */
+    .fast-timer-pill{display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 0.9rem;border-radius:2rem;font-size:0.73rem;font-weight:900;border:1px solid;transition:0.3s;cursor:default;white-space:nowrap;margin-bottom:0.6rem;}
+    .fast-open{background:rgba(52,199,89,0.12);border-color:rgba(52,199,89,0.4);color:#34c759;}
+    .fast-closed{background:rgba(0,229,255,0.08);border-color:rgba(0,229,255,0.3);color:var(--accent-cal);}
+    .fast-warning{background:rgba(255,159,28,0.12);border-color:rgba(255,159,28,0.4);color:var(--accent-warn);}
+    /* ── DAY SUMMARY MODAL ── */
+    .summary-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:150;display:none;justify-content:center;align-items:center;padding:1rem;}
+    .summary-modal-overlay.open{display:flex;}
+    .summary-modal-box{background:rgba(8,12,22,0.97);backdrop-filter:blur(30px);border-radius:1.4rem;padding:1.4rem;width:100%;max-width:500px;border:1px solid var(--glass-border);box-shadow:0 30px 80px rgba(0,0,0,0.7);}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;padding:0.45rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;}
+    .summary-row:last-child{border-bottom:none;}
+    /* ── CONFETTI ── */
+    .confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999;}
+    /* ── WEEK SUCCESS RATE ── */
+    .week-success-pill{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.65rem;font-weight:900;padding:0.2rem 0.6rem;border-radius:2rem;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);color:var(--text-soft);white-space:nowrap;}
+    /* ── PARTNER SCORE ── */
+    .partner-score-pill{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.65rem;font-weight:900;padding:0.25rem 0.7rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.35);cursor:default;white-space:nowrap;}
+    /* ── WINDOW END ALERT ── */
+    .window-alert{display:none;padding:0.7rem 1rem;border-radius:0.8rem;background:rgba(255,159,28,0.12);border:1px solid rgba(255,159,28,0.4);color:var(--accent-warn);font-size:0.75rem;font-weight:800;margin-bottom:0.7rem;line-height:1.5;animation:fadeIn 0.3s ease;}
+    .window-alert.show{display:block;}
+    /* ── AUTO-WATER HINT ── */
+    .water-auto-hint{font-size:0.58rem;color:var(--accent-cal);font-weight:900;margin-top:0.15rem;line-height:1.3;opacity:0.8;}
   </style>
 </head>
 <body>
@@ -410,6 +437,20 @@
   </div>
 </div>
 
+
+<!-- ── RÉSUMÉ DU JOUR MODAL ── -->
+<div class="summary-modal-overlay" id="summaryModal">
+  <div class="summary-modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 id="summaryModalTitle" style="font-size:1rem;font-weight:900;color:var(--accent-cal)">📋 Résumé du jour</h3>
+      <button onclick="closeDaySummary()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.3rem 0.8rem;border-radius:2rem;font-size:0.75rem;font-weight:900;cursor:pointer">✕</button>
+    </div>
+    <div id="summaryModalContent"></div>
+  </div>
+</div>
+<!-- ── CANVAS CONFETTIS ── -->
+<canvas id="confettiCanvas" class="confetti-canvas" style="display:none"></canvas>
+
 <div class="app-wrapper">
   <!-- HEADER -->
   <div class="panel">
@@ -474,6 +515,19 @@
     
     <div id="sleepWaterMessages" style="margin:0.5rem 1rem 0.8rem;font-size:0.75rem;color:var(--text-soft);line-height:1.5"></div>
 
+    <!-- ── JEÛNE TIMER + SCORE BAR + ALERTE FENÊTRE ── -->
+    <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.3rem">
+      <div id="fastTimerPill" class="fast-timer-pill fast-closed">⏳ ...</div>
+      <div id="partnerScorePill" class="partner-score-pill">💞 Merdi: ...</div>
+      <div id="weekSuccessPill" class="week-success-pill">📊 ...</div>
+    </div>
+    <div class="day-score-label"><span id="dayScoreLbl">SCORE JOURNÉE</span><span id="dayScorePct">0%</span></div>
+    <div class="day-score-bar-wrap" title="Score global : macros + activité + eau + sommeil">
+      <div class="day-score-bar-fill" id="dayScoreBarFill" style="width:0%;background:#ff3b30"></div>
+    </div>
+    <div id="windowEndAlert" class="window-alert"></div>
+
+
     <div class="controls-grid" style="grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.5rem;margin-bottom:0.5rem">
       <div class="input-group"><label>Semaine</label>
         <select id="selWeek">
@@ -512,7 +566,7 @@
           <option value="5000">10 × 500ml (5L)</option>
         </select>
       </div>
-      <div class="input-group"><label>Water (ml)</label><input type="number" id="inpWaterML" step="50" value="0" placeholder="0" min="0" max="10000"></div>
+      <div class="input-group"><label>Water (ml)</label><input type="number" id="inpWaterML" step="50" value="0" placeholder="0" min="0" max="10000"><div id="waterAutoHint" class="water-auto-hint"></div></div>
       <div class="input-group"><label>Incline Walk</label>
         <select id="inpIncline"><option value="0">Rest / No</option>
           <optgroup label="🚶 No bar holding — 9% @ 3.5km/h">
@@ -558,6 +612,7 @@
       </label>
       <button class="btn" style="flex:1;min-width:150px;border-color:var(--accent-cal);color:var(--accent-cal);background:rgba(0,229,255,0.05)" onclick="openFoodModal()">🗄️ GÉRER ALIMENTS</button>
       <button class="btn" style="flex:1;min-width:130px;border-color:var(--accent-pro);color:var(--accent-pro);background:rgba(255,59,48,0.05)" onclick="openScanner()">📷 SCANNER</button>
+      <button class="btn" style="flex:1;min-width:110px;border-color:var(--accent-fib);color:var(--accent-fib);background:rgba(191,90,242,0.05)" onclick="openDaySummary()">📋 RÉSUMÉ</button>
     </div>
 
     <div class="dash-row">
@@ -1106,7 +1161,7 @@ function renderQuickSummary(R,tgt){
     +'</div>';
 }
 
-// ═══ WEIGHT CHART ═══
+// ═══ WEIGHT CHART — avec ligne de tendance ═══
 function renderWeightChart(){
   const canvas=document.getElementById('weightChart');
   if(!canvas) return;
@@ -1126,25 +1181,43 @@ function renderWeightChart(){
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
   ctx.scale(dpr,dpr);
   if(points.length<2){ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='13px Inter,sans-serif';ctx.textAlign='center';ctx.fillText(fr?'Pas encore assez de donnees':'Not enough data yet',W/2,70);const leg=document.getElementById('chartLegend');if(leg)leg.textContent='';return;}
-  const ws=points.map(function(p){return p.weight;});
-  const minW=Math.min.apply(null,ws)-0.5,maxW=Math.max.apply(null,ws)+0.5;
+  const ws=points.map(p=>p.weight);
+  const minW=Math.min(...ws)-0.5,maxW=Math.max(...ws)+0.5;
   const pad={l:38,r:10,t:10,b:20};
   const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
-  const xS=function(i){return(i/(points.length-1||1))*gW+pad.l;};
-  const yS=function(v){return pad.t+gH-(v-minW)/(maxW-minW||1)*gH;};
+  const xS=i=>(i/(points.length-1||1))*gW+pad.l;
+  const yS=v=>pad.t+gH-(v-minW)/(maxW-minW||1)*gH;
   ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
-  [0,0.5,1].forEach(function(r){
+  [0,0.5,1].forEach(r=>{
     const y=pad.t+gH*r;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
     ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='9px Inter,sans-serif';ctx.textAlign='right';
     ctx.fillText((maxW-(maxW-minW)*r).toFixed(1)+'kg',pad.l-3,y+3);
   });
   const accentColor=getComputedStyle(document.documentElement).getPropertyValue('--accent-cal').trim()||'#00e5ff';
   ctx.strokeStyle=accentColor;ctx.lineWidth=2.5;ctx.beginPath();
-  points.forEach(function(p,i){i===0?ctx.moveTo(xS(i),yS(p.weight)):ctx.lineTo(xS(i),yS(p.weight));});ctx.stroke();
-  points.forEach(function(p,i){ctx.fillStyle=accentColor;ctx.beginPath();ctx.arc(xS(i),yS(p.weight),3,0,Math.PI*2);ctx.fill();});
-  const first=points[0].weight,last=points[points.length-1].weight,diff=(last-first).toFixed(1);
-  const leg=document.getElementById('chartLegend');
-  if(leg) leg.textContent=first+'kg -> '+last+'kg ('+(diff>=0?'+':'')+diff+'kg)';
+  points.forEach((p,i)=>{i===0?ctx.moveTo(xS(i),yS(p.weight)):ctx.lineTo(xS(i),yS(p.weight));});ctx.stroke();
+  points.forEach((p,i)=>{ctx.fillStyle=accentColor;ctx.beginPath();ctx.arc(xS(i),yS(p.weight),3,0,Math.PI*2);ctx.fill();});
+  if(points.length>=4){
+    const n=points.length;
+    const sumX=points.reduce((a,_,i)=>a+i,0);
+    const sumY=points.reduce((a,p)=>a+p.weight,0);
+    const sumXY=points.reduce((a,p,i)=>a+i*p.weight,0);
+    const sumXX=points.reduce((a,_,i)=>a+i*i,0);
+    const slope=(n*sumXY-sumX*sumY)/(n*sumXX-sumX*sumX||1);
+    const intercept=(sumY-slope*sumX)/n;
+    ctx.strokeStyle='rgba(255,200,0,0.55)';ctx.lineWidth=1.8;ctx.setLineDash([5,4]);ctx.beginPath();
+    ctx.moveTo(xS(0),yS(intercept));ctx.lineTo(xS(n-1),yS(intercept+slope*(n-1)));
+    ctx.stroke();ctx.setLineDash([]);
+    const trendWeekly=slope*7;
+    const dir=trendWeekly<=-0.02?'↘':trendWeekly>=0.02?'↗':'→';
+    const trendLabel=fr?`Tendance: ${trendWeekly>0?'+':''}${trendWeekly.toFixed(2)}kg/sem ${dir}`:`Trend: ${trendWeekly>0?'+':''}${trendWeekly.toFixed(2)}kg/wk ${dir}`;
+    const leg=document.getElementById('chartLegend');
+    if(leg){const first=points[0].weight,last=points[n-1].weight,diff=(last-first).toFixed(1);leg.innerHTML=`${first}kg → ${last}kg (<span style="color:${diff>=0?'#ff9f1c':'#34c759'}">${diff>=0?'+':''}${diff}kg</span>) | <span style="color:rgba(255,200,0,0.8)">${trendLabel}</span>`;}
+  } else {
+    const first=points[0].weight,last=points[points.length-1].weight,diff=(last-first).toFixed(1);
+    const leg=document.getElementById('chartLegend');
+    if(leg) leg.textContent=first+'kg -> '+last+'kg ('+(diff>=0?'+':'')+diff+'kg)';
+  }
 }
 
 // ═══ STREAK ═══
@@ -2720,6 +2793,14 @@ function updateApp(){
     const bar=document.getElementById('bar'+n);
     if(bar){bar.style.width=pcts[n.toLowerCase()]+'%';bar.style.background=c;}
   });
+  // ── Nouvelles fonctions ──
+  updateDayScoreBar();
+  updateWeekSuccessRate();
+  updateWaterAutoHint();
+  updateFastTimer();
+  const _sEl=document.getElementById('streakCount');
+  if(_sEl){const _sc=parseInt(_sEl.textContent)||0;checkStreakCelebration(_sc);}
+  fetchPartnerScore();
 }
 
 // ═══════════════════════════════════
@@ -2885,6 +2966,30 @@ function renderRecap(){
       ${fr?'Seule la <strong>moyenne hebdomadaire</strong> est fiable. Densite tissu adipeux : 7 700 kcal/kg (Hall et al., Lancet 2011).':'Only the <strong>weekly average</strong> is reliable. Fat tissue density: 7,700 kcal/kg (Hall et al., Lancet 2011).'}<br>
       ${R.daysWithData<7?`<span style="color:var(--accent-warn)">${R.daysWithData}/7 ${fr?'jours remplis cette semaine.':'days filled this week.'}</span>`:''}
     </div>`;
+  // ── Eau & sommeil moyens + taux réussite ──
+  const _ws=calcWeekWaterSleep(state.week);
+  const _waterL=(_ws.avgWater/1000).toFixed(1);
+  const _sleepH=_ws.avgSleep?Math.floor(_ws.avgSleep/60)+'h'+String(_ws.avgSleep%60).padStart(2,'0'):'—';
+  const _wColor=_ws.avgWater>=2000?'var(--accent-fat)':_ws.avgWater>=1500?'var(--accent-car)':'var(--accent-warn)';
+  const _sColor=_ws.avgSleep>=420?'var(--accent-fat)':_ws.avgSleep>=360?'var(--accent-car)':'var(--accent-warn)';
+  const _recapEl=document.getElementById('recapContent');
+  if(_recapEl){
+    const _fr2=appLang==='fr';
+    let _ok=0;for(let _d=0;_d<7;_d++){if(dayQualifiesForStreak(state.week,_d))_ok++;}
+    const _pct=Math.round(_ok/7*100);
+    const _rColor=_pct>=80?'var(--accent-fat)':_pct>=50?'var(--accent-car)':'var(--accent-warn)';
+    _recapEl.innerHTML+=`
+      <p class="recap-section-title" style="margin-top:0.8rem">💧 ${_fr2?'EAU & SOMMEIL MOYENS':'AVG WATER & SLEEP'}</p>
+      <div class="dash-row">
+        <div class="stat-card"><div class="stat-val" style="color:${_wColor}">${_ws.avgWater>0?_waterL+'L':'—'}</div><div class="stat-lbl">${_fr2?'Eau moy./jour':'Avg water/day'}</div></div>
+        <div class="stat-card"><div class="stat-val" style="color:${_sColor};font-size:1.1rem">${_sleepH}</div><div class="stat-lbl">${_fr2?'Sommeil moy.':'Avg sleep'}</div></div>
+        <div class="stat-card"><div class="stat-val" style="color:var(--text-soft)">${_ws.daysW}/7</div><div class="stat-lbl">${_fr2?'Jours eau':'Days water'}</div></div>
+      </div>
+      <p class="recap-section-title" style="margin-top:0.8rem">🏆 ${_fr2?'TAUX DE RÉUSSITE':'SUCCESS RATE'}</p>
+      <div class="proj-block">
+        <div class="proj-row"><span style="color:var(--text-soft)">${_fr2?'Jours objectifs atteints':'Days goals met'}</span><span style="color:${_rColor};font-weight:900">${_ok}/7 — ${_pct}%</span></div>
+      </div>`;
+  }
 }
 
 // ═══════════════════════════════════
@@ -3300,6 +3405,389 @@ function checkRefeedReminder(){
     if(window.confirm(msg)){d.refeed=true;var cb=document.getElementById('refeedDay');if(cb)cb.checked=true;updateApp();}
   },2500);
 }
+
+
+// ═══════════════════════════════════════════════════════
+// ① TIMER JEÛNE 16:8  (fenêtre 15h00 – 23h00)
+// ═══════════════════════════════════════════════════════
+const FAST_OPEN_H=15, FAST_CLOSE_H=23;
+function updateFastTimer(){
+  const pill=document.getElementById('fastTimerPill');
+  const alert=document.getElementById('windowEndAlert');
+  if(!pill) return;
+  const fr=appLang==='fr';
+  const now=new Date();
+  const h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+  const nowMin=h*60+m;
+  const openMin=FAST_OPEN_H*60;
+  const closeMin=FAST_CLOSE_H*60;
+  const pad2=n=>String(n).padStart(2,'0');
+  if(nowMin>=openMin && nowMin<closeMin){
+    const remMin=closeMin-nowMin-1;
+    const remSec=60-s;
+    const adjMin=remSec===60?remMin:remMin;
+    const adjSec=remSec===60?0:remSec;
+    const remTot=remMin*60+(60-s);
+    const label=fr?`✅ Fenêtre ouverte — ferme dans ${pad2(Math.floor(remTot/3600))}h${pad2(Math.floor((remTot%3600)/60))}m${pad2(remTot%60)}s`
+                  :`✅ Window open — closes in ${pad2(Math.floor(remTot/3600))}h${pad2(Math.floor((remTot%3600)/60))}m${pad2(remTot%60)}s`;
+    pill.textContent=label;
+    pill.className='fast-timer-pill fast-open';
+    // Alerte fin fenêtre si < 60 min restantes
+    if(remTot<3600) checkWindowEndAlert(remTot);
+    else if(alert) alert.classList.remove('show');
+  } else if(nowMin<openMin){
+    const waitMin=openMin-nowMin;
+    const waitTot=waitMin*60-s;
+    const label=fr?`⏳ Fenêtre fermée — ouvre dans ${pad2(Math.floor(waitTot/3600))}h${pad2(Math.floor((waitTot%3600)/60))}m${pad2(waitTot%60)}s`
+                  :`⏳ Window closed — opens in ${pad2(Math.floor(waitTot/3600))}h${pad2(Math.floor((waitTot%3600)/60))}m${pad2(waitTot%60)}s`;
+    pill.textContent=label;
+    pill.className='fast-timer-pill fast-closed';
+    if(alert) alert.classList.remove('show');
+  } else {
+    const label=fr?'🌙 Fenêtre fermée — jeûne en cours':'🌙 Window closed — fast in progress';
+    pill.textContent=label;
+    pill.className='fast-timer-pill fast-closed';
+    if(alert) alert.classList.remove('show');
+  }
+}
+function checkWindowEndAlert(remSec){
+  const alert=document.getElementById('windowEndAlert');
+  if(!alert) return;
+  const d=getD(state.week,state.day);
+  const R=calcDay(d);
+  const tgt=state.targets;
+  const remCal=Math.round(tgt.cal-R.cal);
+  const remPro=Math.round(tgt.p-R.pro);
+  const remMin=Math.floor(remSec/60);
+  if(remCal<100 && remPro<15){alert.classList.remove('show');return;}
+  const fr=appLang==='fr';
+  let html='⚠️ '+(fr?`Fenêtre alimentaire ferme dans ${remMin} min`:`Window closes in ${remMin} min`)+' — ';
+  const missing=[];
+  if(remCal>80) missing.push(`${remCal} kcal`);
+  if(remPro>10) missing.push(`${remPro}g P`);
+  if(missing.length) html+=(fr?'Il manque encore : ':'Still missing: ')+missing.join(', ')+'. ';
+  // Suggestions rapides
+  const quick=Object.entries(userDB).filter(([k,v])=>v.p>15&&v.u==='unit').slice(0,2).map(([k,v])=>(appLang==='fr'&&v.fr)?v.fr:v.en);
+  if(quick.length) html+=(fr?'Idées rapides : ':'Quick options: ')+quick.join(', ')+'.';
+  alert.innerHTML=html;
+  alert.classList.add('show');
+}
+setInterval(updateFastTimer,1000);
+
+// ═══════════════════════════════════════════════════════
+// ② SCORE JOURNÉE GLOBAL (0–100%)
+// Poids : macros 60%, activité 40%
+// ═══════════════════════════════════════════════════════
+function computeDayScore(){
+  const d=getD(state.week,state.day);
+  const R=calcDay(d);
+  const tgt=state.targets;
+  const calPct=Math.min(1,R.cal/tgt.cal);
+  const proPct=Math.min(1,R.pro/tgt.p);
+  const carPct=Math.min(1,R.car/tgt.c);
+  const fatPct=Math.min(1,R.fat/tgt.f);
+  const fibPct=Math.min(1,R.fib/tgt.fib);
+  // Macro score: protéines comptent double
+  const macroScore=(proPct*2+calPct+carPct+fatPct+fibPct)/6;
+  // Activité
+  const steps=parseInt(d.s||0);
+  const hasGym=parseInt(d.g||0)>0;
+  const hasIncline=d.i&&d.i!=='0';
+  const stepScore=Math.min(1,steps/10000);
+  const actScore=stepScore*0.3+(hasGym?0.4:0)+(hasIncline?0.3:0);
+  // Eau
+  const totalW=(d.water||0)+calcWaterFromFoods(d)+(d.waterML||0);
+  const waterScore=Math.min(1,totalW/2500);
+  // Sommeil
+  const sleepMin=d.sleep||0;
+  const sleepScore=sleepMin>=420?1:sleepMin>=360?0.7:sleepMin>=300?0.4:0;
+  const global=macroScore*0.5+actScore*0.3+waterScore*0.1+sleepScore*0.1;
+  return Math.round(global*100);
+}
+function updateDayScoreBar(){
+  const score=computeDayScore();
+  const fill=document.getElementById('dayScoreBarFill');
+  const pctEl=document.getElementById('dayScorePct');
+  const lbl=document.getElementById('dayScoreLbl');
+  if(!fill||!pctEl) return;
+  fill.style.width=score+'%';
+  const color=score>=90?'#34c759':score>=70?'#00e5ff':score>=50?'#ffcc00':score>=30?'#ff9f1c':'#ff3b30';
+  fill.style.background=color;
+  pctEl.textContent=score+'%';
+  pctEl.style.color=color;
+  const fr=appLang==='fr';
+  lbl.textContent=fr?'SCORE JOURNÉE':'DAY SCORE';
+  // Confettis si 100%
+  if(score>=100) launchConfetti();
+}
+
+// ═══════════════════════════════════════════════════════
+// ③ TAUX DE RÉUSSITE HEBDOMADAIRE
+// ═══════════════════════════════════════════════════════
+function updateWeekSuccessRate(){
+  const pill=document.getElementById('weekSuccessPill');
+  if(!pill) return;
+  const fr=appLang==='fr';
+  let ok=0,total=0;
+  for(let d=0;d<7;d++){
+    const day=getD(state.week,d);
+    if(day&&day.foods&&day.foods.length>0){
+      total++;
+      if(dayQualifiesForStreak(state.week,d)) ok++;
+    }
+  }
+  if(total===0){pill.textContent='📊 '+(fr?'0 jour cette semaine':'0 days this week');return;}
+  const pct=Math.round(ok/7*100);
+  const color=pct>=80?'#34c759':pct>=50?'#ffcc00':'#ff9f1c';
+  pill.innerHTML=`<span style="color:${color}">${ok}/7 ${fr?'jours — '+pct+'%':' days — '+pct+'%'}</span>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// ④ RÉSUMÉ DU JOUR (modal)
+// ═══════════════════════════════════════════════════════
+function openDaySummary(){
+  const d=getD(state.week,state.day);
+  const R=calcDay(d);
+  const tgt=state.targets;
+  const fr=appLang==='fr';
+  const score=computeDayScore();
+  const totalW=(d.water||0)+calcWaterFromFoods(d)+(d.waterML||0);
+  const sleepH=d.sleep?Math.floor(d.sleep/60)+'h'+String(d.sleep%60).padStart(2,'0'):'—';
+  const deficitToday=Math.round(R.tdee-R.cal);
+  const rows=[
+    {lbl:fr?'🎯 Kcal mangées':'🎯 Kcal eaten',val:`${Math.round(R.cal)} / ${tgt.cal}`,color:'var(--accent-cal)'},
+    {lbl:fr?'🥩 Protéines':'🥩 Protein',val:`${Math.round(R.pro)}g / ${tgt.p}g`,color:'var(--accent-pro)'},
+    {lbl:fr?'🍚 Glucides':'🍚 Carbs',val:`${Math.round(R.car)}g / ${tgt.c}g`,color:'var(--accent-car)'},
+    {lbl:fr?'🥑 Lipides':'🥑 Fat',val:`${Math.round(R.fat)}g / ${tgt.f}g`,color:'var(--accent-fat)'},
+    {lbl:fr?'🌿 Fibres':'🌿 Fiber',val:`${Math.round(R.fib)}g / ${tgt.fib}g`,color:'var(--accent-fib)'},
+    {lbl:fr?'🔥 Déficit':'🔥 Deficit',val:`${deficitToday} kcal`,color:deficitToday>=0?'var(--accent-fat)':'var(--accent-warn)'},
+    {lbl:fr?'👟 Pas':'👟 Steps',val:(d.s||0).toLocaleString(),color:'#fff'},
+    {lbl:fr?'💧 Eau':'💧 Water',val:`${Math.round(totalW/100)/10}L`,color:'#00e5ff'},
+    {lbl:fr?'😴 Sommeil':'😴 Sleep',val:sleepH,color:'var(--accent-fib)'},
+    {lbl:fr?'🏆 Score global':'🏆 Day score',val:score+'%',color:score>=80?'#34c759':score>=50?'#ffcc00':'#ff9f1c'},
+  ];
+  const html=rows.map(r=>`<div class="summary-row"><span style="color:var(--text-soft)">${r.lbl}</span><span style="color:${r.color};font-weight:900">${r.val}</span></div>`).join('');
+  const modal=document.getElementById('summaryModal');
+  const title=document.getElementById('summaryModalTitle');
+  const cont=document.getElementById('summaryModalContent');
+  if(title) title.textContent=fr?'📋 Résumé du jour':'📋 Day Summary';
+  if(cont) cont.innerHTML=html;
+  if(modal) modal.classList.add('open');
+}
+function closeDaySummary(){
+  const modal=document.getElementById('summaryModal');
+  if(modal) modal.classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑤ GRAPHIQUE POIDS — LIGNE DE TENDANCE (régression linéaire)
+// ═══════════════════════════════════════════════════════
+function renderWeightChartEnhanced(){
+  const canvas=document.getElementById('weightChart');
+  if(!canvas) return;
+  const weeks=parseInt(document.getElementById('chartWeeks')&&document.getElementById('chartWeeks').value||8);
+  const fr=appLang==='fr';
+  const points=[];
+  for(let w=Math.max(1,state.week-weeks+1);w<=state.week;w++){
+    for(let d=0;d<7;d++){
+      const day=state.log[w+'_'+d];
+      if(day&&day.w&&parseFloat(day.w)>0) points.push({weight:parseFloat(day.w)});
+    }
+  }
+  const ctx=canvas.getContext&&canvas.getContext('2d');
+  if(!ctx) return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||300,H=140;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+  if(points.length<2){
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='13px Inter,sans-serif';ctx.textAlign='center';
+    ctx.fillText(fr?'Pas encore assez de données':'Not enough data yet',W/2,70);
+    const leg=document.getElementById('chartLegend');if(leg)leg.textContent='';return;
+  }
+  const ws=points.map(p=>p.weight);
+  const minW=Math.min(...ws)-0.5,maxW=Math.max(...ws)+0.5;
+  const pad={l:38,r:10,t:10,b:20};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  const xS=i=>(i/(points.length-1||1))*gW+pad.l;
+  const yS=v=>pad.t+gH-(v-minW)/(maxW-minW||1)*gH;
+  // Grille
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+  [0,0.5,1].forEach(r=>{
+    const y=pad.t+gH*r;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='9px Inter,sans-serif';ctx.textAlign='right';
+    ctx.fillText((maxW-(maxW-minW)*r).toFixed(1)+'kg',pad.l-3,y+3);
+  });
+  const accentColor=getComputedStyle(document.documentElement).getPropertyValue('--accent-cal').trim()||'#00e5ff';
+  // Ligne réelle
+  ctx.strokeStyle=accentColor;ctx.lineWidth=2.5;ctx.beginPath();
+  points.forEach((p,i)=>{i===0?ctx.moveTo(xS(i),yS(p.weight)):ctx.lineTo(xS(i),yS(p.weight));});ctx.stroke();
+  // Points
+  points.forEach((p,i)=>{ctx.fillStyle=accentColor;ctx.beginPath();ctx.arc(xS(i),yS(p.weight),3,0,Math.PI*2);ctx.fill();});
+  // ── Régression linéaire ──
+  if(points.length>=4){
+    const n=points.length;
+    const sumX=points.reduce((a,_,i)=>a+i,0);
+    const sumY=points.reduce((a,p)=>a+p.weight,0);
+    const sumXY=points.reduce((a,p,i)=>a+i*p.weight,0);
+    const sumXX=points.reduce((a,_,i)=>a+i*i,0);
+    const slope=(n*sumXY-sumX*sumY)/(n*sumXX-sumX*sumX||1);
+    const intercept=(sumY-slope*sumX)/n;
+    ctx.strokeStyle='rgba(255,200,0,0.55)';ctx.lineWidth=1.8;ctx.setLineDash([5,4]);ctx.beginPath();
+    ctx.moveTo(xS(0),yS(intercept));
+    ctx.lineTo(xS(n-1),yS(intercept+slope*(n-1)));
+    ctx.stroke();ctx.setLineDash([]);
+    // Annotation tendance
+    const trendWeekly=slope*7;
+    const dir=trendWeekly<=-0.02?'↘':trendWeekly>=0.02?'↗':'→';
+    const trendLabel=fr?`Tendance: ${trendWeekly>0?'+':''}${trendWeekly.toFixed(2)}kg/sem ${dir}`:`Trend: ${trendWeekly>0?'+':''}${trendWeekly.toFixed(2)}kg/wk ${dir}`;
+    const leg=document.getElementById('chartLegend');
+    if(leg){
+      const first=points[0].weight,last=points[n-1].weight,diff=(last-first).toFixed(1);
+      leg.innerHTML=`${first}kg → ${last}kg (<span style="color:${diff>=0?'#ff9f1c':'#34c759'}">${diff>=0?'+':''}${diff}kg</span>) &nbsp;|&nbsp; <span style="color:rgba(255,200,0,0.8)">${trendLabel}</span>`;
+    }
+  } else {
+    const first=points[0].weight,last=points[points.length-1].weight,diff=(last-first).toFixed(1);
+    const leg=document.getElementById('chartLegend');
+    if(leg) leg.textContent=first+'kg -> '+last+'kg ('+(diff>=0?'+':'')+diff+'kg)';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑥ CONFETTIS — célébration 100% macros / nouveau streak record
+// ═══════════════════════════════════════════════════════
+let _confettiActive=false,_lastStreakPeak=0;
+function launchConfetti(){
+  if(_confettiActive) return;
+  _confettiActive=true;
+  const canvas=document.getElementById('confettiCanvas');
+  if(!canvas){_confettiActive=false;return;}
+  canvas.style.display='block';
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const colors=['#00e5ff','#ff3b30','#ffcc00','#34c759','#bf5af2','#ff9f1c','#fff'];
+  const particles=Array.from({length:90},()=>({
+    x:Math.random()*canvas.width,y:-10,
+    vx:(Math.random()-0.5)*4,vy:Math.random()*3+2,
+    color:colors[Math.floor(Math.random()*colors.length)],
+    size:Math.random()*6+3,rot:Math.random()*360,vrot:(Math.random()-0.5)*8,
+    life:1,decay:Math.random()*0.01+0.005
+  }));
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.vrot;p.life-=p.decay;
+      if(p.y>canvas.height||p.life<=0) return;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.globalAlpha=p.life;ctx.fillStyle=p.color;
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<200 && particles.some(p=>p.life>0)) requestAnimationFrame(draw);
+    else{ctx.clearRect(0,0,canvas.width,canvas.height);canvas.style.display='none';_confettiActive=false;}
+  }
+  draw();
+}
+function checkStreakCelebration(currentStreak){
+  if(currentStreak>_lastStreakPeak && currentStreak>=7){
+    _lastStreakPeak=currentStreak;
+    setTimeout(launchConfetti,400);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑦ AUTO-EAU depuis aliments + champ manuel cumulatif
+// ═══════════════════════════════════════════════════════
+function updateWaterAutoHint(){
+  const hint=document.getElementById('waterAutoHint');
+  if(!hint) return;
+  const d=getD(state.week,state.day);
+  const autoML=calcWaterFromFoods(d);
+  const fr=appLang==='fr';
+  if(autoML>0) hint.textContent=fr?`💧 +${autoML}ml auto depuis boissons trackées`:`💧 +${autoML}ml auto from tracked drinks`;
+  else hint.textContent='';
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑧ SCORE PARTENAIRE — lecture Firestore benedicte
+// ═══════════════════════════════════════════════════════
+const PARTNER_FS_URL=`https://firestore.googleapis.com/v1/projects/merdi-fatlosssapp/databases/(default)/documents/apps/merdi?key=${FS_API_KEY}`;
+let _partnerScore=null,_partnerLastFetch=0;
+async function fetchPartnerScore(){
+  const now=Date.now();
+  if(now-_partnerLastFetch<120000) return; // max toutes les 2 min
+  _partnerLastFetch=now;
+  try{
+    const res=await fetch(PARTNER_FS_URL);
+    if(!res.ok) return;
+    const data=await res.json();
+    if(!data.fields||!data.fields.state) return;
+    const pState=JSON.parse(data.fields.state.stringValue);
+    const pUserDB=data.fields.userDB?JSON.parse(data.fields.userDB.stringValue):null;
+    if(!pState||!pUserDB) return;
+    // Calculer le score du jour de Bénédicte
+    const pWeek=pState.week,pDay=pState.day;
+    const pDayData=pState.log[pWeek+'_'+pDay]||{foods:[],s:0,sleep:0,water:0,waterML:0};
+    const pTgt=pState.targets||{cal:2300,p:190,c:216,f:75,fib:35};
+    // Calc macros avec pUserDB
+    let pcal=0,ppro=0,pcar=0,pfat=0,pfib=0;
+    (pDayData.foods||[]).forEach(f=>{
+      const item=pUserDB[f.id];if(!item)return;
+      const r=(item.u==='g'||item.u==='ml')?f.q/100:f.q;
+      pcal+=item.cal*r;ppro+=item.p*r;pcar+=item.c*r;pfat+=item.f*r;pfib+=(item.fib||0)*r;
+    });
+    const pCalPct=Math.min(1,pcal/pTgt.cal);
+    const pProPct=Math.min(1,ppro/pTgt.p);
+    const pCarPct=Math.min(1,pcar/pTgt.c);
+    const pFatPct=Math.min(1,pfat/pTgt.f);
+    const pFibPct=Math.min(1,pfib/pTgt.fib);
+    const pMacroScore=(pProPct*2+pCalPct+pCarPct+pFatPct+pFibPct)/6;
+    const pSteps=parseInt(pDayData.s||0);
+    const pHasGym=parseInt(pDayData.g||0)>0;
+    const pHasIncline=pDayData.i&&pDayData.i!=='0';
+    const pActScore=Math.min(1,pSteps/10000)*0.3+(pHasGym?0.4:0)+(pHasIncline?0.3:0);
+    const pTotalW=(pDayData.water||0)+(pDayData.waterML||0);
+    const pWaterScore=Math.min(1,pTotalW/2500);
+    const pSleepMin=pDayData.sleep||0;
+    const pSleepScore=pSleepMin>=420?1:pSleepMin>=360?0.7:0;
+    _partnerScore=Math.round((pMacroScore*0.5+pActScore*0.3+pWaterScore*0.1+pSleepScore*0.1)*100);
+    updatePartnerScorePill();
+  }catch(e){}
+}
+function updatePartnerScorePill(){
+  const pill=document.getElementById('partnerScorePill');
+  if(!pill) return;
+  if(_partnerScore===null){pill.textContent='💞 Merdi: ...';return;}
+  const color=_partnerScore>=80?'#ff69b4':_partnerScore>=50?'#ffcc00':'#ff9f1c';
+  const emoji=_partnerScore>=80?'💪':_partnerScore>=50?'😊':'💙';
+  pill.innerHTML=`💞 Merdi: <span style="color:${color};font-weight:900">${_partnerScore}% ${emoji}</span>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑨ RÉCAP HEBDO — moyenne eau + sommeil
+// Extension de renderRecap : injectée via patch
+// ═══════════════════════════════════════════════════════
+function calcWeekWaterSleep(week){
+  let totalWater=0,totalSleep=0,daysW=0,daysS=0;
+  for(let d=0;d<7;d++){
+    const day=getD(week,d);
+    const w=(day.water||0)+calcWaterFromFoods(day)+(day.waterML||0);
+    const s=day.sleep||0;
+    if(w>0){totalWater+=w;daysW++;}
+    if(s>0){totalSleep+=s;daysS++;}
+  }
+  return{
+    avgWater:daysW>0?Math.round(totalWater/daysW):0,
+    avgSleep:daysS>0?Math.round(totalSleep/daysS):0,
+    daysW,daysS
+  };
+}
+
+// ─── Init timer ───
+updateFastTimer();
+fetchPartnerScore();
 
 applyModeUI();syncInputs();applyLang();updateModeLabels();updateApp();checkAutoCopyPrompt();checkRefeedReminder();startCloudSync();
 </script>
