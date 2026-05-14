@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Merdi Fat Loss Journey</title>
+  <title>Merdi Fat Loss Journey v6</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
     *{margin:0;padding:0;box-sizing:border-box;}
@@ -369,7 +369,19 @@
         </div>
       </div>
       
-      <button class="profile-toggle-btn" onclick="toggleProfile()" id="profileToggleBtn">⚙️ <span id="profileToggleLabel">Profil</span></button>
+      <div style="display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end">
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:flex-end">
+          <button class="profile-toggle-btn" onclick="toggleProfile()" id="profileToggleBtn">⚙️ <span id="profileToggleLabel">Profil</span></button>
+          <button class="btn-reset" onclick="showHistPanel()">📚 <span id="histBtnLbl">Historique</span></button>
+          <button class="btn-reset" onclick="confirmReset()">🔄 <span id="resetBtnLbl">Reset</span></button>
+          <button class="btn btn-export" onclick="exportData()" style="padding:0.35rem 0.8rem;font-size:0.68rem;">📤 Export</button>
+          <button class="btn btn-import" onclick="importData()" style="padding:0.35rem 0.8rem;font-size:0.68rem;">📥 Import</button>
+        </div>
+        <button class="btn btn-save" onclick="manualSave()" id="saveBtn" style="width:100%">💾 SAUVEGARDER</button>
+        <div style="display:flex;justify-content:center;width:100%">
+          <span id="syncBadge" class="sync-badge" style="border-color:rgba(255,255,255,0.2);color:var(--text-soft)"><span class="sync-dot" style="background:#888"></span>Connexion...</span>
+        </div>
+      </div>
       <div id="profileSection" class="profile-hidden">
       <div class="profile-card">
         <div class="profile-card-title" id="profileCardTitle">👤 Physiologie / Profile</div>
@@ -388,15 +400,6 @@
     </div>
 </div>
     </div>
-      <div style="display:flex;gap:0.5rem;margin-bottom:0.4rem"><button class="btn-reset" onclick="showHistPanel()">📚 <span id="histBtnLbl">Historique</span></button><button class="btn-reset" onclick="confirmReset()">🔄 <span id="resetBtnLbl">Reset</span></button></div>
-      <button class="btn btn-save" onclick="manualSave()" id="saveBtn">💾 SAUVEGARDER</button>
-      <div style="display:flex;justify-content:center;margin-top:0.3rem">
-        <span id="syncBadge" class="sync-badge" style="border-color:rgba(255,255,255,0.2);color:var(--text-soft)"><span class="sync-dot" style="background:#888"></span>Connexion...</span>
-      </div>
-      <div class="io-row">
-        <button class="btn btn-export" onclick="exportData()">📤 Export</button>
-        <button class="btn btn-import" onclick="importData()">📥 Import</button>
-      </div>
 
     </div>
 
@@ -406,7 +409,9 @@
       <div id="bannerMsg">⚡ Initialisation...</div>
     </div>
 
-    <div class="controls-grid">
+    <div id="sleepWaterMessages" style="margin:0.5rem 1rem 0.8rem;font-size:0.75rem;color:var(--text-soft);line-height:1.5"></div>
+
+    <div class="controls-grid" style="grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.5rem;margin-bottom:0.5rem">
       <div class="input-group"><label>Semaine</label>
         <select id="selWeek">
           <option value="1">Week 1</option><option value="2">Week 2</option><option value="3">Week 3</option>
@@ -424,12 +429,29 @@
           <option value="3">Jeudi</option><option value="4">Vendredi</option><option value="5">Samedi</option><option value="6">Dimanche</option>
         </select>
       </div>
-
-    </div>
-    <div class="controls-grid">
       <div class="input-group"><label>Poids (kg)</label><input type="number" id="inpWeight" step="0.1" value="89.0"></div>
       <div class="input-group"><label>Pas</label><input type="number" id="inpSteps" step="100" value="0" placeholder="0"></div>
-      <div class="input-group"><label>Incline Walk (10%)</label>
+      <div class="input-group"><label>Sleep</label>
+        <select id="inpSleep">
+          <option value="0">—</option>
+          <option value="300">5h00</option><option value="315">5h15</option><option value="330">5h30</option><option value="345">5h45</option>
+          <option value="360">6h00</option><option value="375">6h15</option><option value="390">6h30</option><option value="405">6h45</option>
+          <option value="420">7h00</option><option value="435">7h15</option><option value="450">7h30</option><option value="465">7h45</option>
+          <option value="480">8h00</option><option value="495">8h15</option><option value="510">8h30</option><option value="525">8h45</option>
+          <option value="540">9h00</option><option value="555">9h15</option><option value="570">9h30</option><option value="585">9h45</option>
+        </select>
+      </div>
+      <div class="input-group"><label>Water</label>
+        <select id="inpWater">
+          <option value="0">—</option>
+          <option value="500">1 × 500ml</option><option value="1000">2 × 500ml (1L)</option><option value="1500">3 × 500ml (1.5L)</option>
+          <option value="2000">4 × 500ml (2L)</option><option value="2500">5 × 500ml (2.5L)</option><option value="3000">6 × 500ml (3L)</option>
+          <option value="3500">7 × 500ml (3.5L)</option><option value="4000">8 × 500ml (4L)</option><option value="4500">9 × 500ml (4.5L)</option>
+          <option value="5000">10 × 500ml (5L)</option>
+        </select>
+      </div>
+      <div class="input-group"><label>Water (ml)</label><input type="number" id="inpWaterML" step="50" value="0" placeholder="0" min="0" max="10000"></div>
+      <div class="input-group"><label>Incline Walk</label>
         <select id="inpIncline"><option value="0">Repos / Non</option>
           <optgroup label="🚶 Sans toucher les barres — 9% @ 3.5km/h">
             <option value="25_9_1.0">25 min — sans barres</option>
@@ -438,23 +460,23 @@
             <option value="40_9_1.0">40 min — sans barres</option>
             <option value="45_9_1.0">45 min — sans barres</option>
           </optgroup>
-          <optgroup label="🤲 Barres du bas (capteurs) — 13% @ 4km/h">
-            <option value="25_13_0.80">25 min — barres bas</option>
-            <option value="30_13_0.80">30 min — barres bas</option>
-            <option value="35_13_0.80">35 min — barres bas</option>
-            <option value="40_13_0.80">40 min — barres bas</option>
-            <option value="45_13_0.80">45 min — barres bas</option>
+          <optgroup label="🤲 Barres du bas (capteurs) — 11.5% @ 4km/h">
+            <option value="25_115_0.80">25 min — barres bas</option>
+            <option value="30_115_0.80">30 min — barres bas</option>
+            <option value="35_115_0.80">35 min — barres bas</option>
+            <option value="40_115_0.80">40 min — barres bas</option>
+            <option value="45_115_0.80">45 min — barres bas</option>
           </optgroup>
-          <optgroup label="🙌 Barre du haut (écran) — 13.5% @ 4km/h">
-            <option value="25_135_0.75">25 min — barre haut</option>
-            <option value="30_135_0.75">30 min — barre haut</option>
-            <option value="35_135_0.75">35 min — barre haut</option>
-            <option value="40_135_0.75">40 min — barre haut</option>
-            <option value="45_135_0.75">45 min — barre haut</option>
+          <optgroup label="🙌 Barre du haut (écran) — 11.5% @ 4km/h">
+            <option value="25_115_0.75">25 min — barre haut</option>
+            <option value="30_115_0.75">30 min — barre haut</option>
+            <option value="35_115_0.75">35 min — barre haut</option>
+            <option value="40_115_0.75">40 min — barre haut</option>
+            <option value="45_115_0.75">45 min — barre haut</option>
           </optgroup>
         </select>
       </div>
-      <div class="input-group"><label>Gym Session</label>
+      <div class="input-group"><label>Séance Gym</label>
         <select id="inpGym">
           <option value="0">Repos</option>
           <option value="60">1) Dos + Jambes (60 min)</option>
@@ -765,7 +787,11 @@ const defDB={
   "chocolat_7m":    {cat:["Snacks"],en:"Chocolat (7 morceaux)",fr:"Chocolat (7 morceaux)",cal:220,p:8,c:20,f:14,fib:0,u:"unit"},
   "popcorn":        {cat:["Snacks"],en:"Pop Corn soufflé",fr:"Pop corn soufflé",cal:387,p:12.9,c:77.8,f:4.5,fib:14.5,u:"g"},
   "biscuits":       {cat:["Snacks"],en:"Biscuits (générique)",fr:"Biscuits (générique)",cal:450,p:7,c:65,f:18,fib:2,u:"g"},
-  "mango_icecream": {cat:["Snacks"],en:"Crème glacée mangue",fr:"Crème glacée mangue",cal:190,p:2.5,c:25,f:9,fib:0.5,u:"g"}
+  "mango_icecream": {cat:["Snacks"],en:"Crème glacée mangue",fr:"Crème glacée mangue",cal:190,p:2.5,c:25,f:9,fib:0.5,u:"g"},
+  "canadian_dry_zero": {cat:["Snacks"],en:"Canada Dry Zero (330ml can)",fr:"Canada Dry Zéro (canette 330ml)",cal:0,p:0,c:0,f:0,fib:0,u:"unit",water:330},
+  "7up_zero":          {cat:["Snacks"],en:"7UP Zero (330ml can)",fr:"7UP Zéro (canette 330ml)",cal:0,p:0,c:0,f:0,fib:0,u:"unit",water:330},
+  "pepsi_cherry_zero": {cat:["Snacks"],en:"Pepsi Cherry Zero (330ml can)",fr:"Pepsi Cherry Zéro (canette 330ml)",cal:0,p:0,c:0,f:0,fib:0,u:"unit",water:330},
+  "coke_zero":         {cat:["Snacks"],en:"Coca-Cola Zero (330ml can)",fr:"Coca-Cola Zéro (canette 330ml)",cal:0,p:0,c:0,f:0,fib:0,u:"unit",water:330}
 };
 
 const CATEGORIES=["Meal 1","Meal 2","Meal 3","Sauces","Snacks"];
@@ -787,7 +813,7 @@ if(!state||!state.profile){
 function getD(w,d){
   if(appMode==='maintenance'){return getMaintD(w,d);}
   const k=`${w}_${d}`;
-  if(!state.log[k]) state.log[k]={w:state.profile.defaultW,s:0,i:0,g:0,foods:[],refeed:false};
+  if(!state.log[k]) state.log[k]={w:state.profile.defaultW,s:0,i:0,g:0,sleep:0,water:0,waterML:0,foods:[],refeed:false};
   return state.log[k];
 }
 function save(){
@@ -914,6 +940,9 @@ function syncInputs(){
   document.getElementById('inpSteps').value=d.s;
   document.getElementById('inpIncline').value=d.i;
   document.getElementById('inpGym').value=d.g;
+  document.getElementById('inpSleep').value=d.sleep||0;
+  document.getElementById('inpWater').value=d.water||0;
+  document.getElementById('inpWaterML').value=d.waterML||0;
   document.getElementById('refeedDay').checked=d.refeed||false;
 }
 
@@ -1096,15 +1125,75 @@ function getStreakSpecialMessage(){
   const hasIncline=parseInt(d.i||0)>0;
   const steps=parseInt(d.s||0);
   const t=state.targets;
-  const macrosGood=R.cal>=2000&&(t.p-R.pro)<=10&&(t.f-R.fat)<=10&&(t.fib-R.fib)<=10&&(t.c-R.car)<=60;
-  if(steps>=12000&&hasGym&&hasIncline&&macrosGood){
-    return fr?'🔥 Humm... en tout cas Bénédicte ne va plus te résister si tu continues comme ça 😍':'🔥 Humm... Bénédicte won\'t be able to resist you if you keep this up 😍';
+
+  // Calcul du pourcentage de complétion global (macros + activité)
+  const calPct=R.cal/t.cal;
+  const proPct=R.pro/t.p;
+  const carPct=R.car/t.c;
+  const fatPct=R.fat/t.f;
+  const fibPct=R.fib/t.fib;
+  const avgMacroPct=(proPct*2+carPct+fatPct+fibPct)/5;
+  const activityScore=(steps>=10000?1:steps/10000)*0.3+(hasGym?0.35:0)+(hasIncline?0.35:0);
+  const globalPct=avgMacroPct*0.6+activityScore*0.4;
+
+  // Messages romantiques progressifs (Merdi recoit les messages de Bénédicte)
+  const romanticMessages={
+    below65:[
+      {fr:"😔 Bénédicte espère te voir te reprendre demain... Ne la déçois pas trop longtemps.",en:"😔 Bénédicte hopes to see you bounce back tomorrow... Don't disappoint her too long."},
+      {fr:"💔 Tu es loin de ton meilleur aujourd'hui. Bénédicte te sait capable de mieux.",en:"💔 You're far from your best today. Bénédicte knows you can do better."},
+      {fr:"😢 Journée compliquée... Mais Bénédicte croit toujours en toi. Demain est un nouveau départ.",en:"😢 Tough day... But Bénédicte still believes in you. Tomorrow is a fresh start."},
+    ],
+    pct75:[
+      {fr:"😊 Bonne journée ! Bénédicte te voit progresser et ça lui fait plaisir.",en:"😊 Good day! Bénédicte sees you progressing and it makes her happy."},
+      {fr:"💚 Tu es sur la bonne voie. Continue comme ça et Bénédicte sera fière de toi.",en:"💚 You're on the right track. Keep this up and Bénédicte will be proud of you."},
+      {fr:"👍 Solide ! Bénédicte remarque tes efforts constants.",en:"👍 Solid! Bénédicte notices your consistent efforts."},
+    ],
+    pct80:[
+      {fr:"😍 Très belle journée ! Bénédicte te trouve de plus en plus séduisant.",en:"😍 Great day! Bénédicte finds you more and more attractive."},
+      {fr:"💖 Wow ! Tu prends soin de toi et ça se voit. Bénédicte est impressionnée.",en:"💖 Wow! You're taking care of yourself and it shows. Bénédicte is impressed."},
+      {fr:"🔥 Tu es sur une excellente lancée. Bénédicte te regarde différemment.",en:"🔥 You're on an excellent streak. Bénédicte looks at you differently."},
+    ],
+    pct85:[
+      {fr:"🥰 Incroyable discipline ! Bénédicte est fascinée par ta transformation.",en:"🥰 Incredible discipline! Bénédicte is fascinated by your transformation."},
+      {fr:"💕 Tu deviens irrésistible... Bénédicte ne peut plus détacher son regard.",en:"💕 You're becoming irresistible... Bénédicte can't take her eyes off you."},
+      {fr:"✨ Quelle journée parfaite ! Bénédicte fond littéralement devant toi.",en:"✨ What a perfect day! Bénédicte is literally melting for you."},
+    ],
+    pct90:[
+      {fr:"😱 ROI ! Bénédicte n'en revient pas de ta détermination.",en:"😱 KING! Bénédicte can't believe your determination."},
+      {fr:"🔥🔥 Tu es en FEU aujourd'hui ! Bénédicte est totalement sous le charme.",en:"🔥🔥 You're ON FIRE today! Bénédicte is totally charmed."},
+      {fr:"💪💪 Performance exceptionnelle ! Bénédicte te trouve extraordinaire.",en:"💪💪 Exceptional performance! Bénédicte finds you extraordinary."},
+    ],
+    pct95:[
+      {fr:"🏆 PERFECTION ABSOLUE ! Bénédicte ne peut plus te résister, tu es son champion.",en:"🏆 ABSOLUTE PERFECTION! Bénédicte can't resist you anymore, you're her champion."},
+      {fr:"👑 TU ES LE ROI ! Bénédicte est totalement conquise par ton dévouement.",en:"👑 YOU ARE THE KING! Bénédicte is totally conquered by your dedication."},
+      {fr:"💎 DIAMANT PUR ! Bénédicte t'admire plus que jamais. Tu es son inspiration.",en:"💎 PURE DIAMOND! Bénédicte admires you more than ever. You are her inspiration."},
+    ],
+    above100:[
+      {fr:"🚀 AU-DELÀ DE TOUT ! Bénédicte est sans voix... Tu dépasses toutes les attentes !",en:"🚀 BEYOND EVERYTHING! Bénédicte is speechless... You exceed all expectations!"},
+      {fr:"⚡ SURHUMAIN ! Bénédicte te regarde comme un dieu. Continue cette folie !",en:"⚡ SUPERHUMAN! Bénédicte looks at you like a god. Keep this madness going!"},
+      {fr:"🌟 LÉGENDE VIVANTE ! Bénédicte ne savait pas que c'était possible. Tu es incroyable !",en:"🌟 LIVING LEGEND! Bénédicte didn't know this was possible. You're incredible!"},
+    ],
+  };
+
+  let selectedMessages;
+  if(globalPct<0.65)       selectedMessages=romanticMessages.below65;
+  else if(globalPct<0.80)  selectedMessages=romanticMessages.pct75;
+  else if(globalPct<0.85)  selectedMessages=romanticMessages.pct80;
+  else if(globalPct<0.90)  selectedMessages=romanticMessages.pct85;
+  else if(globalPct<0.95)  selectedMessages=romanticMessages.pct90;
+  else if(globalPct<1.05)  selectedMessages=romanticMessages.pct95;
+  else                     selectedMessages=romanticMessages.above100;
+
+  // Sélection aléatoire mais cohérente pour la journée (même message toute la journée)
+  const dayKey=state.week+'_'+state.day;
+  if(!_streakMsgSeed) _streakMsgSeed={};
+  if(!_streakMsgSeed[dayKey]){
+    _streakMsgSeed[dayKey]=Math.floor(Math.random()*selectedMessages.length);
   }
-  if(steps>=10000&&macrosGood){
-    return fr?'💪 Humm... tu deviens de plus en plus sexy pour Bénédicte 🔥':'💪 Humm... you\'re getting sexier for Bénédicte every day 🔥';
-  }
-  return null;
+  const msg=selectedMessages[_streakMsgSeed[dayKey]%selectedMessages.length];
+  return fr?msg.fr:msg.en;
 }
+let _streakMsgSeed={};
 
 
 function calcStreak(){
@@ -1285,6 +1374,150 @@ function getStatEmoji(eaten, target){
   if(pct>=35)  return '🥳';
   return '⁉️';
 }
+
+// ═══ ROMANTIC MACRO MESSAGES ═══
+function getRomanticMacroMsg(macro, pct, lang){
+  const fr = lang === 'fr';
+  const partner = 'Bénédicte'; // Pour Merdi
+  const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  
+  let emoji = '';
+  let text = '';
+  
+  // Paliers selon pourcentage
+  if(pct < 65){
+    // Messages inverses/encourageants
+    emoji = '💪';
+    const msgs_fr = [
+      `${partner} croit en toi! Continue à monter les ${macro.toLowerCase()}.`,
+      `Allez champion! ${partner} sait que tu peux faire mieux.`,
+      `${partner} te regarde avec confiance. À toi de jouer!`,
+      `Courage bébé, ${partner} t'attend à la ligne d'arrivée.`
+    ];
+    const msgs_en = [
+      `${partner} believes in you! Keep pushing those ${macro.toLowerCase()}.`,
+      `Come on champ! ${partner} knows you can do better.`,
+      `${partner} is watching with confidence. Your move!`,
+      `Keep going baby, ${partner} is waiting at the finish line.`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else if(pct >= 65 && pct < 75){
+    emoji = '😊';
+    const msgs_fr = [
+      `Bon début! ${partner} sourit en te voyant progresser.`,
+      `${partner} est fière de ton effort. Continue!`,
+      `Tu montes la pente! ${partner} t'encourage.`,
+      `C'est un bon départ mon amour. ${partner} te soutient.`
+    ];
+    const msgs_en = [
+      `Good start! ${partner} smiles seeing your progress.`,
+      `${partner} is proud of your effort. Keep going!`,
+      `You're climbing! ${partner} cheers for you.`,
+      `Nice beginning my love. ${partner} supports you.`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else if(pct >= 75 && pct < 80){
+    emoji = '🤩';
+    const msgs_fr = [
+      `${partner} te regarde avec admiration. Tu assures!`,
+      `Wow! ${partner} est impressionnée par ta discipline.`,
+      `Tu gères comme un boss! ${partner} te kiffe.`,
+      `${partner} fond devant ta détermination bébé.`
+    ];
+    const msgs_en = [
+      `${partner} looks at you with admiration. You're crushing it!`,
+      `Wow! ${partner} is impressed by your discipline.`,
+      `You're handling it like a boss! ${partner} loves it.`,
+      `${partner} melts seeing your determination baby.`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else if(pct >= 80 && pct < 85){
+    emoji = '😍';
+    const msgs_fr = [
+      `${partner} ne peut pas détacher ses yeux de toi! Tu brilles.`,
+      `Incroyable! ${partner} est conquise par ta rigueur.`,
+      `Tu es un exemple pour nous deux! ${partner} t'admire.`,
+      `${partner} tombe encore plus amoureuse en te voyant si fort.`
+    ];
+    const msgs_en = [
+      `${partner} can't take her eyes off you! You're glowing.`,
+      `Amazing! ${partner} is won over by your rigor.`,
+      `You're an example for us both! ${partner} admires you.`,
+      `${partner} falls even more in love seeing you so strong.`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else if(pct >= 85 && pct < 90){
+    emoji = '🔥';
+    const msgs_fr = [
+      `${partner} pense: "C'est mon homme ça!" Tu déchires!`,
+      `Niveau supérieur! ${partner} ne reconnaît plus le king qu'elle a.`,
+      `${partner} se dit qu'elle a vraiment le meilleur. Tu flames!`,
+      `Woah bébé! ${partner} est choquée par ton niveau.`
+    ];
+    const msgs_en = [
+      `${partner} thinks: "That's my man!" You're killing it!`,
+      `Next level! ${partner} can't believe the king she has.`,
+      `${partner} realizes she truly has the best. You're on fire!`,
+      `Woah baby! ${partner} is shocked by your level.`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else if(pct >= 90 && pct < 95){
+    emoji = '❤️‍🔥';
+    const msgs_fr = [
+      `${partner} te regarde et pense: "Mon Dieu qu'il est parfait!"`,
+      `Excellence absolue! ${partner} est sur un nuage grâce à toi.`,
+      `${partner} ne peut que t'admirer et t'aimer encore plus fort.`,
+      `Tu es une légende vivante pour ${partner}. Elle te vénère!`
+    ];
+    const msgs_en = [
+      `${partner} looks at you thinking: "My God he's perfect!"`,
+      `Absolute excellence! ${partner} is on cloud nine because of you.`,
+      `${partner} can only admire and love you even stronger.`,
+      `You're a living legend to ${partner}. She worships you!`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else if(pct >= 95 && pct < 100){
+    emoji = '👑';
+    const msgs_fr = [
+      `PRESQUE PARFAIT! ${partner} ne trouve plus les mots... juste WOW.`,
+      `${partner} te couronne roi de la discipline. 95%+? Fou!`,
+      `Tu frises la perfection! ${partner} est sans voix devant toi.`,
+      `${partner} pense qu'elle rêve. Comment tu fais ça bébé?!`
+    ];
+    const msgs_en = [
+      `ALMOST PERFECT! ${partner} is speechless... just WOW.`,
+      `${partner} crowns you king of discipline. 95%+? Insane!`,
+      `You're touching perfection! ${partner} is speechless before you.`,
+      `${partner} thinks she's dreaming. How do you do this baby?!`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  else { // 100%+
+    emoji = '💎';
+    const msgs_fr = [
+      `PERFECTION ABSOLUE! ${partner} n'en croit pas ses yeux. TU ES UN DIAMANT!`,
+      `100%?! ${partner} est en larmes de fierté. Tu es SURHUMAIN mon amour!`,
+      `${partner} se prosterne devant le DIEU que tu es. PARFAIT!`,
+      `LÉGENDE! ${partner} raconte ton exploit à tout le monde. ICONIQUE!`
+    ];
+    const msgs_en = [
+      `ABSOLUTE PERFECTION! ${partner} can't believe her eyes. YOU ARE A DIAMOND!`,
+      `100%?! ${partner} is crying with pride. You're SUPERHUMAN my love!`,
+      `${partner} bows before the GOD you are. PERFECT!`,
+      `LEGEND! ${partner} tells everyone about your feat. ICONIC!`
+    ];
+    text = fr ? rnd(msgs_fr) : rnd(msgs_en);
+  }
+  
+  return {emoji, text};
+}
+
 function updateStatEmojis(R, tgt){
   const pairs=[
     ['Cal', R.cal, tgt.cal],
@@ -1296,16 +1529,10 @@ function updateStatEmojis(R, tgt){
   pairs.forEach(function(arr){
     const n=arr[0], eaten=arr[1], target=arr[2];
     const pct=target>0?eaten/target*100:0;
-    let emoji='';
-    if(pct>105) emoji='❤️\u200d🔥';
-    else if(pct>=100) emoji='🔥';
-    else if(pct>100) emoji='🤯';
-    else if(pct>=75) emoji='🤩';
-    else if(pct>=50) emoji='👀';
-    else if(pct>=35) emoji='🥳';
-    else emoji='⁉️';
+    const msg=getRomanticMacroMsg(n,pct,appLang);
     const el=document.getElementById('emojiStat'+n);
-    if(el) el.textContent=emoji;
+    if(el) el.textContent=msg.emoji;
+    if(el) el.title=msg.text; // Tooltip avec message
   });
   // Weight lock emoji
   const wEl=document.getElementById('emojiStatWt');
@@ -1340,13 +1567,38 @@ function calcRealTDEE(){
     const ip=String(d.i).split('_');
     const iDurR=parseInt(ip[0])||25;
     const iBarsR=parseFloat(ip[2])||1.0;
-    // Real params per person
-    const realGrade=pr.s==='M'?
-      (iBarsR<0.78?0.16:iBarsR<0.85?0.15:0.12): // M: upper=16%, lower=15%, free=12%
-      (iBarsR<0.78?0.125:iBarsR<0.85?0.125:0.105); // F: upper=12.5%, lower=12.5%, free=10.5%
-    const realSpeed=pr.s==='M'?
-      (iBarsR<1.0?83.33:75.0): // M: bars=5km/h, free=4.5km/h
-      (iBarsR<1.0?83.33:66.67); // F: bars=5km/h, free=4km/h
+    // Real params per person - MERDI
+    let realGrade, realSpeed;
+    if(pr.s==='M'){
+      if(iBarsR>=1.0){
+        // Sans barres: réel 12.5% @ 4.4km/h
+        realGrade=0.125;
+        realSpeed=73.33; // 4.4km/h = 73.33 m/min
+      } else if(iBarsR>=0.78){
+        // Barres bas: réel 15% @ 5km/h
+        realGrade=0.15;
+        realSpeed=83.33; // 5km/h
+      } else {
+        // Barre haut: réel 15% @ 5km/h
+        realGrade=0.15;
+        realSpeed=83.33; // 5km/h
+      }
+    } else {
+      // BENEDICTE - F
+      if(iBarsR>=1.0){
+        // Sans barres: réel 10.75% @ 4.2km/h
+        realGrade=0.1075;
+        realSpeed=70.0; // 4.2km/h = 70 m/min
+      } else if(iBarsR>=0.78){
+        // Barres bas: réel 11.5% @ 5km/h
+        realGrade=0.115;
+        realSpeed=83.33; // 5km/h
+      } else {
+        // Barre haut: réel 11.5% @ 5km/h
+        realGrade=0.115;
+        realSpeed=83.33; // 5km/h
+      }
+    }
     const VO2R=0.1*realSpeed+1.8*realSpeed*realGrade+3.5;
     kcalI_real=(VO2R*w*5/1000)*iDurR*iBarsR;
   }
@@ -1769,7 +2021,7 @@ function applyLang(){
   tl.forEach(function(el,i){if(tk[i])el.textContent=tk[i];});
   // ── Controls grid labels ──
   var cl=document.querySelectorAll('.controls-grid .input-group label');
-  var ck=fr?['Semaine','Jour','Poids (kg)','Pas','Incline Walk','Seance Gym']:['Week','Day','Weight (kg)','Steps','Incline Walk','Gym Session'];
+  var ck=fr?['Semaine','Jour','Poids (kg)','Pas','Sleep','Water','Water (ml)','Incline Walk','Séance Gym']:['Week','Day','Weight (kg)','Steps','Sleep','Water','Water (ml)','Incline Walk','Gym Session'];
   cl.forEach(function(el,i){if(ck[i])el.textContent=ck[i];});
   // ── Day selector ──
   var ds=document.getElementById('selDay');
@@ -1780,12 +2032,12 @@ function applyLang(){
     if(is2.options[0])is2.options[0].text=fr?'Repos / Non':'Rest / No';
     var ig=is2.querySelectorAll('optgroup');
     if(ig[0])ig[0].label=fr?'Sans toucher les barres - 9% @ 3.5km/h':'No bar holding - 9% @ 3.5km/h';
-    if(ig[1])ig[1].label=fr?'Barres du bas - 13% @ 4km/h':'Lower bars - 13% @ 4km/h';
-    if(ig[2])ig[2].label=fr?'Barre du haut - 13.5% @ 4km/h':'Upper bar - 13.5% @ 4km/h';
+    if(ig[1])ig[1].label=fr?'Barres du bas - 11.5% @ 4km/h':'Lower bars - 11.5% @ 4km/h';
+    if(ig[2])ig[2].label=fr?'Barre du haut - 11.5% @ 4km/h':'Upper bar - 11.5% @ 4km/h';
     for(var j=0;j<5;j++){var d=25+j*5;
       var o1=is2.querySelector('[value="'+d+'_9_1.0"]');if(o1)o1.text=d+' min - '+(fr?'sans barres':'no bars');
-      var o2=is2.querySelector('[value="'+d+'_13_0.80"]');if(o2)o2.text=d+' min - '+(fr?'barres bas':'lower bars');
-      var o3=is2.querySelector('[value="'+d+'_135_0.75"]');if(o3)o3.text=d+' min - '+(fr?'barre haut':'upper bar');
+      var o2=is2.querySelector('[value="'+d+'_115_0.80"]');if(o2)o2.text=d+' min - '+(fr?'barres bas':'lower bars');
+      var o3=is2.querySelector('[value="'+d+'_115_0.75"]');if(o3)o3.text=d+' min - '+(fr?'barre haut':'upper bar');
     }
   }
   // ── Gym select ──
@@ -2165,6 +2417,192 @@ function renderMacroSuggestions(R,tgt){
   el.innerHTML=`<div class="suggest-panel"><div class="suggest-title">${t('suggest_title')} — <span style="color:var(--accent-cal)">${Math.round(remCal)} ${t('kcal_left')}</span></div><div class="suggest-grid">${chips.join('')}</div></div>`;
 }
 
+// ═══ SLEEP & WATER MESSAGES ═══
+// Ne compte que les boissons (items avec champ water explicite — canettes, jus, etc.)
+// L'eau contenue dans les aliments solides n'est pas comptabilisée
+function calcWaterFromFoods(d){
+  let waterAuto=0;
+  if(!d.foods) return 0;
+  d.foods.forEach(entry=>{
+    const item=userDB[entry.id];
+    if(!item || !item.water) return; // Ignorer tout ce qui n'a pas de champ water
+    const qty=entry.q||1;
+    // Boissons en unités (canettes 330ml, etc.) : water par unité × quantité
+    if(item.u==='unit') waterAuto+=item.water*qty;
+    // Boissons en ml : water pour 100ml × quantité/100
+    else if(item.u==='ml') waterAuto+=(item.water/100)*qty;
+    // On n'extrait PAS l'eau des aliments en grammes (solides)
+  });
+  return Math.round(waterAuto);
+}
+
+function getSleepWaterMsg(d,fr){
+  let msg='';
+  const sleepMin=d.sleep||0;
+  const waterBottles=d.water||0;
+  const waterAuto=calcWaterFromFoods(d);
+  const waterML=d.waterML||0;
+  const totalWaterML=waterBottles+waterAuto+waterML;
+
+  // Seed stable par journée pour éviter que le message change à chaque clic
+  const dayKey=state.week+'_'+state.day;
+  if(!_sleepWaterSeed) _sleepWaterSeed={};
+  if(!_sleepWaterSeed[dayKey]) _sleepWaterSeed[dayKey]=Math.floor(Math.random()*100);
+  const seed=_sleepWaterSeed[dayKey];
+  const pick=(arr)=>arr[seed%arr.length];
+
+  // ── Messages sommeil ──
+  if(sleepMin>0){
+    const sleepHrs=sleepMin/60;
+    const hFmt=Math.floor(sleepHrs)+'h'+(sleepMin%60>0?(sleepMin%60)+'min':'');
+    msg+='<span style="font-size:0.68rem">';
+    if(sleepHrs<6){
+      const msgs_fr=[
+        `😴 Sommeil: ${hFmt} — Trop court! Le corps répare ses muscles la nuit. Vise 7-9h.`,
+        `⚠️ Sommeil: ${hFmt} — Moins de 6h augmente le cortisol et freine la perte de gras.`,
+        `😩 Sommeil: ${hFmt} — La ghréline (faim) grimpe avec si peu de sommeil. Dors plus!`,
+        `🔴 Sommeil: ${hFmt} — Récupération compromise. La testostérone chute sous 6h/nuit.`,
+      ];
+      const msgs_en=[
+        `😴 Sleep: ${hFmt} — Too short! The body repairs muscles overnight. Aim for 7-9h.`,
+        `⚠️ Sleep: ${hFmt} — Under 6h raises cortisol and slows fat loss.`,
+        `😩 Sleep: ${hFmt} — Ghrelin (hunger hormone) spikes with this little sleep. Sleep more!`,
+        `🔴 Sleep: ${hFmt} — Recovery compromised. Testosterone drops under 6h/night.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else if(sleepHrs<7){
+      const msgs_fr=[
+        `😊 Sommeil: ${hFmt} — Pas mal, mais essaie d'ajouter 30-60 min pour optimiser la récup.`,
+        `🌙 Sommeil: ${hFmt} — Correct! Un peu plus et tes performances gym vont grimper.`,
+        `💤 Sommeil: ${hFmt} — Raisonnable. Vise 7h30 pour une récupération musculaire optimale.`,
+        `😌 Sommeil: ${hFmt} — Décent. Couche-toi 30 min plus tôt ce soir si tu peux.`,
+      ];
+      const msgs_en=[
+        `😊 Sleep: ${hFmt} — Not bad, but try adding 30-60 min to optimize recovery.`,
+        `🌙 Sleep: ${hFmt} — Decent! A bit more and your gym performance will go up.`,
+        `💤 Sleep: ${hFmt} — Reasonable. Aim for 7h30 for optimal muscle recovery.`,
+        `😌 Sleep: ${hFmt} — Decent. Try going to bed 30 min earlier tonight if you can.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else if(sleepHrs<=9){
+      const msgs_fr=[
+        `✅ Sommeil: ${hFmt} — Parfait! La récup est au top, les hormones sont équilibrées.`,
+        `🌟 Sommeil: ${hFmt} — Zone optimale! Ton corps va bien utiliser ces heures de réparation.`,
+        `💪 Sommeil: ${hFmt} — Excellent! GH (hormone de croissance) libérée en quantité maximale.`,
+        `😴✅ Sommeil: ${hFmt} — Nickel! Tu maximises ta perte de gras et ta récup musculaire.`,
+      ];
+      const msgs_en=[
+        `✅ Sleep: ${hFmt} — Perfect! Recovery is on point, hormones are balanced.`,
+        `🌟 Sleep: ${hFmt} — Optimal zone! Your body will make great use of these repair hours.`,
+        `💪 Sleep: ${hFmt} — Excellent! Growth hormone released at maximum capacity.`,
+        `😴✅ Sleep: ${hFmt} — On point! You're maximizing fat loss and muscle recovery.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else {
+      const msgs_fr=[
+        `😮 Sommeil: ${hFmt} — Beaucoup! Fatigue accumulée ou rattrapage? Surveille ton énergie.`,
+        `🛌 Sommeil: ${hFmt} — Très long. Si c'est habituel, vérifie la qualité de ton sommeil.`,
+        `😴😮 Sommeil: ${hFmt} — Rattrapage? C'est ok occasionnellement, mais vise 7-9h au quotidien.`,
+        `💤😮 Sommeil: ${hFmt} — Trop dormir peut aussi fatiguer. Tu t'es senti reposé ce matin?`,
+      ];
+      const msgs_en=[
+        `😮 Sleep: ${hFmt} — A lot! Accumulated fatigue or catch-up? Monitor your energy.`,
+        `🛌 Sleep: ${hFmt} — Very long. If habitual, check your sleep quality.`,
+        `😴😮 Sleep: ${hFmt} — Catching up? Okay occasionally, but aim for 7-9h daily.`,
+        `💤😮 Sleep: ${hFmt} — Sleeping too much can also cause fatigue. Did you feel rested?`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    }
+    msg+='</span><br>';
+  }
+
+  // ── Messages eau ──
+  if(totalWaterML>0){
+    const liters=(totalWaterML/1000).toFixed(1);
+    const breakdown=[];
+    if(waterBottles>0) breakdown.push(`${waterBottles/1000}L ${fr?'bouteilles':'bottles'}`);
+    if(waterML>0) breakdown.push(`${waterML}ml ${fr?'pesé':'weighed'}`);
+    if(waterAuto>0) breakdown.push(`${waterAuto}ml ${fr?'boissons détectées':'from drinks'}`);
+    const detailStr=breakdown.length?` (${breakdown.join(' + ')})`:' ';
+    msg+='<span style="font-size:0.68rem">';
+    if(totalWaterML<1500){
+      const msgs_fr=[
+        `💧 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Très peu! La déshydratation ralentit le métabolisme.`,
+        `🚨 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Critique! Bois plus, ta performance gym en dépend.`,
+        `💧⚠️ Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Insuffisant. La faim augmente quand on est déshydraté.`,
+        `🔴 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Trop peu! Vise au minimum 2L aujourd'hui.`,
+      ];
+      const msgs_en=[
+        `💧 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Very low! Dehydration slows your metabolism.`,
+        `🚨 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Critical! Drink more, your gym performance depends on it.`,
+        `💧⚠️ Water: ${totalWaterML}ml (${liters}L)${detailStr} — Not enough. Hunger increases when dehydrated.`,
+        `🔴 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Too little! Aim for at least 2L today.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else if(totalWaterML<2000){
+      const msgs_fr=[
+        `💧 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Pas assez. Vise 2-3L/jour pour optimiser la perte de gras.`,
+        `🫗 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Un peu juste. Ajoute encore 1-2 verres dans la journée.`,
+        `💦 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Presque! Quelques verres de plus et tu es dans la zone.`,
+        `😐 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Insuffisant. L'eau aide à transporter les nutriments vers les muscles.`,
+      ];
+      const msgs_en=[
+        `💧 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Not enough. Aim for 2-3L/day to optimize fat loss.`,
+        `🫗 Water: ${totalWaterML}ml (${liters}L)${detailStr} — A bit low. Add 1-2 more glasses during the day.`,
+        `💦 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Almost there! A few more glasses and you're in the zone.`,
+        `😐 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Insufficient. Water helps transport nutrients to muscles.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else if(totalWaterML<=3000){
+      const msgs_fr=[
+        `💦 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Excellent! Hydratation optimale pour la récup et le métabolisme.`,
+        `✅ Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Parfait! Ton corps est bien hydraté pour la journée.`,
+        `🌟 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Super! L'hydratation optimale favorise l'oxydation des graisses.`,
+        `💪 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Dans la zone! Tes reins et tes muscles te remercient.`,
+      ];
+      const msgs_en=[
+        `💦 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Excellent! Optimal hydration for recovery and metabolism.`,
+        `✅ Water: ${totalWaterML}ml (${liters}L)${detailStr} — Perfect! Your body is well hydrated for the day.`,
+        `🌟 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Great! Optimal hydration supports fat oxidation.`,
+        `💪 Water: ${totalWaterML}ml (${liters}L)${detailStr} — In the zone! Your kidneys and muscles thank you.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else if(totalWaterML<=4000){
+      const msgs_fr=[
+        `🌊 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Beaucoup! Bien si tu t'es beaucoup entraîné aujourd'hui.`,
+        `💧💧 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Solide! Surveille juste le sodium si tu bois autant régulièrement.`,
+        `🏊 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Très bien hydraté. C'est parfait les jours d'entraînement intense.`,
+        `🫗✅ Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Bien! Un peu au-dessus de la moyenne mais ça reste sain.`,
+      ];
+      const msgs_en=[
+        `🌊 Water: ${totalWaterML}ml (${liters}L)${detailStr} — A lot! Good if you trained hard today.`,
+        `💧💧 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Solid! Just watch sodium if you drink this much regularly.`,
+        `🏊 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Very well hydrated. Perfect on intense training days.`,
+        `🫗✅ Water: ${totalWaterML}ml (${liters}L)${detailStr} — Good! Slightly above average but still healthy.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    } else {
+      const msgs_fr=[
+        `🚰 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Énorme! Pas trop non plus, l'hyponatrémie existe.`,
+        `😮 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Très beaucoup! Surveille si tu urines très clair constamment.`,
+        `⚠️ Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Au-delà de 4L, l'excès peut diluer les électrolytes. Sois prudent.`,
+        `🌊😮 Eau: ${totalWaterML}ml (${liters}L)${detailStr} — Massif! OK si grosse chaleur ou sport intense, sinon modère un peu.`,
+      ];
+      const msgs_en=[
+        `🚰 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Huge! Don't overdo it — hyponatremia is a real risk.`,
+        `😮 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Very much! Check if you're urinating very clear constantly.`,
+        `⚠️ Water: ${totalWaterML}ml (${liters}L)${detailStr} — Beyond 4L, excess can dilute electrolytes. Be careful.`,
+        `🌊😮 Water: ${totalWaterML}ml (${liters}L)${detailStr} — Massive! OK in extreme heat or heavy sport, otherwise ease up a bit.`,
+      ];
+      msg+=fr?pick(msgs_fr):pick(msgs_en);
+    }
+    msg+='</span>';
+  }
+
+  return msg;
+}
+let _sleepWaterSeed={};
+
 // ═══════════════════════════════════
 function updateApp(){
   const d=getD(state.week,state.day);
@@ -2198,6 +2636,7 @@ function updateApp(){
     `Incline <span style="color:var(--accent-cal)">${Math.round(R.kcalI)}</span> + `+
     `Gym <span style="color:var(--accent-pro)">${Math.round(R.kcalG)}</span> `+
     `= <span style="color:#fff;font-weight:900">${Math.round(R.tdee)} kcal</span>`;
+  document.getElementById('sleepWaterMessages').innerHTML=getSleepWaterMsg(d,fr);
   const ban=document.getElementById('statusBanner');
   const msg=document.getElementById('bannerMsg');
   if(d.refeed){ban.style.borderColor='var(--accent-fib)';msg.innerHTML=fr?`🔄 REFEED DAY — Cible ~${Math.round(R.tdee)} kcal. Glucides max, proteines maintenues.`:`🔄 REFEED DAY — Target ~${Math.round(R.tdee)} kcal. Max carbs, protein maintained.`;}
@@ -2572,14 +3011,40 @@ function showMsg(elId,msg,color){
 document.getElementById('selWeek').addEventListener('change',e=>{
   if(appMode==='maintenance'){maintState.week=parseInt(e.target.value);saveMaint();}
   else{state.week=parseInt(e.target.value);save();}
+  autoFillMondayWeight();
   syncInputs();updateApp();
 });
 document.getElementById('selDay').addEventListener('change',e=>{
   if(appMode==='maintenance'){maintState.day=parseInt(e.target.value);saveMaint();}
   else{state.day=parseInt(e.target.value);save();}
+  autoFillMondayWeight();
   syncInputs();updateApp();
 });
-['inpWeight','inpSteps','inpIncline','inpGym'].forEach(id=>{
+
+// Auto-fill lundi weight from dimanche précédent
+function autoFillMondayWeight(){
+  const activeS=appMode==='maintenance'?maintState:state;
+  if(activeS.day===0){ // Lundi
+    const d=appMode==='maintenance'?getMaintD(activeS.week,0):getD(activeS.week,0);
+    // Si pas de poids déjà entré pour ce lundi
+    if(!d.w || d.w===activeS.profile.defaultW){
+      // Chercher le dimanche précédent
+      let prevWeek=activeS.week;
+      let prevDay=6; // Dimanche
+      if(activeS.week>1){
+        prevWeek=activeS.week-1;
+      } else {
+        return; // Pas de semaine précédente
+      }
+      const prevSunday=appMode==='maintenance'?getMaintD(prevWeek,prevDay):getD(prevWeek,prevDay);
+      if(prevSunday.w && prevSunday.w!==activeS.profile.defaultW){
+        d.w=prevSunday.w; // Copier le poids
+        if(appMode==='maintenance') saveMaint(); else save();
+      }
+    }
+  }
+}
+['inpWeight','inpSteps','inpIncline','inpGym','inpSleep','inpWater','inpWaterML'].forEach(id=>{
   /* maintenance routing handled inside */
   document.getElementById(id).addEventListener('input',()=>{
     const d=getD(state.week,state.day);
@@ -2589,11 +3054,17 @@ document.getElementById('selDay').addEventListener('change',e=>{
       md.s=parseInt(document.getElementById('inpSteps').value)||0;
       md.i=document.getElementById('inpIncline').value||'0';
       md.g=parseInt(document.getElementById('inpGym').value)||0;
+      md.sleep=parseInt(document.getElementById('inpSleep').value)||0;
+      md.water=parseInt(document.getElementById('inpWater').value)||0;
+      md.waterML=parseInt(document.getElementById('inpWaterML').value)||0;
     } else {
       d.w=parseFloat(document.getElementById('inpWeight').value)||state.profile.defaultW;
       d.s=parseInt(document.getElementById('inpSteps').value)||0;
       d.i=document.getElementById('inpIncline').value||'0';
       d.g=parseInt(document.getElementById('inpGym').value)||0;
+      d.sleep=parseInt(document.getElementById('inpSleep').value)||0;
+      d.water=parseInt(document.getElementById('inpWater').value)||0;
+      d.waterML=parseInt(document.getElementById('inpWaterML').value)||0;
     }
     updateApp();
   });
