@@ -330,9 +330,320 @@
     .window-alert.show{display:block;}
     /* ── AUTO-WATER HINT ── */
     .water-auto-hint{font-size:0.58rem;color:var(--accent-cal);font-weight:900;margin-top:0.15rem;line-height:1.3;opacity:0.8;}
+
+    /* ── MACRO HISTORY MINI CHART ── */
+    .macro-hist-chart{width:100%;height:80px;position:relative;margin:0.5rem 0;}
+    .macro-hist-canvas{width:100%;height:80px;display:block;}
+    /* ── COPY MEAL BUTTON ── */
+    .copy-meal-btn{background:rgba(0,229,255,0.07);border:1px solid rgba(0,229,255,0.2);color:var(--accent-cal);font-size:0.6rem;font-weight:900;padding:0.2rem 0.55rem;border-radius:2rem;cursor:pointer;white-space:nowrap;transition:0.15s;}
+    .copy-meal-btn:hover{background:rgba(0,229,255,0.15);}
+    /* ── MACRO ALERT FLASH ── */
+    @keyframes macroFlash{0%{background:rgba(255,59,48,0.3)}100%{background:transparent}}
+    .macro-flash{animation:macroFlash 0.7s ease-out;}
+    /* ── TEMPLATE DAY ── */
+    .template-btn{background:rgba(191,90,242,0.08);border:1px solid rgba(191,90,242,0.3);color:var(--accent-fib);font-size:0.68rem;font-weight:900;padding:0.35rem 0.8rem;border-radius:2rem;cursor:pointer;transition:0.15s;white-space:nowrap;}
+    .template-btn:hover{background:rgba(191,90,242,0.18);}
+    .template-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:160;display:none;justify-content:center;align-items:center;padding:1rem;}
+    .template-modal-overlay.open{display:flex;}
+    .template-modal-box{background:rgba(8,12,22,0.97);backdrop-filter:blur(30px);border-radius:1.4rem;padding:1.4rem;width:100%;max-width:480px;border:1px solid var(--glass-border);}
+    /* ── DUO RANKING ── */
+    .duo-rank-pill{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.65rem;font-weight:900;padding:0.25rem 0.7rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.35);white-space:nowrap;margin-bottom:0.4rem;}
+    /* ── SHARED CHALLENGE ── */
+    .challenge-banner{background:linear-gradient(135deg,rgba(0,229,255,0.07),rgba(191,90,242,0.07));border:1px solid rgba(255,255,255,0.1);border-radius:1rem;padding:0.8rem 1rem;margin-bottom:0.7rem;}
+    .challenge-title{font-size:0.62rem;font-weight:900;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.4rem;}
+    .challenge-text{font-size:0.78rem;font-weight:900;color:#fff;line-height:1.4;}
+    .challenge-input{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.5rem 0.7rem;border-radius:0.7rem;font-size:0.75rem;font-weight:700;outline:none;margin-top:0.4rem;}
+    /* ── OFFLINE BANNER ── */
+    .offline-banner{display:none;position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:300;background:rgba(255,59,48,0.92);backdrop-filter:blur(12px);color:#fff;font-size:0.72rem;font-weight:900;padding:0.5rem 1.2rem;border-radius:2rem;border:1px solid rgba(255,59,48,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.5);white-space:nowrap;}
+    .offline-banner.show{display:block;}
+    /* ── COPY MEAL MODAL ── */
+    .copy-meal-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:170;display:none;justify-content:center;align-items:center;padding:1rem;}
+    .copy-meal-modal-overlay.open{display:flex;}
+    .copy-meal-modal-box{background:rgba(8,12,22,0.97);backdrop-filter:blur(30px);border-radius:1.4rem;padding:1.4rem;width:100%;max-width:440px;border:1px solid var(--glass-border);}
+
+    /* ══════════════════════════════════════════
+       STICKY TITLE BAR
+    ══════════════════════════════════════════ */
+    .sticky-title-bar{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      background:rgba(4,5,8,0.92);backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(0,229,255,0.15);
+      padding:0.45rem 1.2rem;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:0.8rem;
+      transform:translateY(-100%);
+      transition:transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .sticky-title-bar.visible{transform:translateY(0);}
+    .sticky-title-text{
+      font-weight:900;text-transform:uppercase;white-space:nowrap;overflow:hidden;
+      text-overflow:ellipsis;
+      background:linear-gradient(135deg,#FFDF00 0%,#FF8C00 35%,#FF3300 70%,#00F2FF 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      font-size:clamp(0.65rem,2.5vw,1rem);
+      flex:1;min-width:0;
+    }
+    .sticky-score-mini{font-size:0.65rem;font-weight:900;color:var(--text-soft);white-space:nowrap;}
+    body{padding-top:0.5rem;}
+
+    /* ══════════════════════════════════════════
+       TITRE DYNAMIQUE — taille selon longueur
+    ══════════════════════════════════════════ */
+    .inp-title{
+      background:linear-gradient(135deg,#FFDF00 0%,#FF8C00 35%,#FF3300 70%,#00F2FF 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      border:none;font-weight:900;width:100%;text-transform:uppercase;outline:none;
+      line-height:1.15;display:block;
+      font-size:clamp(0.9rem,4vw,2.1rem);
+      text-shadow:none;
+      filter:drop-shadow(0 0 18px rgba(255,105,180,0.3)) drop-shadow(0 0 6px rgba(255,140,0,0.3));
+    }
+    .inp-title:focus{border-bottom:2px dashed rgba(255,140,0,0.5);}
+
+    /* ══════════════════════════════════════════
+       WATERMARK ANIMÉ MK
+    ══════════════════════════════════════════ */
+    .wm-initials{
+      position:fixed;inset:0;z-index:1;pointer-events:none;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .wm-initials::before{
+      content:"BT";font-size:clamp(18rem,40vw,28rem);font-weight:900;
+      color:rgba(255,105,180,0.015);letter-spacing:-0.05em;
+      animation:wmRotate 40s linear infinite;
+      user-select:none;
+    }
+    @keyframes wmRotate{0%{transform:rotate(0deg) scale(1);}50%{transform:rotate(180deg) scale(1.05);}100%{transform:rotate(360deg) scale(1);}}
+
+    /* ══════════════════════════════════════════
+       EFFET SCANLINE / GRILLE FOND
+    ══════════════════════════════════════════ */
+    body::after{
+      content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,105,180,0.01) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,105,180,0.01) 1px,transparent 1px);
+      background-size:40px 40px;
+    }
+
+    /* ══════════════════════════════════════════
+       STAT-CARDS — micro-bordure colorée
+    ══════════════════════════════════════════ */
+    .stat-card{
+      flex:1;min-width:72px;background:rgba(0,0,0,0.5);padding:0.8rem;
+      border-radius:1rem;border:1px solid rgba(255,255,255,0.05);
+      text-align:center;position:relative;overflow:hidden;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .stat-card::after{
+      content:"";position:absolute;bottom:0;left:0;right:0;height:3px;
+      border-radius:0 0 1rem 1rem;
+      background:var(--card-accent,rgba(255,255,255,0.1));
+    }
+    .stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+
+    /* ══════════════════════════════════════════
+       MACRO BARS — animation fluide
+    ══════════════════════════════════════════ */
+    .macro-bar{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+    @keyframes macroPulse{0%,100%{opacity:1;}50%{opacity:0.6;box-shadow:0 0 8px currentColor;}}
+    .macro-bar.full{animation:macroPulse 1.5s ease-in-out 3;}
+
+    /* ══════════════════════════════════════════
+       MEAL-CARDS — fond teinté
+    ══════════════════════════════════════════ */
+    .meal-card{
+      background:var(--card-bg);border-radius:1.1rem;padding:1rem;
+      margin-bottom:1rem;border-top:4px solid;
+      transition:box-shadow 0.2s;
+    }
+
+    /* ══════════════════════════════════════════
+       FOOD-ROW — animation ajout/suppression
+    ══════════════════════════════════════════ */
+    .food-row{
+      display:flex;align-items:center;gap:0.7rem;
+      background:rgba(0,0,0,0.5);padding:0.7rem;border-radius:0.8rem;
+      margin-bottom:0.4rem;flex-wrap:wrap;
+      animation:foodRowIn 0.25s cubic-bezier(.4,0,.2,1);
+      transition:transform 0.2s,opacity 0.2s;
+    }
+    @keyframes foodRowIn{from{opacity:0;transform:scale(0.92) translateY(-6px);}to{opacity:1;transform:scale(1) translateY(0);}}
+    .food-row.removing{transform:translateX(60px);opacity:0;}
+
+    /* ══════════════════════════════════════════
+       BOUTONS — hover expressif
+    ══════════════════════════════════════════ */
+    .btn{transition:transform 0.15s,box-shadow 0.15s,background 0.15s;}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.35);}
+    .btn:active{transform:scale(0.97);}
+    .btn-save{transition:transform 0.15s,box-shadow 0.15s,background 0.15s;}
+    .btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,105,180,0.3);}
+    .btn-save.saved-flash{background:linear-gradient(135deg,#34c759,#00e5aa) !important;color:#000 !important;}
+    @keyframes saveFlash{0%{transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);}}
+    .btn-save.saved-flash{animation:saveFlash 0.4s ease;}
+
+    /* ══════════════════════════════════════════
+       INPUTS MOBILE — 44px min (Apple HIG)
+    ══════════════════════════════════════════ */
+    @media(max-width:767px){
+      select,input[type="number"],input[type="text"].search-input{min-height:44px;}
+      .btn{min-height:44px;}
+      .btn-del{min-height:44px;min-width:44px;}
+      .qty-input{min-height:44px;}
+    }
+
+    /* ══════════════════════════════════════════
+       SÉPARATEURS VISUELS PANNEAU GAUCHE
+    ══════════════════════════════════════════ */
+    .panel-sep{
+      height:1px;margin:0.7rem -1.2rem;
+      background:linear-gradient(90deg,transparent,rgba(255,105,180,0.12),transparent);
+    }
+
+    /* ══════════════════════════════════════════
+       SYNC BADGE — pulsation verte
+    ══════════════════════════════════════════ */
+    @keyframes syncPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.6);}}
+    .sync-dot.live{animation:syncPulse 2s ease-in-out infinite;}
+
+    /* ══════════════════════════════════════════
+       ZEBRA STRIPES RÉCAP
+    ══════════════════════════════════════════ */
+    .proj-row:nth-child(even){background:rgba(255,255,255,0.025);border-radius:0.4rem;padding:0.1rem 0.3rem;}
+
+    /* ══════════════════════════════════════════
+       HEAT MAP GITHUB
+    ══════════════════════════════════════════ */
+    .heatmap-wrap{margin-top:0.8rem;}
+    .heatmap-title{font-size:0.62rem;font-weight:900;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;}
+    .heatmap-grid{display:flex;gap:3px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:0.3rem;}
+    .heatmap-col{display:flex;flex-direction:column;gap:3px;}
+    .heatmap-cell{
+      width:11px;height:11px;border-radius:2px;
+      background:rgba(255,255,255,0.06);
+      transition:transform 0.15s;cursor:default;flex-shrink:0;
+    }
+    .heatmap-cell:hover{transform:scale(1.4);}
+    .heatmap-cell.s1{background:rgba(255,105,180,0.2);}
+    .heatmap-cell.s2{background:rgba(255,105,180,0.4);}
+    .heatmap-cell.s3{background:rgba(255,105,180,0.65);}
+    .heatmap-cell.s4{background:rgba(255,105,180,0.9);}
+    .heatmap-legend{display:flex;align-items:center;gap:4px;margin-top:0.4rem;font-size:0.58rem;color:var(--text-soft);}
+    .heatmap-legend-cell{width:9px;height:9px;border-radius:1px;}
+
+    /* ══════════════════════════════════════════
+       ANNEAUX D'ACTIVITÉ STYLE APPLE WATCH
+    ══════════════════════════════════════════ */
+    .activity-rings{display:flex;justify-content:center;margin:0.6rem 0;}
+    .rings-svg{overflow:visible;}
+
+    /* ══════════════════════════════════════════
+       STREAK — animation flip compteur
+    ══════════════════════════════════════════ */
+    @keyframes streakFlip{
+      0%{transform:rotateX(0deg);}
+      50%{transform:rotateX(90deg);opacity:0.3;}
+      100%{transform:rotateX(0deg);}
+    }
+    .streak-count.flip{animation:streakFlip 0.4s ease;}
+
+    /* ══════════════════════════════════════════
+       PALIERS DE STREAK — médaille brillance
+    ══════════════════════════════════════════ */
+    @keyframes medalShine{
+      0%{background-position:200% center;}
+      100%{background-position:-200% center;}
+    }
+    .streak-milestone{
+      display:inline-block;padding:0.2rem 0.8rem;border-radius:2rem;font-size:0.7rem;font-weight:900;
+      background:linear-gradient(90deg,#FFD700,#FFA500,#FFD700,#FFFACD,#FFD700);
+      background-size:300% auto;animation:medalShine 2s linear infinite;
+      color:#000;margin-top:0.3rem;
+    }
+
+    /* ══════════════════════════════════════════
+       AURORA — quand toutes les macros atteintes
+    ══════════════════════════════════════════ */
+    @keyframes auroraGlow{
+      0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,0);}
+      50%{box-shadow:0 0 40px 8px rgba(52,199,89,0.15),0 0 80px 20px rgba(0,229,255,0.08);}
+    }
+    .panel.aurora-active{animation:auroraGlow 2s ease-in-out 3;}
+
+    /* ══════════════════════════════════════════
+       ROUGEOIEMENT PROTÉINES BASSES
+    ══════════════════════════════════════════ */
+    @keyframes proPulse{0%,100%{box-shadow:none;}50%{box-shadow:0 0 16px 2px rgba(255,59,48,0.35);}}
+    .stat-card.pro-low{animation:proPulse 2s ease-in-out infinite;}
+
+    /* ══════════════════════════════════════════
+       JAUGES CIRCULAIRES MINIATURES
+    ══════════════════════════════════════════ */
+    .mini-gauge{display:inline-block;vertical-align:middle;margin-left:0.3rem;}
+
+    /* ══════════════════════════════════════════
+       SÉLECTEUR COULEUR ACCENT
+    ══════════════════════════════════════════ */
+    .accent-picker{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.5rem;}
+    .accent-swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.15s,border-color 0.15s;}
+    .accent-swatch:hover,.accent-swatch.active{transform:scale(1.25);border-color:#fff;}
+
+    /* ══════════════════════════════════════════
+       MENU ACTIONS MOBILE CONDENSÉ
+    ══════════════════════════════════════════ */
+    .actions-menu-btn{
+      background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);
+      color:#fff;padding:0.35rem 0.8rem;border-radius:2rem;font-size:0.68rem;
+      font-weight:900;cursor:pointer;white-space:nowrap;
+    }
+    .actions-menu-dropdown{
+      display:none;position:absolute;right:0;top:calc(100% + 6px);
+      background:rgba(8,12,22,0.97);backdrop-filter:blur(20px);
+      border:1px solid var(--glass-border);border-radius:0.9rem;
+      padding:0.5rem;z-index:50;min-width:160px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+    }
+    .actions-menu-dropdown.open{display:flex;flex-direction:column;gap:0.3rem;}
+    .actions-menu-dropdown button{
+      background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+      color:#fff;padding:0.5rem 0.8rem;border-radius:0.6rem;font-size:0.75rem;
+      font-weight:800;cursor:pointer;text-align:left;transition:background 0.15s;
+    }
+    .actions-menu-dropdown button:hover{background:rgba(255,255,255,0.12);}
+
+    /* ══════════════════════════════════════════
+       NUIT/JOUR — transition douce + étoiles
+    ══════════════════════════════════════════ */
+    body{transition:filter 0.8s ease;}
+    .night-stars{
+      position:fixed;inset:0;z-index:0;pointer-events:none;
+      opacity:0;transition:opacity 1s ease;
+    }
+    body.night-mode .night-stars{opacity:1;}
+
+    /* ══════════════════════════════════════════
+       GRADIENT SOUS COURBE DE POIDS
+    ══════════════════════════════════════════ */
+    /* Géré via canvas JS */
+
+    /* ══════════════════════════════════════════
+       TYPING EFFECT TITRE
+    ══════════════════════════════════════════ */
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+    .title-cursor{display:inline-block;width:2px;height:1em;background:var(--accent-cal);animation:blink 0.7s infinite;vertical-align:text-bottom;margin-left:2px;}
   </style>
 </head>
 <body>
+
+<div class="sticky-title-bar" id="stickyTitleBar">
+  <div class="sticky-title-text" id="stickyTitleText">BENE FAT LOSS JOURNEY</div>
+  <div class="sticky-score-mini" id="stickyScoreMini">—</div>
+</div>
+<div class="wm-initials" aria-hidden="true"></div>
+<div class="night-stars" id="nightStars"></div>
+
 <div class="kapuku-wm" aria-hidden="true"></div>
 <!-- ═══ APP MODE TOGGLE ═══ -->
 <div class="night-badge" id="nightBadge">🌙 Night Mode</div>
@@ -451,6 +762,30 @@
 <!-- ── CANVAS CONFETTIS ── -->
 <canvas id="confettiCanvas" class="confetti-canvas" style="display:none"></canvas>
 
+
+<!-- ── TEMPLATE DAY MODAL ── -->
+<div class="template-modal-overlay" id="templateModal">
+  <div class="template-modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 id="templateModalTitle" style="font-size:1rem;font-weight:900;color:var(--accent-fib)">💾 Jour type</h3>
+      <button onclick="closeTemplateModal()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.3rem 0.8rem;border-radius:2rem;font-size:0.75rem;font-weight:900;cursor:pointer">✕</button>
+    </div>
+    <div id="templateModalContent"></div>
+  </div>
+</div>
+<!-- ── COPY MEAL MODAL ── -->
+<div class="copy-meal-modal-overlay" id="copyMealModal">
+  <div class="copy-meal-modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 id="copyMealModalTitle" style="font-size:1rem;font-weight:900;color:var(--accent-cal)">📋 Copier un repas</h3>
+      <button onclick="closeCopyMealModal()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.3rem 0.8rem;border-radius:2rem;font-size:0.75rem;font-weight:900;cursor:pointer">✕</button>
+    </div>
+    <div id="copyMealModalContent"></div>
+  </div>
+</div>
+<!-- ── OFFLINE BANNER ── -->
+<div class="offline-banner" id="offlineBanner">📵 Hors ligne — données sauvegardées localement</div>
+
 <div class="app-wrapper">
   <!-- HEADER -->
   <div class="panel">
@@ -495,6 +830,18 @@
           <select id="inpSex" onchange="updateProfile()"><option value="M">Male</option><option value="F" selected>Female</option></select>
         </div>
       
+
+      <div style="margin-top:0.5rem">
+        <div style="font-size:0.6rem;font-weight:900;color:var(--text-soft);text-transform:uppercase;margin-bottom:0.3rem" id="accentPickerLabel">🎨 Couleur accent</div>
+        <div class="accent-picker" id="accentPicker">
+          <div class="accent-swatch" style="background:#00e5ff" onclick="setAccentColor('#00e5ff','#0088ff')" title="Cyan"></div>
+          <div class="accent-swatch" style="background:#34c759" onclick="setAccentColor('#34c759','#00e5aa')" title="Vert"></div>
+          <div class="accent-swatch" style="background:#ff9f1c" onclick="setAccentColor('#ff9f1c','#ff6b00')" title="Orange"></div>
+          <div class="accent-swatch" style="background:#bf5af2" onclick="setAccentColor('#bf5af2','#9b59b6')" title="Violet"></div>
+          <div class="accent-swatch active" style="background:#ff375f" onclick="setAccentColor('#ff375f','#ff0044')" title="Rose"></div>
+        </div>
+      </div>
+
     <div class="targets-row">
       <div class="input-group"><label>🎯 Kcal</label><input type="number" id="tgtCal" value="1800" onchange="updateTargets()"></div>
       <div class="input-group"><label>🎯 Pro (g)</label><input type="number" id="tgtPro" value="150" onchange="updateTargets()"></div>
@@ -526,6 +873,17 @@
       <div class="day-score-bar-fill" id="dayScoreBarFill" style="width:0%;background:#ff3b30"></div>
     </div>
     <div id="windowEndAlert" class="window-alert"></div>
+
+    <!-- ── DÉFI PARTAGÉ + CLASSEMENT DUO ── -->
+    <div id="duoRankWrap" style="margin-bottom:0.4rem">
+      <div class="duo-rank-pill" id="duoRankPill">🏆 ...</div>
+    </div>
+    <div class="challenge-banner" id="challengeBanner">
+      <div class="challenge-title" id="challengeTitle">⚡ DÉFI DE LA SEMAINE</div>
+      <div class="challenge-text" id="challengeText">...</div>
+      <input class="challenge-input" id="challengeInput" type="text" placeholder="Modifier le défi..." onchange="saveChallenge()" style="display:none">
+      <button onclick="toggleChallengeEdit()" style="background:none;border:none;color:var(--text-soft);font-size:0.6rem;cursor:pointer;margin-top:0.3rem" id="challengeEditBtn">✏️ Modifier</button>
+    </div>
 
 
     <div class="controls-grid" style="grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.5rem;margin-bottom:0.5rem">
@@ -613,6 +971,7 @@
       <button class="btn" style="flex:1;min-width:150px;border-color:var(--accent-cal);color:var(--accent-cal);background:rgba(0,229,255,0.05)" onclick="openFoodModal()">🗄️ GÉRER ALIMENTS</button>
       <button class="btn" style="flex:1;min-width:130px;border-color:var(--accent-pro);color:var(--accent-pro);background:rgba(255,59,48,0.05)" onclick="openScanner()">📷 SCANNER</button>
       <button class="btn" style="flex:1;min-width:110px;border-color:var(--accent-fib);color:var(--accent-fib);background:rgba(191,90,242,0.05)" onclick="openDaySummary()">📋 RÉSUMÉ</button>
+      <button class="template-btn" onclick="openTemplateModal()">⭐ JOUR TYPE</button>
     </div>
 
     <div class="dash-row">
@@ -3788,6 +4147,1063 @@ function calcWeekWaterSleep(week){
 // ─── Init timer ───
 updateFastTimer();
 fetchPartnerScore();
+
+
+// ═══════════════════════════════════════════════════════
+// ① COURBE IDÉALE SUR GRAPHIQUE — patch renderWeightChart
+// ═══════════════════════════════════════════════════════
+// Extension: ajouter courbe idéale -0.5kg/semaine
+// On patch directement en ajoutant du code à la fin de renderWeightChart
+// via un wrapper propre
+const _rwcBase = renderWeightChart;
+renderWeightChart = function(){
+  _rwcBase();
+  // Ajouter la courbe idéale par-dessus
+  const canvas = document.getElementById('weightChart');
+  if(!canvas) return;
+  const ctx = canvas.getContext && canvas.getContext('2d');
+  if(!ctx) return;
+  const weeks = parseInt(document.getElementById('chartWeeks')&&document.getElementById('chartWeeks').value||8);
+  // Récupérer les points de poids pour obtenir le premier poids connu
+  const pts = [];
+  for(let w=Math.max(1,state.week-weeks+1);w<=state.week;w++){
+    for(let d=0;d<7;d++){
+      const day=state.log[w+'_'+d];
+      if(day&&day.w&&parseFloat(day.w)>0) pts.push(parseFloat(day.w));
+    }
+  }
+  if(pts.length < 2) return;
+  const W = canvas.offsetWidth||300, H = 140;
+  const dpr = window.devicePixelRatio||1;
+  const minW = Math.min(...pts)-0.5, maxW = Math.max(...pts)+0.5;
+  const pad = {l:38,r:10,t:10,b:20};
+  const gW = W-pad.l-pad.r, gH = H-pad.t-pad.b;
+  const n = pts.length;
+  const xS = i=>(i/(n-1||1))*gW+pad.l;
+  const yS = v=>pad.t+gH-(v-minW)/(maxW-minW||1)*gH;
+  const idealStart = pts[0];
+  const idealEnd = idealStart - (0.5/7)*(n-1); // -0.5kg/7jours par point
+  ctx.save();
+  ctx.strokeStyle = 'rgba(52,199,89,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([3,5]);
+  ctx.beginPath();
+  ctx.moveTo(xS(0), yS(idealStart));
+  ctx.lineTo(xS(n-1), yS(Math.max(idealEnd, minW)));
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+  // Mise à jour légende pour ajouter la projection
+  const fr = appLang==='fr';
+  const leg = document.getElementById('chartLegend');
+  if(leg && leg.innerHTML){
+    const projEnd = idealEnd.toFixed(2);
+    leg.innerHTML += ` &nbsp;|&nbsp; <span style="color:rgba(52,199,89,0.7)">🎯 ${fr?'Idéal':'Ideal'}: ${projEnd}kg</span>`;
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// ② PROJECTION POIDS 4/8/12 SEMAINES
+// Affichée dans le récap, basée sur la tendance réelle
+// ═══════════════════════════════════════════════════════
+function calcWeightProjection(){
+  // Collecte tous les points de poids des 8 dernières semaines
+  const pts = [];
+  for(let w=Math.max(1,state.week-7);w<=state.week;w++){
+    for(let d=0;d<7;d++){
+      const day=state.log[w+'_'+d];
+      if(day&&day.w&&parseFloat(day.w)>0) pts.push(parseFloat(day.w));
+    }
+  }
+  if(pts.length < 4) return null;
+  const n = pts.length;
+  const sumX=pts.reduce((_,__,i)=>_+i,0);
+  const sumY=pts.reduce((a,p)=>a+p,0);
+  const sumXY=pts.reduce((a,p,i)=>a+i*p,0);
+  const sumXX=pts.reduce((a,_,i)=>a+i*i,0);
+  const slope=(n*sumXY-sumX*sumY)/(n*sumXX-sumX*sumX||1);
+  const intercept=(sumY-slope*sumX)/n;
+  const currentW = pts[pts.length-1];
+  const weeklyChange = slope*7;
+  return {
+    current: currentW,
+    weeklyChange,
+    in4: (currentW + weeklyChange*4).toFixed(1),
+    in8: (currentW + weeklyChange*8).toFixed(1),
+    in12: (currentW + weeklyChange*12).toFixed(1),
+  };
+}
+
+// ═══════════════════════════════════════════════════════
+// ③ MINI GRAPHIQUE MACROS 4 SEMAINES — dans le récap
+// ═══════════════════════════════════════════════════════
+function renderMacroHistChart(){
+  const canvas = document.getElementById('macroHistCanvas');
+  if(!canvas) return;
+  const fr = appLang==='fr';
+  const weeks = [];
+  for(let w=Math.max(1,state.week-3);w<=state.week;w++) weeks.push(w);
+  const data = weeks.map(w=>{
+    const R = calcWeekRecap(w);
+    return {
+      week: w,
+      avgPro: weeks.length ? Math.round(R.totalPro/7) : 0,
+      avgDef: Math.round(R.totalDef/7),
+    };
+  });
+  const ctx = canvas.getContext('2d');
+  if(!ctx) return;
+  const dpr = window.devicePixelRatio||1;
+  const W = canvas.offsetWidth||300, H = 80;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+  if(data.length<2){ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='11px Inter';ctx.textAlign='center';ctx.fillText(fr?'Pas assez de données':'Not enough data',W/2,40);return;}
+  const barW = Math.floor((W-40)/(data.length*2+1));
+  const pad = {l:36,r:8,t:6,b:20};
+  // Axe protéines (rouge)
+  const maxPro = Math.max(...data.map(d=>d.avgPro),1);
+  const maxDef = Math.max(...data.map(d=>Math.abs(d.avgDef)),1);
+  data.forEach((d,i)=>{
+    const x = pad.l + i*(barW*2+4);
+    // Barre protéines
+    const hPro = Math.round((d.avgPro/maxPro)*(H-pad.t-pad.b));
+    ctx.fillStyle='rgba(255,59,48,0.7)';
+    ctx.fillRect(x, H-pad.b-hPro, barW, hPro);
+    // Barre déficit
+    const hDef = Math.round((Math.abs(d.avgDef)/maxDef)*(H-pad.t-pad.b));
+    const defColor = d.avgDef>=0?'rgba(0,229,255,0.6)':'rgba(255,159,28,0.6)';
+    ctx.fillStyle=defColor;
+    ctx.fillRect(x+barW+2, H-pad.b-hDef, barW, hDef);
+    // Label semaine
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='8px Inter';ctx.textAlign='center';
+    ctx.fillText('S'+d.week, x+barW, H-4);
+    // Valeur protéines
+    if(d.avgPro>0){ctx.fillStyle='rgba(255,59,48,0.9)';ctx.font='7px Inter';ctx.textAlign='center';ctx.fillText(d.avgPro+'g',x+barW/2,H-pad.b-hPro-2);}
+  });
+  // Légende
+  ctx.fillStyle='rgba(255,59,48,0.8)';ctx.fillRect(pad.l,4,8,6);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='8px Inter';ctx.textAlign='left';ctx.fillText(fr?'Prot moy/j':'Avg prot/d',pad.l+10,10);
+  ctx.fillStyle='rgba(0,229,255,0.7)';ctx.fillRect(pad.l+75,4,8,6);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fillText(fr?'Déf moy/j':'Avg def/d',pad.l+85,10);
+}
+
+// ═══════════════════════════════════════════════════════
+// ④ ALERTE MACRO AU DÉPASSEMENT
+// ═══════════════════════════════════════════════════════
+let _lastMacroStatus = {};
+function checkMacroOverage(R, tgt){
+  const fr = appLang==='fr';
+  const checks = [
+    {key:'cal', val:R.cal, limit:tgt.cal+200, label:fr?'Kcal':'Kcal', color:'var(--accent-cal)'},
+    {key:'fat', val:R.fat, limit:tgt.f+10, label:'Fat', color:'var(--accent-fat)'},
+    {key:'car', val:R.car, limit:tgt.c+30, label:fr?'Glucides':'Carbs', color:'var(--accent-car)'},
+  ];
+  checks.forEach(({key,val,limit,label,color})=>{
+    const over = val > limit;
+    if(over && !_lastMacroStatus[key]){
+      _lastMacroStatus[key]=true;
+      // Flash le stat-card correspondant
+      const cardMap={'cal':'valCons','fat':'valFat','car':'valCar'};
+      const el=document.getElementById(cardMap[key]);
+      if(el){el.closest('.stat-card')&&el.closest('.stat-card').classList.add('macro-flash');setTimeout(()=>el.closest('.stat-card')&&el.closest('.stat-card').classList.remove('macro-flash'),800);}
+    } else if(!over){
+      _lastMacroStatus[key]=false;
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑤ COPIE D'UN REPAS INDIVIDUEL
+// ═══════════════════════════════════════════════════════
+let _copyMealTarget = null;
+function openCopyMealModal(targetMeal){
+  _copyMealTarget = targetMeal;
+  const fr = appLang==='fr';
+  const modal = document.getElementById('copyMealModal');
+  const title = document.getElementById('copyMealModalTitle');
+  const cont = document.getElementById('copyMealModalContent');
+  if(!modal||!cont) return;
+  if(title) title.textContent = (fr?'📋 Copier vers ':'📋 Copy to ') + targetMeal;
+  // Lister les jours passés qui ont des aliments dans ce repas
+  const options = [];
+  for(let w=state.week;w>=Math.max(1,state.week-4);w--){
+    for(let d=6;d>=0;d--){
+      if(w===state.week && d===state.day) continue;
+      const day=state.log[w+'_'+d];
+      if(!day||!day.foods) continue;
+      const mealFoods=day.foods.filter(f=>f.meal===targetMeal&&userDB[f.id]);
+      if(!mealFoods.length) continue;
+      const DAY_FR=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+      const DAY_EN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const lbl=(fr?DAY_FR:DAY_EN)[d];
+      let kcal=0;
+      mealFoods.forEach(f=>{const item=userDB[f.id];if(!item)return;const r=(item.u==='g'||item.u==='ml')?f.q/100:f.q;kcal+=item.cal*r;});
+      options.push({w,d,lbl:`S${w} ${lbl} — ${Math.round(kcal)} kcal (${mealFoods.length} aliments)`,foods:mealFoods});
+      if(options.length>=6) break;
+    }
+    if(options.length>=6) break;
+  }
+  if(!options.length){
+    cont.innerHTML=`<p style="color:var(--text-soft);font-size:0.82rem;text-align:center;padding:1rem">${fr?'Aucun jour passé avec ce repas.':'No past day with this meal.'}</p>`;
+  } else {
+    cont.innerHTML=options.map((o,i)=>
+      `<button onclick="applyCopyMeal(${i})" style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:0.65rem;border-radius:0.7rem;font-weight:800;cursor:pointer;font-size:0.8rem;text-align:left;margin-bottom:0.4rem">${o.lbl}</button>`
+    ).join('');
+    cont._options = options;
+  }
+  modal.classList.add('open');
+}
+function closeCopyMealModal(){ document.getElementById('copyMealModal').classList.remove('open'); }
+function applyCopyMeal(idx){
+  const cont = document.getElementById('copyMealModalContent');
+  const options = cont._options||[];
+  const opt = options[idx];
+  if(!opt||!_copyMealTarget) return;
+  const d = getD(state.week,state.day);
+  const fr = appLang==='fr';
+  // Retirer les aliments existants de ce repas
+  d.foods = d.foods.filter(f=>f.meal!==_copyMealTarget);
+  // Ajouter les aliments copiés avec nouveaux instanceId
+  opt.foods.forEach(f=>{
+    d.foods.push({...f, instanceId:Date.now().toString(36)+Math.random().toString(36).slice(2,6), meal:_copyMealTarget});
+  });
+  closeCopyMealModal();
+  updateApp();
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑥ JOUR TYPE (TEMPLATE)
+// ═══════════════════════════════════════════════════════
+const TEMPLATE_KEY = typeof FS_DOC !== 'undefined' ? 'template_day_'+FS_DOC : 'template_day';
+function openTemplateModal(){
+  const fr = appLang==='fr';
+  const modal = document.getElementById('templateModal');
+  const title = document.getElementById('templateModalTitle');
+  const cont = document.getElementById('templateModalContent');
+  if(!modal||!cont) return;
+  if(title) title.textContent = fr?'⭐ Jour Type':'⭐ Template Day';
+  const existing = loadTemplate();
+  const d = getD(state.week,state.day);
+  const hasCurrent = d.foods&&d.foods.length>0;
+  let html = '';
+  if(existing){
+    let kcal=0;
+    existing.forEach(f=>{const item=userDB[f.id];if(!item)return;const r=(item.u==='g'||item.u==='ml')?f.q/100:f.q;kcal+=item.cal*r;});
+    html+=`<div style="background:rgba(191,90,242,0.08);border:1px solid rgba(191,90,242,0.25);border-radius:0.8rem;padding:0.7rem;margin-bottom:0.8rem;font-size:0.78rem;color:var(--accent-fib)">
+      ⭐ ${fr?'Template sauvegardé':'Saved template'}: <strong>${existing.length} ${fr?'aliments':'foods'}</strong> — ${Math.round(kcal)} kcal
+    </div>`;
+    html+=`<button onclick="applyTemplate()" style="width:100%;background:linear-gradient(135deg,rgba(191,90,242,0.3),rgba(0,229,255,0.2));border:1px solid rgba(191,90,242,0.4);color:#fff;padding:0.75rem;border-radius:0.8rem;font-weight:900;cursor:pointer;margin-bottom:0.5rem;font-size:0.85rem">
+      📥 ${fr?'Charger ce template aujourd\'hui':'Load this template today'}
+    </button>`;
+  }
+  if(hasCurrent){
+    html+=`<button onclick="saveTemplate()" style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.75rem;border-radius:0.8rem;font-weight:900;cursor:pointer;margin-bottom:0.5rem;font-size:0.85rem">
+      💾 ${fr?'Sauvegarder le jour actuel comme template':'Save today as template'}
+    </button>`;
+  }
+  if(existing){
+    html+=`<button onclick="clearTemplate()" style="width:100%;background:rgba(255,59,48,0.1);border:1px solid rgba(255,59,48,0.3);color:#ff3b30;padding:0.6rem;border-radius:0.8rem;font-weight:900;cursor:pointer;font-size:0.8rem">
+      🗑️ ${fr?'Supprimer le template':'Delete template'}
+    </button>`;
+  }
+  if(!existing&&!hasCurrent){
+    html=`<p style="color:var(--text-soft);font-size:0.82rem;text-align:center;padding:1rem">${fr?'Ajoute des aliments aujourd\'hui d\'abord, puis sauvegarde comme template.':'Add foods today first, then save as template.'}</p>`;
+  }
+  cont.innerHTML=html;
+  modal.classList.add('open');
+}
+function closeTemplateModal(){ document.getElementById('templateModal').classList.remove('open'); }
+function loadTemplate(){
+  try{const t=localStorage.getItem(TEMPLATE_KEY);return t?JSON.parse(t):null;}catch(e){return null;}
+}
+function saveTemplate(){
+  const d=getD(state.week,state.day);
+  if(!d.foods||!d.foods.length) return;
+  localStorage.setItem(TEMPLATE_KEY, JSON.stringify(d.foods));
+  closeTemplateModal();
+  const fr=appLang==='fr';
+  const ban=document.getElementById('statusBanner');
+  if(ban){const msg=document.getElementById('bannerMsg');if(msg)msg.innerHTML=fr?'⭐ Template sauvegardé !':'⭐ Template saved!';}
+}
+function applyTemplate(){
+  const tmpl=loadTemplate();
+  if(!tmpl) return;
+  const d=getD(state.week,state.day);
+  const fr=appLang==='fr';
+  if(d.foods&&d.foods.length>0&&!confirm(fr?'Remplacer les aliments actuels par le template ?':'Replace current foods with template?')) return;
+  d.foods=JSON.parse(JSON.stringify(tmpl)).map(f=>({...f,instanceId:Date.now().toString(36)+Math.random().toString(36).slice(2,6)}));
+  closeTemplateModal();
+  updateApp();
+}
+function clearTemplate(){
+  localStorage.removeItem(TEMPLATE_KEY);
+  closeTemplateModal();
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑦ MODE HORS LIGNE — badge amélioré
+// ═══════════════════════════════════════════════════════
+let _wasOffline=false;
+function updateOfflineBanner(isOffline){
+  const banner=document.getElementById('offlineBanner');
+  if(!banner) return;
+  const fr=appLang==='fr';
+  if(isOffline){
+    banner.textContent=fr?'📵 Hors ligne — données sauvegardées localement':'📵 Offline — data saved locally';
+    banner.classList.add('show');
+    _wasOffline=true;
+  } else {
+    if(_wasOffline){
+      banner.textContent=fr?'☁️ Reconnecté — synchronisation...':'☁️ Reconnected — syncing...';
+      setTimeout(()=>banner.classList.remove('show'),2500);
+      _wasOffline=false;
+    } else {
+      banner.classList.remove('show');
+    }
+  }
+}
+// Patch setSyncBadge pour déclencher le banner offline
+const _origSetSyncBadge = setSyncBadge;
+setSyncBadge = function(status){
+  _origSetSyncBadge(status);
+  updateOfflineBanner(status==='offline');
+};
+
+// ═══════════════════════════════════════════════════════
+// ⑧ CLASSEMENT DUO HEBDOMADAIRE + ⑨ DÉFI PARTAGÉ
+// ═══════════════════════════════════════════════════════
+const CHALLENGE_FS_DOC = 'shared_challenge';
+const CHALLENGE_FS_URL=`https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents/apps/${CHALLENGE_FS_DOC}?key=${FS_API_KEY}`;
+let _challengeData=null,_challengeLastFetch=0;
+
+async function fetchChallenge(){
+  const now=Date.now();
+  if(now-_challengeLastFetch<120000) return;
+  _challengeLastFetch=now;
+  try{
+    const res=await fetch(CHALLENGE_FS_URL);
+    if(!res.ok) throw new Error('no data');
+    const data=await res.json();
+    if(data.fields){
+      _challengeData={
+        text:data.fields.text?.stringValue||'',
+        merdiScore:parseFloat(data.fields.merdiScore?.doubleValue||data.fields.merdiScore?.integerValue||0),
+        beneScore:parseFloat(data.fields.beneScore?.doubleValue||data.fields.beneScore?.integerValue||0),
+      };
+    }
+  }catch(e){
+    // Pas de doc partagé encore — initialiser avec défaut
+    if(!_challengeData) _challengeData={text:'',merdiScore:0,beneScore:0};
+  }
+  updateDuoRankUI();
+  updateChallengeUI();
+}
+
+async function saveChallenge(){
+  const input=document.getElementById('challengeInput');
+  if(!input) return;
+  const text=input.value.trim();
+  if(!_challengeData) _challengeData={text:'',merdiScore:0,beneScore:0};
+  _challengeData.text=text;
+  // Uploader le défi partagé — les deux apps lisent depuis ce doc
+  try{
+    await fetch(CHALLENGE_FS_URL,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{
+        text:{stringValue:text},
+        merdiScore:{doubleValue:_challengeData.merdiScore||0},
+        beneScore:{doubleValue:_challengeData.beneScore||0},
+      }})
+    });
+  }catch(e){}
+  updateChallengeUI();
+  toggleChallengeEdit();
+}
+
+let _publishLastTs=0;
+async function publishMyScore(){
+  // Throttle: max 1 fois par minute
+  const _now=Date.now();
+  if(_now-_publishLastTs<60000) return;
+  _publishLastTs=_now;
+  // Publier mon score hebdomadaire dans le doc partagé
+  const myScore=computeWeekScore();
+  if(!_challengeData) _challengeData={text:'',merdiScore:0,beneScore:0};
+  const isMerdi = typeof FS_DOC!=='undefined' && FS_DOC==='merdi';
+  if(isMerdi) _challengeData.merdiScore=myScore;
+  else _challengeData.beneScore=myScore;
+  try{
+    const fieldKey=isMerdi?'merdiScore':'beneScore';
+    await fetch(CHALLENGE_FS_URL,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{[fieldKey]:{doubleValue:myScore}}})
+    });
+  }catch(e){}
+}
+
+function computeWeekScore(){
+  let total=0,days=0;
+  for(let d=0;d<7;d++){
+    const day=getD(state.week,d);
+    if(!day.foods||!day.foods.length) continue;
+    days++;
+    // Score simplifié pour comparaison
+    const R=calcDay(day);
+    const tgt=state.targets;
+    const s=Math.min(1,R.pro/tgt.p)*0.5+Math.min(1,(R.tdee-R.cal)/500)*0.3+Math.min(1,(parseInt(day.s||0)/10000))*0.2;
+    total+=s;
+  }
+  return days>0?Math.round(total/days*100):0;
+}
+
+function updateDuoRankUI(){
+  const pill=document.getElementById('duoRankPill');
+  if(!pill||!_challengeData) return;
+  const fr=appLang==='fr';
+  const isMerdi = typeof FS_DOC!=='undefined' && FS_DOC==='merdi';
+  const myScore=isMerdi?_challengeData.merdiScore:_challengeData.beneScore;
+  const partnerScore=isMerdi?_challengeData.beneScore:_challengeData.merdiScore;
+  const partnerName=isMerdi?'Bénédicte':'Merdi';
+  if(myScore===0&&partnerScore===0){pill.textContent='🏆 '+(fr?'Scores en attente...':'Scores pending...');return;}
+  if(myScore>partnerScore){
+    pill.innerHTML=`🏆 <span style="color:#ffcc00;font-weight:900">${fr?'Tu mènes':'You lead'} (${myScore}% vs ${partnerScore}%)</span> 💪`;
+  } else if(partnerScore>myScore){
+    pill.innerHTML=`🏆 <span style="color:var(--accent-cal)">${partnerName} ${fr?'mène':'leads'} (${partnerScore}% vs ${myScore}%)</span> 🔥`;
+  } else {
+    pill.innerHTML=`🏆 <span style="color:var(--accent-fat)">${fr?'Égalité parfaite':'Perfect tie'} (${myScore}%)</span> 🤝`;
+  }
+}
+
+function updateChallengeUI(){
+  const textEl=document.getElementById('challengeText');
+  const input=document.getElementById('challengeInput');
+  if(!textEl) return;
+  const fr=appLang==='fr';
+  // Auto-challenge si pas de texte personnalisé
+  const week=state.week;
+  const autoChallenge=fr
+    ?`Semaine ${week} : 7 jours en déficit tous les deux — ${fr?'Restez disciplinés !':'Stay disciplined!'}`
+    :`Week ${week}: 7 deficit days each — Stay disciplined!`;
+  const text=_challengeData?.text||autoChallenge;
+  textEl.textContent=text;
+  if(input) input.value=_challengeData?.text||'';
+}
+
+function toggleChallengeEdit(){
+  const input=document.getElementById('challengeInput');
+  const btn=document.getElementById('challengeEditBtn');
+  const text=document.getElementById('challengeText');
+  if(!input) return;
+  const visible=input.style.display==='none';
+  input.style.display=visible?'block':'none';
+  if(text) text.style.display=visible?'none':'block';
+  if(btn) btn.textContent=visible?'✅ Sauvegarder':'✏️ Modifier';
+  if(visible) input.focus();
+  else saveChallenge();
+}
+
+// ═══════════════════════════════════════════════════════
+// ⑩ COMPRESSION FIRESTORE — nettoyage jours vides
+// ═══════════════════════════════════════════════════════
+function cleanEmptyDays(){
+  // Supprimer les entrées log où il n'y a ni aliments, ni poids significatif, ni activité
+  let cleaned=0;
+  Object.keys(state.log).forEach(key=>{
+    const d=state.log[key];
+    if(!d) return;
+    const hasFood=d.foods&&d.foods.length>0;
+    const hasWeight=d.w&&parseFloat(d.w)>0&&parseFloat(d.w)!==parseFloat(state.profile.defaultW);
+    const hasActivity=parseInt(d.s||0)>0||parseInt(d.g||0)>0||(d.i&&d.i!=='0');
+    if(!hasFood&&!hasWeight&&!hasActivity){
+      delete state.log[key];
+      cleaned++;
+    }
+  });
+  return cleaned;
+}
+
+function runFirestoreCleanup(){
+  const fr=appLang==='fr';
+  const cleaned=cleanEmptyDays();
+  save();
+  const ban=document.getElementById('bannerMsg');
+  if(ban) ban.innerHTML=fr?`🗜️ ${cleaned} jours vides supprimés — Firestore allégé.`:`🗜️ ${cleaned} empty days cleaned — Firestore optimized.`;
+  const banner=document.getElementById('statusBanner');
+  if(banner) banner.style.borderColor='var(--accent-fib)';
+  setTimeout(()=>updateApp(),2000);
+}
+
+// ═══════════════════════════════════════════════════════
+// INJECTION DANS renderMealsList — bouton copie repas
+// ═══════════════════════════════════════════════════════
+const _rmBase=renderMealsList;
+renderMealsList=function(foods){
+  _rmBase(foods);
+  // Ajouter bouton copie dans chaque meal-header
+  const cont=document.getElementById('mealsContainer');
+  if(!cont) return;
+  cont.querySelectorAll('.meal-card').forEach(card=>{
+    const header=card.querySelector('.meal-header');
+    if(!header||header.querySelector('.copy-meal-btn')) return;
+    const mealLabel=header.querySelector('span:first-child');
+    if(!mealLabel) return;
+    // Trouver le nom de repas correspondant (inverser catName)
+    const label=mealLabel.textContent.trim();
+    const fr=appLang==='fr';
+    const CAT_REV_FR={'Repas 1':'Meal 1','Repas 2':'Meal 2','Repas 3':'Meal 3','Sauces':'Sauces','Snacks':'Snacks'};
+    const catKey=fr?(CAT_REV_FR[label]||label):label;
+    const btn=document.createElement('button');
+    btn.className='copy-meal-btn';
+    btn.textContent=fr?'📋 Copier':'📋 Copy';
+    btn.onclick=e=>{e.stopPropagation();openCopyMealModal(catKey);};
+    header.style.alignItems='center';
+    header.appendChild(btn);
+  });
+};
+
+// ═══════════════════════════════════════════════════════
+// INJECTION DANS renderRecap — graphique + projections
+// ═══════════════════════════════════════════════════════
+const _rrBase=renderRecap;
+renderRecap=function(){
+  _rrBase();
+  const cont=document.getElementById('recapContent');
+  if(!cont) return;
+  const fr=appLang==='fr';
+  // Mini graphique macros
+  const proj=calcWeightProjection();
+  if(proj){
+    const pc=proj.weeklyChange;
+    const dirColor=pc<=-0.05?'var(--accent-fat)':pc>=0.05?'var(--accent-warn)':'#fff';
+    cont.innerHTML+=`
+      <p class="recap-section-title" style="margin-top:0.8rem">📊 ${fr?'MACROS — 4 DERNIÈRES SEMAINES':'MACROS — LAST 4 WEEKS'}</p>
+      <div class="macro-hist-chart"><canvas id="macroHistCanvas" class="macro-hist-canvas"></canvas></div>
+      <p class="recap-section-title" style="margin-top:0.8rem">🔮 ${fr?'PROJECTION POIDS':'WEIGHT PROJECTION'}</p>
+      <div class="proj-block">
+        <div class="proj-row"><span style="color:var(--text-soft)">${fr?'Tendance réelle/semaine':'Real trend/week'}</span><span style="color:${dirColor};font-weight:900">${pc>=0?'+':''}${pc.toFixed(2)} kg/sem</span></div>
+        <div class="proj-row"><span style="color:var(--text-soft)">${fr?'Dans 4 semaines':'In 4 weeks'}</span><span style="color:var(--accent-cal);font-weight:900">${proj.in4} kg</span></div>
+        <div class="proj-row"><span style="color:var(--text-soft)">${fr?'Dans 8 semaines':'In 8 weeks'}</span><span style="color:var(--accent-fat);font-weight:900">${proj.in8} kg</span></div>
+        <div class="proj-row"><span style="color:var(--text-soft)">${fr?'Dans 12 semaines':'In 12 weeks'}</span><span style="color:#ffcc00;font-weight:900">${proj.in12} kg</span></div>
+      </div>`;
+    setTimeout(renderMacroHistChart,50);
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// INJECTION DANS updateApp
+// ═══════════════════════════════════════════════════════
+const _uaBase=updateApp;
+updateApp=function(){
+  _uaBase();
+  const d2=getD(state.week,state.day);
+  const R2=calcDay(d2);
+  checkMacroOverage(R2,state.targets);
+  fetchChallenge();
+  publishMyScore();
+  updateDuoRankUI();
+  updateChallengeUI();
+};
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+fetchChallenge();
+
+
+// ════════════════════════════════════════════════════════
+// DESIGN SYSTEM — 28 améliorations visuelles
+// ════════════════════════════════════════════════════════
+
+// ── 1. TITRE STICKY + TAILLE DYNAMIQUE ──
+function initStickyTitle(){
+  const bar = document.getElementById('stickyTitleBar');
+  const stickyText = document.getElementById('stickyTitleText');
+  const titleInput = document.getElementById('inpAppTitle');
+  if(!bar || !titleInput) return;
+  // Sync texte
+  function syncTitle(){
+    const txt = titleInput.value || 'FAT LOSS JOURNEY';
+    if(stickyText) stickyText.textContent = txt;
+    // Taille dynamique selon longueur
+    const len = txt.length;
+    const size = len <= 15 ? '2.1rem' : len <= 22 ? '1.6rem' : len <= 30 ? '1.2rem' : '0.9rem';
+    titleInput.style.fontSize = size;
+  }
+  titleInput.addEventListener('input', syncTitle);
+  syncTitle();
+  // Scroll listener
+  let ticking = false;
+  window.addEventListener('scroll', ()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const scrolled = window.scrollY > 80;
+        bar.classList.toggle('visible', scrolled);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, {passive:true});
+}
+
+// ── 2. EFFET TYPING AU CHARGEMENT ──
+function runTitleTyping(){
+  const el = document.getElementById('inpAppTitle');
+  if(!el || sessionStorage.getItem('_titleTyped')) return;
+  sessionStorage.setItem('_titleTyped','1');
+  const full = el.value;
+  el.value = '';
+  let i = 0;
+  const iv = setInterval(()=>{
+    el.value = full.slice(0, ++i);
+    if(i >= full.length){ clearInterval(iv); }
+  }, 60);
+}
+
+// ── 3. STAT-CARDS couleur accent ──
+function colorStatCards(){
+  const map = {
+    'valCons':'var(--accent-cal)',
+    'valDef':'var(--accent-warn)',
+    'valLoss':'var(--accent-fat)',
+    'valBMR':'rgba(161,184,206,0.6)',
+    'valTDEE':'rgba(255,255,255,0.4)',
+    'valPro':'var(--accent-pro)',
+    'valCar':'var(--accent-car)',
+    'valFat':'var(--accent-fat)',
+    'valFib':'var(--accent-fib)',
+  };
+  Object.entries(map).forEach(([id, color])=>{
+    const el = document.getElementById(id);
+    if(el){
+      const card = el.closest('.stat-card');
+      if(card) card.style.setProperty('--card-accent', color);
+    }
+  });
+}
+
+// ── 4. MACRO BARS PULSE à 100% ──
+function checkMacroPulse(R, tgt){
+  const pairs = [
+    ['barCal', R.cal, tgt.cal],
+    ['barPro', R.pro, tgt.p],
+    ['barCar', R.car, tgt.c],
+    ['barFat', R.fat, tgt.f],
+    ['barFib', R.fib, tgt.fib],
+  ];
+  pairs.forEach(([id, val, target])=>{
+    const bar = document.getElementById(id);
+    if(!bar) return;
+    const pct = target > 0 ? val/target : 0;
+    if(pct >= 0.99){
+      if(!bar.classList.contains('full')){
+        bar.classList.add('full');
+        setTimeout(()=>bar.classList.remove('full'), 4600);
+      }
+    } else {
+      bar.classList.remove('full');
+    }
+  });
+}
+
+// ── 5. AURORA quand toutes les macros atteintes ──
+let _auroraActive = false;
+function checkAurora(R, tgt){
+  const allGood = R.cal >= tgt.cal*0.92 && R.cal <= tgt.cal*1.08
+    && R.pro >= tgt.p*0.95 && R.fat <= tgt.f*1.1 && R.fib >= tgt.fib*0.85;
+  const panel = document.querySelector('.app-wrapper > .panel');
+  if(!panel) return;
+  if(allGood && !_auroraActive){
+    _auroraActive = true;
+    panel.classList.add('aurora-active');
+    setTimeout(()=>{panel.classList.remove('aurora-active'); _auroraActive=false;}, 6200);
+  } else if(!allGood){
+    _auroraActive = false;
+  }
+}
+
+// ── 6. ROUGEOIEMENT protéines basses ──
+function checkProLow(R, tgt){
+  const proCard = document.getElementById('valPro')?.closest('.stat-card');
+  if(!proCard) return;
+  const low = R.pro < tgt.p * 0.75 && R.cal > 600;
+  proCard.classList.toggle('pro-low', low);
+}
+
+// ── 7. ANIMATION SAUVEGARDER ──
+function flashSaveBtn(){
+  const btn = document.getElementById('saveBtn');
+  if(!btn) return;
+  const fr = appLang === 'fr';
+  btn.classList.add('saved-flash');
+  btn.textContent = fr ? '✅ SAUVEGARDÉ !' : '✅ SAVED!';
+  setTimeout(()=>{
+    btn.classList.remove('saved-flash');
+    btn.textContent = fr ? '💾 SAUVEGARDER' : '💾 SAVE';
+  }, 1800);
+}
+
+// ── 8. FOOD-ROW animation suppression ──
+const _origDeleteEntry = window.deleteEntry;
+window.deleteEntry = function(iid){
+  // Trouver la row et animer avant suppression
+  const rows = document.querySelectorAll('.food-row');
+  let targetRow = null;
+  rows.forEach(row=>{
+    const delBtn = row.querySelector('[onclick*="'+iid+'"]');
+    if(delBtn) targetRow = row;
+  });
+  if(targetRow){
+    targetRow.classList.add('removing');
+    setTimeout(()=>{ if(typeof _origDeleteEntry==='function') _origDeleteEntry(iid); }, 180);
+  } else {
+    if(typeof _origDeleteEntry==='function') _origDeleteEntry(iid);
+  }
+};
+
+// ── 9. SYNC BADGE pulsation ──
+function updateSyncDotLive(isLive){
+  const dot = document.querySelector('.sync-dot');
+  if(!dot) return;
+  if(isLive) dot.classList.add('live');
+  else dot.classList.remove('live');
+}
+
+// ── 10. GRADIENT SOUS COURBE DE POIDS ──
+// Patch renderWeightChart pour ajouter le gradient
+const _rwcDesignBase = renderWeightChart;
+renderWeightChart = function(){
+  _rwcDesignBase();
+  const canvas = document.getElementById('weightChart');
+  if(!canvas) return;
+  const ctx = canvas.getContext && canvas.getContext('2d');
+  if(!ctx) return;
+  const weeks = parseInt(document.getElementById('chartWeeks')?.value||8);
+  const pts = [];
+  for(let w=Math.max(1,state.week-weeks+1);w<=state.week;w++){
+    for(let d=0;d<7;d++){
+      const day=state.log[w+'_'+d];
+      if(day&&day.w&&parseFloat(day.w)>0) pts.push(parseFloat(day.w));
+    }
+  }
+  if(pts.length < 2) return;
+  const W = canvas.offsetWidth||300, H = 140;
+  const dpr = window.devicePixelRatio||1;
+  const minW = Math.min(...pts)-0.5, maxW = Math.max(...pts)+0.5;
+  const pad = {l:38,r:10,t:10,b:20};
+  const gW = W-pad.l-pad.r, gH = H-pad.t-pad.b;
+  const n = pts.length;
+  const xS = i=>(i/(n-1||1))*gW+pad.l;
+  const yS = v=>pad.t+gH-(v-minW)/(maxW-minW||1)*gH;
+  // Gradient fill sous la courbe
+  const grad = ctx.createLinearGradient(0, pad.t, 0, H-pad.b);
+  const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-cal').trim()||'#00e5ff';
+  grad.addColorStop(0, accentColor.replace(')', ',0.22)').replace('rgb','rgba').replace('#00e5ff','rgba(255,105,180,0.22)'));
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.moveTo(xS(0), H-pad.b);
+  pts.forEach((p,i)=>ctx.lineTo(xS(i), yS(p)));
+  ctx.lineTo(xS(n-1), H-pad.b);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+};
+
+// ── 11. STREAK FLIP + PALIERS ──
+let _lastStreakVal = 0;
+function animateStreakFlip(newVal){
+  const el = document.getElementById('streakCount');
+  if(!el) return;
+  if(newVal !== _lastStreakVal){
+    el.classList.remove('flip');
+    void el.offsetWidth; // reflow
+    el.classList.add('flip');
+    setTimeout(()=>el.classList.remove('flip'), 400);
+    _lastStreakVal = newVal;
+  }
+  // Afficher badge palier
+  const milestones = [7,14,21,30,60,90];
+  const streakCard = document.getElementById('streakCard');
+  if(!streakCard) return;
+  let badge = streakCard.querySelector('.streak-milestone');
+  if(milestones.includes(newVal)){
+    const labels = {7:'🏅 7 jours !',14:'🥈 2 semaines !',21:'🥇 3 semaines !',30:'🏆 1 mois !',60:'💎 2 mois !',90:'👑 3 mois !'};
+    if(!badge){
+      badge = document.createElement('div');
+      badge.className='streak-milestone';
+      streakCard.appendChild(badge);
+    }
+    badge.textContent = labels[newVal]||'🔥 Palier !';
+  } else if(badge){
+    badge.remove();
+  }
+}
+
+// ── 12. HEAT MAP GITHUB ──
+function renderHeatMap(){
+  const fr = appLang === 'fr';
+  const wrap = document.getElementById('heatmapWrap');
+  if(!wrap) return;
+  // 12 semaines x 7 jours = 84 cellules
+  const totalWeeks = 12;
+  const startWeek = Math.max(1, state.week - totalWeeks + 1);
+  let cols = [];
+  for(let w=startWeek; w<=state.week; w++){
+    let col = [];
+    for(let d=0;d<7;d++){
+      const day = state.log[w+'_'+d];
+      let score = 0;
+      if(day && day.foods && day.foods.length > 0){
+        const R = calcDay(day);
+        const t = state.targets;
+        const pct = Math.min(1, R.cal/t.cal)*0.3 + Math.min(1,R.pro/t.p)*0.4 + Math.min(1,(parseInt(day.s||0)/8000))*0.3;
+        score = pct < 0.3 ? 1 : pct < 0.55 ? 2 : pct < 0.8 ? 3 : 4;
+      }
+      col.push({w, d, score, isFuture: w===state.week && d > state.day});
+    }
+    cols.push(col);
+  }
+  const DAY_FR = ['L','M','M','J','V','S','D'];
+  const DAY_EN = ['M','T','W','T','F','S','S'];
+  const dayLabels = fr ? DAY_FR : DAY_EN;
+  wrap.innerHTML = `
+    <div class="heatmap-title">${fr?'📅 ACTIVITÉ — 12 DERNIÈRES SEMAINES':'📅 ACTIVITY — LAST 12 WEEKS'}</div>
+    <div style="display:flex;gap:4px">
+      <div style="display:flex;flex-direction:column;gap:3px;margin-top:0">
+        ${dayLabels.map(l=>`<div style="height:11px;font-size:7px;color:var(--text-soft);line-height:11px;width:8px">${l}</div>`).join('')}
+      </div>
+      <div class="heatmap-grid" id="heatmapGrid">
+        ${cols.map(col=>`
+          <div class="heatmap-col">
+            ${col.map(cell=>`<div class="heatmap-cell${cell.score>0&&!cell.isFuture?' s'+cell.score:''}" title="S${cell.w} J${cell.d+1}${cell.score>0?' — Score '+cell.score:fr?' — vide':' — empty'}"></div>`).join('')}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="heatmap-legend">
+      <span>${fr?'Moins':'Less'}</span>
+      <div class="heatmap-legend-cell" style="background:rgba(255,255,255,0.06)"></div>
+      <div class="heatmap-legend-cell heatmap-cell s1"></div>
+      <div class="heatmap-legend-cell heatmap-cell s2"></div>
+      <div class="heatmap-legend-cell heatmap-cell s3"></div>
+      <div class="heatmap-legend-cell heatmap-cell s4"></div>
+      <span>${fr?'Plus':'More'}</span>
+    </div>
+  `;
+}
+
+// ── 13. ANNEAUX D'ACTIVITÉ APPLE WATCH ──
+function renderActivityRings(R, tgt, d){
+  const wrap = document.getElementById('activityRingsWrap');
+  if(!wrap) return;
+  const steps = parseInt(d.s||0);
+  const hasGym = parseInt(d.g||0)>0;
+  const hasIncline = d.i && d.i!=='0';
+  // 3 anneaux: macros, activité, hydratation
+  const macrosPct = Math.min(1,(Math.min(1,R.pro/tgt.p)*0.4+Math.min(1,R.cal/tgt.cal)*0.3+Math.min(1,R.fib/tgt.fib)*0.3));
+  const actPct = Math.min(1, (steps/10000)*0.35 + (hasGym?0.4:0) + (hasIncline?0.25:0));
+  const totalW = (d.water||0)+calcWaterFromFoods(d)+(d.waterML||0);
+  const hydroPct = Math.min(1, totalW/2500);
+  const rings = [
+    {pct:macrosPct, color:'var(--accent-pro)', r:36, label:'M'},
+    {pct:actPct,    color:'var(--accent-fat)', r:26, label:'A'},
+    {pct:hydroPct,  color:'var(--accent-cal)', r:16, label:'H'},
+  ];
+  const size = 90;
+  const cx = size/2, cy = size/2;
+  const strokeW = 7;
+  let svgRings = rings.map(({pct,color,r})=>{
+    const circ = 2*Math.PI*r;
+    const dash = pct*circ;
+    return `
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${strokeW}"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}"
+        stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ*0.25}"
+        stroke-linecap="round" style="transition:stroke-dasharray 0.8s cubic-bezier(.4,0,.2,1)"/>
+    `;
+  }).join('');
+  const fr = appLang==='fr';
+  wrap.innerHTML = `
+    <div style="display:flex;align-items:center;gap:0.8rem">
+      <svg class="rings-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${svgRings}</svg>
+      <div style="font-size:0.62rem;color:var(--text-soft);line-height:1.8">
+        <div><span style="color:var(--accent-pro)">●</span> ${fr?'Macros':'Macros'}: <strong style="color:#fff">${Math.round(macrosPct*100)}%</strong></div>
+        <div><span style="color:var(--accent-fat)">●</span> ${fr?'Activité':'Activity'}: <strong style="color:#fff">${Math.round(actPct*100)}%</strong></div>
+        <div><span style="color:var(--accent-cal)">●</span> ${fr?'Hydrat.':'Hydrat.'}: <strong style="color:#fff">${Math.round(hydroPct*100)}%</strong></div>
+      </div>
+    </div>
+  `;
+}
+
+// ── 14. SÉPARATEURS PANNEAU GAUCHE ──
+function injectPanelSeparators(){
+  // Injectés une seule fois dans le DOM
+  if(document.querySelector('.panel-sep')) return;
+  const panel = document.querySelector('.app-wrapper > .panel');
+  if(!panel) return;
+  // Après sleepWaterMessages
+  const swMsg = document.getElementById('sleepWaterMessages');
+  if(swMsg) swMsg.insertAdjacentHTML('afterend','<div class="panel-sep"></div>');
+  // Après la controls-grid
+  const cGrid = panel.querySelector('.controls-grid');
+  if(cGrid) cGrid.insertAdjacentHTML('afterend','<div class="panel-sep"></div>');
+  // Après remainingPanel
+  const remPanel = document.getElementById('remainingPanel');
+  if(remPanel) remPanel.insertAdjacentHTML('afterend','<div class="panel-sep"></div>');
+}
+
+// ── 15. ÉTOILES NUIT ──
+function initNightStars(){
+  const container = document.getElementById('nightStars');
+  if(!container || container.children.length > 0) return;
+  const frag = document.createDocumentFragment();
+  for(let i=0;i<60;i++){
+    const star = document.createElement('div');
+    const size = Math.random()*2+1;
+    star.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:#fff;`
+      +`left:${Math.random()*100}%;top:${Math.random()*100}%;`
+      +`opacity:${Math.random()*0.6+0.1};`
+      +`animation:blink ${Math.random()*3+2}s ease-in-out ${Math.random()*2}s infinite;`;
+    frag.appendChild(star);
+  }
+  container.appendChild(frag);
+}
+
+// ── 16. ACCENT COLOR PICKER ──
+function setAccentColor(primary, secondary){
+  document.documentElement.style.setProperty('--accent-cal', primary);
+  document.documentElement.style.setProperty('--glass-border', primary.replace(')', ',0.25)').replace('#00e5ff','rgba(255,105,180,0.25)'));
+  // Update save btn gradient
+  const saveBtn = document.getElementById('saveBtn');
+  if(saveBtn) saveBtn.style.background = `linear-gradient(135deg,${primary},${secondary})`;
+  // Update active swatch
+  document.querySelectorAll('.accent-swatch').forEach(s=>{
+    s.classList.toggle('active', s.style.background===primary||s.style.backgroundColor===primary);
+  });
+  // Persist
+  try{ localStorage.setItem('_accentColor', JSON.stringify({primary,secondary})); }catch(e){}
+}
+function loadAccentColor(){
+  try{
+    const saved = localStorage.getItem('_accentColor');
+    if(saved){ const {primary,secondary}=JSON.parse(saved); setAccentColor(primary,secondary); }
+  }catch(e){}
+}
+
+// ── 17. STICKY TITLE score mini ──
+function updateStickyScore(){
+  const el = document.getElementById('stickyScoreMini');
+  if(!el) return;
+  const score = typeof computeDayScore==='function' ? computeDayScore() : 0;
+  const color = score>=90?'#34c759':score>=70?'var(--accent-cal)':score>=50?'#ffcc00':'#ff9f1c';
+  el.innerHTML = `<span style="color:${color};font-weight:900">${score}%</span>`;
+  // Sync titre
+  const titleInput = document.getElementById('inpAppTitle');
+  const stickyText = document.getElementById('stickyTitleText');
+  if(titleInput && stickyText) stickyText.textContent = titleInput.value;
+}
+
+// ── 18. MEAL-CARDS fond teinté ──
+function tintMealCards(){
+  const colorMap = {
+    'Meal 1':'rgba(255,159,28,0.04)',
+    'Meal 2':'rgba(255,59,48,0.04)',
+    'Meal 3':'rgba(0,229,255,0.04)',
+    'Sauces':'rgba(0,255,136,0.03)',
+    'Snacks':'rgba(191,90,242,0.04)',
+  };
+  const borderMap = {
+    'Meal 1':'var(--meal1-color)',
+    'Meal 2':'var(--meal2-color)',
+    'Meal 3':'var(--meal3-color)',
+    'Sauces':'var(--sauce-color)',
+    'Snacks':'var(--snack-color)',
+  };
+  document.querySelectorAll('.meal-card').forEach(card=>{
+    const header = card.querySelector('.meal-header span:first-child');
+    if(!header) return;
+    const label = header.textContent.trim();
+    // Trouver la clé originale
+    const CAT_REV = {'Repas 1':'Meal 1','Repas 2':'Meal 2','Repas 3':'Meal 3','Sauces':'Sauces','Snacks':'Snacks'};
+    const key = CAT_REV[label]||label;
+    if(colorMap[key]) card.style.background = colorMap[key];
+  });
+}
+
+// ── 19. PATCH manualSave pour animation ──
+const _origManualSave = window.manualSave;
+window.manualSave = function(){
+  if(typeof _origManualSave==='function') _origManualSave();
+  flashSaveBtn();
+};
+
+// ── 20. SYNC BADGE live ──
+const _origSetSyncBadgeDesign = setSyncBadge;
+setSyncBadge = function(status){
+  _origSetSyncBadgeDesign(status);
+  updateSyncDotLive(status==='listening'||status==='synced');
+};
+
+// ── 21. HEATMAP WRAPPER dans streak-card ──
+function ensureHeatmapWrapper(){
+  const streakCard = document.getElementById('streakCard');
+  if(!streakCard || document.getElementById('heatmapWrap')) return;
+  const wrap = document.createElement('div');
+  wrap.id = 'heatmapWrap';
+  wrap.className = 'heatmap-wrap';
+  wrap.style.cssText = 'width:100%;margin-top:0.7rem;padding-top:0.7rem;border-top:1px dashed rgba(255,255,255,0.08)';
+  streakCard.appendChild(wrap);
+}
+
+// ── 22. ACTIVITY RINGS WRAPPER ──
+function ensureActivityRingsWrapper(){
+  const remainingPanel = document.getElementById('remainingPanel');
+  if(!remainingPanel || document.getElementById('activityRingsWrap')) return;
+  const wrap = document.createElement('div');
+  wrap.id = 'activityRingsWrap';
+  wrap.style.cssText = 'margin:0.6rem 0;';
+  remainingPanel.insertAdjacentElement('afterend', wrap);
+}
+
+// ── 23. updateApp patch design ──
+const _uaDesignBase = updateApp;
+updateApp = function(){
+  _uaDesignBase();
+  const d3 = getD(state.week, state.day);
+  const R3 = calcDay(d3);
+  const tgt3 = state.targets;
+  colorStatCards();
+  checkMacroPulse(R3, tgt3);
+  checkAurora(R3, tgt3);
+  checkProLow(R3, tgt3);
+  updateStickyScore();
+  ensureHeatmapWrapper();
+  renderHeatMap();
+  ensureActivityRingsWrapper();
+  renderActivityRings(R3, tgt3, d3);
+  tintMealCards();
+  injectPanelSeparators();
+};
+
+// ── 24. calcStreak patch pour flip ──
+const _csDesignBase = calcStreak;
+calcStreak = function(){
+  _csDesignBase();
+  const el = document.getElementById('streakCount');
+  if(el){ const v=parseInt(el.textContent)||0; animateStreakFlip(v); }
+};
+
+// ── 25. INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  initStickyTitle();
+  initNightStars();
+  loadAccentColor();
+  setTimeout(runTitleTyping, 600);
+  colorStatCards();
+  injectPanelSeparators();
+});
 
 applyModeUI();syncInputs();applyLang();updateModeLabels();updateApp();checkAutoCopyPrompt();checkRefeedReminder();startCloudSync();
 </script>
