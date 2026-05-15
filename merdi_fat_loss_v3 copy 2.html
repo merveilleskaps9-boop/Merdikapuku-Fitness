@@ -13,12 +13,12 @@
       --text:#f4f7fa;--text-soft:#a1b8ce;--card-bg:rgba(10,15,25,0.75);
       --meal1-color:#ff9f1c;--meal2-color:#ff3b30;--meal3-color:#00e5ff;--sauce-color:#00ff88;--snack-color:#bf5af2;
     }
-    body{font-family:'Inter',sans-serif;background:#040508;color:var(--text);padding:1rem;display:flex;justify-content:center;align-items:flex-start;overflow-x:hidden;min-height:100vh;}
+    body{font-family:'Inter',sans-serif;background:#040508;color:var(--text);padding:0;display:block;overflow-x:hidden;min-height:100vh;box-sizing:border-box;}
     body::before{content:"";position:fixed;inset:-50%;background:radial-gradient(circle at 15% 25%,rgba(0,255,255,0.22) 0%,transparent 45%),radial-gradient(circle at 85% 75%,rgba(255,0,255,0.22) 0%,transparent 45%),radial-gradient(circle at 50% 50%,rgba(255,255,0,0.12) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(0,255,100,0.18) 0%,transparent 45%),radial-gradient(circle at 20% 80%,rgba(255,50,50,0.22) 0%,transparent 45%);filter:blur(60px);z-index:0;animation:neonPulse 15s infinite alternate ease-in-out;}
     @keyframes neonPulse{0%{transform:scale(1) rotate(0deg);}100%{transform:scale(1.1) rotate(2deg);}}
     .kapuku-wm{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;opacity:0.06;}
     .kapuku-wm::before{content:"MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU  MERDI KAPUKU";position:absolute;inset:-200px;font-size:1.4rem;font-weight:900;color:#fff;line-height:3.5;letter-spacing:0.3rem;word-spacing:1rem;transform:rotate(-25deg);width:200%;white-space:normal;word-break:break-all;}
-    .app-wrapper{width:100%;max-width:100%;display:flex;flex-direction:column;gap:1rem;position:relative;z-index:2;}
+    .app-wrapper{width:100%;max-width:100%;display:flex;flex-direction:column;gap:1rem;position:relative;z-index:2;margin:0 auto;box-sizing:border-box;}
     .panel{background:var(--glass-bg);backdrop-filter:blur(25px);border-radius:1.2rem;padding:1.2rem;border:1px solid var(--glass-border);box-shadow:0 20px 50px rgba(0,0,0,0.6);}
     .header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.2rem;}
     .title-area{flex:1;min-width:220px;max-width:100%;}
@@ -133,20 +133,35 @@
   @media(max-width:767px){
       .stat-val{font-size:1.1rem;}
       .stat-card{padding:0.6rem;}
-      body{padding:0.5rem;}
+      body{padding:0.5rem 0.6rem;overflow-x:hidden;}
+      .app-wrapper{width:100%;max-width:100%;display:flex;flex-direction:column;box-sizing:border-box;}
       .panel{padding:0.9rem;}
     }
-    @media(min-width:768px){
-      body{padding:1rem 1.5rem;}
+    @media(min-width:768px) and (max-width:1199px){
+      body{padding:1rem 1.5rem;overflow-x:hidden;}
+      .app-wrapper{
+        width:100%;
+        max-width:860px;
+        display:flex;flex-direction:column;
+        margin:0 auto;
+        box-sizing:border-box;
+      }
     }
-    @media(min-width:1024px){
-      body{padding:1rem 2rem;justify-content:flex-start;}
+    @media(min-width:1200px){
+      body{
+        padding:1rem 2rem;
+        overflow-x:hidden;
+      }
       .app-wrapper{
         display:grid;
-        grid-template-columns:360px 1fr;
+        grid-template-columns:340px 1fr;
         grid-template-rows:auto;
         column-gap:1.2rem;
         align-items:start;
+        width:100%;
+        max-width:1280px;
+        margin:0 auto;
+        box-sizing:border-box;
       }
       .app-wrapper > .panel:first-child{
         grid-column:1;
@@ -170,17 +185,19 @@
     }
     @media(min-width:1400px){
       .app-wrapper{
-        grid-template-columns:400px 1fr;
-        column-gap:1.5rem;
+        grid-template-columns:360px 1fr;
+        column-gap:1.4rem;
+        max-width:1400px;
       }
-      body{padding:1.2rem 3rem;}
+      body{padding:1rem 2.5rem;overflow-x:hidden;}
     }
     @media(min-width:1800px){
       .app-wrapper{
-        grid-template-columns:440px 1fr;
-        column-gap:2rem;
+        grid-template-columns:380px 1fr;
+        column-gap:1.6rem;
+        max-width:1600px;
       }
-      body{padding:1.5rem 5rem;}
+      body{padding:1rem 3rem;overflow-x:hidden;}
     }
 
     /* ── Progress bars ── */
@@ -1330,7 +1347,7 @@
     }
     .wm-names-overlay > div{
       position:absolute;font-weight:900;letter-spacing:0.13em;
-      text-transform:uppercase;user-select:none;white-space:nowrap;
+      text-transform:uppercase;user-select:none;white-space:nowrap;max-width:45vw;overflow:hidden;text-overflow:ellipsis;
       mix-blend-mode:lighten;
       transform-style:preserve-3d;will-change:transform;
     }
@@ -1348,10 +1365,6 @@
       text-shadow:0 0 18px rgba(0,180,255,0.38),0 2px 7px rgba(0,0,0,0.9);
       animation:nm3 85s ease-in-out infinite alternate;}
     /* MUM MARIE-PAUL KABEDI — 3 positions */
-    .n-mp-a{top:19%;right:2%;font-size:clamp(1rem,2.4vw,1.6rem);
-      color:rgba(190,110,255,0.35);
-      text-shadow:0 0 32px rgba(160,80,255,0.6),0 2px 10px rgba(0,0,0,0.9),0 0 55px rgba(140,60,255,0.28);
-      animation:nm4 65s ease-in-out infinite alternate;}
     .n-mp-b{top:66%;left:46%;font-size:clamp(0.88rem,2vw,1.3rem);
       color:rgba(190,110,255,0.28);
       text-shadow:0 0 22px rgba(160,80,255,0.45),0 2px 9px rgba(0,0,0,0.9);
@@ -1389,8 +1402,6 @@
       50% {transform:rotate(-8deg) translateZ(9px) scale(1.02);}
       100%{transform:rotate(-12deg) translateZ(4px) scale(1.04);}
     }
-    @keyframes nm4{
-      0%  {transform:rotate(-31deg) translateZ(0px) translateX(0);}
       50% {transform:rotate(-29deg) translateZ(13px) translateX(10px);}
       100%{transform:rotate(-33deg) translateZ(6px) translateX(20px);}
     }
@@ -7212,6 +7223,28 @@ function openFoodPhotoScan(){
   };
   inp.click();
 }
+
+// ── syncSharedFoods (restaurée) ──
+async function syncSharedFoods(){
+  try{
+    const isMerdi=typeof FS_DOC!=='undefined'&&FS_DOC==='merdi';
+    const partnerDoc=isMerdi?'benedicte':'merdi';
+    const url=`https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents/apps/${partnerDoc}?key=${FS_API_KEY}`;
+    const res=await fetch(url);if(!res.ok) return;
+    const data=await res.json();
+    if(!data.fields?.userDB) return;
+    const partnerDB=JSON.parse(data.fields.userDB.stringValue);
+    let added=0;
+    Object.entries(partnerDB).forEach(([id,item])=>{
+      if(id.startsWith('custom_')&&!userDB[id]){
+        userDB[id]=item;added++;
+      }
+    });
+    if(added>0){save();const fr=appLang==='fr';
+      const ban=document.getElementById('bannerMsg');
+      if(ban) ban.innerHTML=fr?`🔄 ${added} aliment(s) importé(s) depuis le profil partenaire`:`🔄 ${added} food(s) synced from partner profile`;}
+  }catch(e){}
+}
 applyModeUI();syncInputs();applyLang();updateModeLabels();updateApp();checkAutoCopyPrompt();checkRefeedReminder();startCloudSync();
 </script>
 
@@ -7226,7 +7259,6 @@ applyModeUI();syncInputs();applyLang();updateModeLabels();updateApp();checkAutoC
   <div class="n-mc-a">Mamie Christine Muswamba</div>
   <div class="n-mc-b">Mamie Christine Muswamba</div>
   <div class="n-mc-c">Mamie Christine Muswamba</div>
-  <div class="n-mp-a">Mum Marie-paul Kabedi</div>
   <div class="n-mp-b">Mum Marie-paul Kabedi</div>
   <div class="n-mp-c">Mum Marie-paul Kabedi</div>
   <div class="n-mpa-a">Maria-paula Kabedi</div>
