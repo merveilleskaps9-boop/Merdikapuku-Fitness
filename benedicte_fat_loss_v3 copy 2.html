@@ -2169,7 +2169,7 @@
         </select>
       </div>
       <div class="input-group"><label>🪢 Corde à sauter <span class="info-btn" onclick="showInfo('rope')">?</span></label>
-        <select id="inpJumpRope" onchange="syncInputs();updateApp()">
+        <select id="inpJumpRope">
           <option value="0">—</option>
           <option value="jump_500">500 sauts</option>
           <option value="jump_1000">1 000 sauts</option>
@@ -2211,7 +2211,7 @@
     <div class="dash-row">
       <div class="stat-card"><div class="stat-val" id="valBMR" style="color:#a1b8ce">0</div><div class="stat-lbl">BMR<span class="info-btn" onclick="showInfo('bmr')">?</span></div></div>
       <div class="stat-card"><div class="stat-val" id="valTDEE" style="color:#fff">0</div><div class="stat-lbl">TDEE<span class="info-btn" onclick="showInfo('tdee')">?</span></div></div>
-      <div class="stat-card"><div class="stat-val" id="valCons" style="color:var(--accent-cal)">0</div><div class="stat-lbl" id="lblCons">MANGÉ</div><div class="macro-bar-wrap"><div class="macro-bar" id="barCal" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatCal" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
+      <div class="stat-card"><div class="stat-val" id="valCons" style="color:var(--accent-cal)">0</div><div class="stat-lbl" id="lblCons">MANGÉ<span class="info-btn" onclick="showInfo('eaten')">?</span></div><div class="macro-bar-wrap"><div class="macro-bar" id="barCal" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatCal" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
       <div class="stat-card"><div class="stat-val" id="valDef" style="color:var(--accent-warn)">0</div><div class="stat-lbl">DÉFICIT<span class="info-btn" onclick="showInfo('deficit')">?</span></div></div>
       <div class="stat-card"><div class="stat-val" id="valLoss" style="color:var(--accent-fat)">0</div><div class="stat-lbl">PERTE/J<span class="info-btn" onclick="showInfo('loss')">?</span></div></div>
     </div>
@@ -2219,7 +2219,7 @@
       <div class="stat-card"><div class="stat-val" id="valPro" style="color:var(--accent-pro)">0</div><div class="stat-lbl" id="lblPro">PROT<span class="info-btn" onclick="showInfo('protein')">?</span></div><div class="macro-bar-wrap"><div class="macro-bar" id="barPro" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatPro" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
       <div class="stat-card"><div class="stat-val" id="valCar" style="color:var(--accent-car)">0</div><div class="stat-lbl" id="lblCar">CARBS<span class="info-btn" onclick="showInfo('carbs')">?</span></div><div class="macro-bar-wrap"><div class="macro-bar" id="barCar" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatCar" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
       <div class="stat-card"><div class="stat-val" id="valFat" style="color:var(--accent-fat)">0</div><div class="stat-lbl" id="lblFat">FAT<span class="info-btn" onclick="showInfo('fat')">?</span></div><div class="macro-bar-wrap"><div class="macro-bar" id="barFat" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatFat" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
-      <div class="stat-card"><div class="stat-val" id="valFib" style="color:var(--accent-fib)">0</div><div class="stat-lbl" id="lblFib">FIBER</div><div class="macro-bar-wrap"><div class="macro-bar" id="barFib" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatFib" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
+      <div class="stat-card"><div class="stat-val" id="valFib" style="color:var(--accent-fib)">0</div><div class="stat-lbl" id="lblFib">FIBER<span class="info-btn" onclick="showInfo('fiber')">?</span></div><div class="macro-bar-wrap"><div class="macro-bar" id="barFib" style="width:0%"></div></div></div><div class="stat-emoji" id="emojiStatFib" style="font-size:1rem;margin-top:0.1rem;line-height:1">⁉️</div>
     </div>
     <div class="tdee-breakdown" id="tdeeBreakdown">Chargement...</div>
     <div id="macroSuggestions"></div>
@@ -2243,7 +2243,7 @@
   <div id="mealsContainer"></div>
 
   <div id="weekBadgeWrap" style="margin-bottom:0.4rem"></div>
-  <div class="streak-card" id="streakCard"><div class="streak-flame">🔥</div><div class="streak-info"><div class="streak-count" id="streakCount">0</div><div class="streak-label" id="streakLabel">CONSECUTIVE DAYS TRACKED</div></div><div style="text-align:right"><div style="font-size:0.65rem;color:var(--text-soft);font-weight:900" id="streakBest">Best: 0</div></div>
+  <div class="streak-card" id="streakCard"><div class="streak-flame">🔥</div><div class="streak-info"><div class="streak-count" id="streakCount">0</div><div class="streak-label" id="streakLabel">CONSECUTIVE DAYS TRACKED<span class="info-btn" onclick="showInfo('streak')" style="margin-left:4px">?</span></div></div><div style="text-align:right"><div style="font-size:0.65rem;color:var(--text-soft);font-weight:900" id="streakBest">Best: 0</div></div>
   <div id="streakSpecialMsg" style="width:100%;font-size:0.78rem;font-weight:900;text-align:center;padding:0.5rem 0 0;font-style:italic;display:none;color:var(--accent-cal);border-top:1px dashed rgba(255,255,255,0.1);margin-top:0.5rem;line-height:1.4"></div>
 </div>
   <div class="chart-panel" id="weightChartPanel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem"><span style="font-size:0.65rem;font-weight:900;color:var(--text-soft);text-transform:uppercase" id="chartTitle">📈 WEIGHT EVOLUTION</span><select id="chartWeeks" style="font-size:0.65rem;padding:0.2rem 0.4rem;border-radius:0.5rem;background:rgba(0,0,0,0.5);border:1px solid rgba(255,182,193,0.15);color:#fff;outline:none" onchange="renderWeightChart()"><option value="4">4 wks</option><option value="8" selected>8 wks</option><option value="12">12 wks</option></select></div><canvas id="weightChart" style="width:100%;height:140px;display:block"></canvas><div style="font-size:0.62rem;color:var(--text-soft);text-align:center;margin-top:0.3rem" id="chartLegend"></div></div>
@@ -4815,7 +4815,7 @@ function autoFillMondayWeight(){
     }
   }
 }
-['inpWeight','inpSteps','inpIncline','inpGym','inpSleep','inpWater','inpWaterML'].forEach(id=>{
+['inpWeight','inpSteps','inpIncline','inpGym','inpSleep','inpWater','inpWaterML','inpJumpRope','creatineVal'].forEach(id=>{
   document.getElementById(id).addEventListener('input',()=>{
     const d=getD(state.week,state.day);
     if(appMode==='maintenance'){
